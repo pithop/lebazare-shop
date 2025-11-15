@@ -1,16 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles for LeBazare */
-body {
-    font-family: 'LeBazare', sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
-}
+@layer base {
+  body {
+    @apply font-sans bg-beige text-dark-text;
+  }
 
-h1, h2, h3 {
-    font-family: 'LeBazare', serif;
+  h1, h2 {
+    @apply font-serif;
+  }
 }
-
-/* Additional custom styles can be added here */
