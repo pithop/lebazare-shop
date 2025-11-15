@@ -2,6 +2,18 @@
 
 Site e-commerce moderne pour LeBazare, une boutique artisanale de produits en matières naturelles (bois, paille, raphia).
 
+## 📖 Guide d'Installation Complet
+
+**👉 [Voir INSTALLATION.md pour le guide complet d'installation et de test local](./INSTALLATION.md)**
+
+Le guide comprend:
+- Instructions détaillées pour cloner le projet depuis GitHub
+- Installation des prérequis (Node.js, npm)
+- Configuration du fichier .env.local
+- Comment lancer le projet en local sur Ubuntu
+- Résolution des problèmes courants
+- Déploiement sur Vercel
+
 ## 🚀 Démarrage Rapide
 
 ### Prérequis
