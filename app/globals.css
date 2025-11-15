@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for LeBazare */
+body {
+    font-family: 'LeBazare', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-family: 'LeBazare', serif;
+}
+
+/* Additional custom styles can be added here */
