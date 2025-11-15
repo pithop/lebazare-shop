@@ -1,4 +1,5 @@
 import { getProductByHandle } from '@/lib/products';
+import { exampleProducts } from '@/lib/example-products';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import AddToCartButton from '@/components/AddToCartButton';
@@ -8,7 +9,12 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { handle: string } }) {
   try {
-    const product = await getProductByHandle(params.handle);
+    let product = await getProductByHandle(params.handle);
+    
+    // Fallback to example products if not found in Shopify
+    if (!product) {
+      product = exampleProducts.find(p => p.handle === params.handle) || null;
+    }
     
     if (!product) {
       return {
@@ -33,7 +39,12 @@ export default async function ProductPage({ params }: { params: { handle: string
   try {
     product = await getProductByHandle(params.handle);
   } catch (error) {
-    console.error('Error fetching product:', error);
+    console.error('Error fetching product from Shopify:', error);
+  }
+  
+  // Fallback to example products if not found in Shopify
+  if (!product) {
+    product = exampleProducts.find(p => p.handle === params.handle) || null;
   }
 
   if (!product) {
