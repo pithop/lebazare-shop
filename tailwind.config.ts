@@ -9,11 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        beige: '#F5F5DC',
-        terracotta: '#B85C38',
-        ocre: '#D2B48C',
-        'dark-text': '#282828',
-        'accent-red': '#C04000',
+        beige: '#F9F5F0',
+        terracotta: '#C86B48',
+        ocre: '#D4A373',
+        sand: '#E6D5B8',
+        'deep-blue': '#2C3E50',
+        'dark-text': '#1A1A1A',
+        'accent-red': '#B03A2E',
+        'soft-gray': '#F0F0F0',
       },
       fontFamily: {
         serif: ['Playfair Display', 'serif'],

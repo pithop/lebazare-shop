@@ -11,6 +11,17 @@ export default function PanierPage() {
           Votre Panier
         </h1>
 
+        {/* Free Shipping Progress Mock */}
+        <div className="bg-white p-4 rounded-lg shadow-sm mb-8">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-stone-600">Plus que <strong>55,00 €</strong> pour la livraison offerte</span>
+            <span className="text-terracotta font-medium">45%</span>
+          </div>
+          <div className="w-full bg-stone-100 rounded-full h-2.5">
+            <div className="bg-terracotta h-2.5 rounded-full" style={{ width: '45%' }}></div>
+          </div>
+        </div>
+
         <div className="bg-white rounded-lg shadow-lg p-8 text-center">
           <div className="mb-8">
             <svg
