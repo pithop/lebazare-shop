@@ -11,47 +11,10 @@ export default function AddToCartButton({ variantId, productTitle }: AddToCartBu
   const [isAdding, setIsAdding] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handleAddToCart = async () => {
-    setIsAdding(true);
-    setMessage('');
-
-    try {
-      // Get or create cart
-      let cartId = localStorage.getItem('cartId');
-
-      const response = await fetch('/api/cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cartId,
-          variantId,
-          quantity: 1,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de l\'ajout au panier');
-      }
-
-      const data = await response.json();
-      
-      // Save cart ID
-      if (data.cart?.id) {
-        localStorage.setItem('cartId', data.cart.id);
-      }
-
-      setMessage(`${productTitle} ajouté au panier !`);
-      
-      // Clear message after 3 seconds
-      setTimeout(() => setMessage(''), 3000);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      setMessage('Erreur lors de l\'ajout au panier');
-    } finally {
-      setIsAdding(false);
-    }
+  const handleAddToCart = () => {
+    // For now, since we don't have a Supabase cart yet and Shopify is removed,
+    // we redirect to the cart page which explains the Etsy flow.
+    window.location.href = '/panier';
   };
 
   return (
@@ -63,7 +26,7 @@ export default function AddToCartButton({ variantId, productTitle }: AddToCartBu
       >
         {isAdding ? 'Ajout en cours...' : 'Ajouter au panier'}
       </button>
-      
+
       {message && (
         <p className={`text-center text-sm ${message.includes('Erreur') ? 'text-red-600' : 'text-green-600'}`}>
           {message}
