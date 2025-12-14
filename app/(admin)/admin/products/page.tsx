@@ -66,9 +66,12 @@ export default async function ProductsPage() {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-2">
-                                        <button className="text-slate-400 hover:text-slate-600">
+                                        <Link
+                                            href={`/admin/products/${product.id}`}
+                                            className="text-slate-400 hover:text-slate-600"
+                                        >
                                             Modifier
-                                        </button>
+                                        </Link>
                                         <DeleteProductButton id={product.id} />
                                     </div>
                                 </td>

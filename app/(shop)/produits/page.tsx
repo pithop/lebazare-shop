@@ -1,7 +1,6 @@
 import { getAllProducts } from '@/lib/products';
 import { exampleProducts } from '@/lib/example-products';
 import ProductCard from '@/components/ProductCard';
-import ProductFilters from '@/components/ProductFilters';
 import { Product } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
@@ -72,12 +71,7 @@ export default async function ProduitsPage({ searchParams }: Props) {
         )}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
-        {/* Sidebar */}
-        <aside className="w-full lg:w-64 flex-shrink-0">
-          <ProductFilters />
-        </aside>
-
+      <div className="flex flex-col gap-12">
         {/* Product Grid */}
         <div className="flex-grow">
           {filteredProducts.length === 0 ? (
@@ -86,11 +80,11 @@ export default async function ProduitsPage({ searchParams }: Props) {
                 Aucun produit ne correspond à votre recherche.
               </p>
               <p className="text-dark-text/60">
-                Essayez d'autres filtres ou revenez plus tard.
+                Essayez d'autres termes ou revenez plus tard.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

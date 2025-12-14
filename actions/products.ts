@@ -79,3 +79,62 @@ export async function deleteProduct(id: string) {
     revalidatePath('/produits')
     return { success: true, message: 'Product deleted' }
 }
+
+export async function updateProduct(id: string, formData: FormData) {
+    const supabase = createClient()
+
+    const title = formData.get('title') as string
+    const description = formData.get('description') as string
+    const price = parseFloat(formData.get('price') as string)
+    const stock = parseInt(formData.get('stock') as string)
+    const imageFile = formData.get('image') as File | null
+
+    const updates: any = {
+        title,
+        description,
+        price,
+        stock,
+        updated_at: new Date().toISOString(),
+    }
+
+    if (imageFile && imageFile.size > 0) {
+        const filename = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`
+        const { error: uploadError } = await supabase.storage
+            .from('products')
+            .upload(filename, imageFile, {
+                cacheControl: '3600',
+                upsert: false
+            })
+
+        if (uploadError) {
+            console.error('Error uploading image:', uploadError)
+            return { success: false, message: 'Failed to upload image' }
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('products')
+            .getPublicUrl(filename)
+
+        updates.images = [publicUrl]
+    } else {
+        // Check for manual URL fallback if provided and no file
+        const imageString = formData.get('image_url') as string
+        if (imageString && imageString.startsWith('http')) {
+            updates.images = [imageString]
+        }
+    }
+
+    const { error } = await supabase
+        .from('products')
+        .update(updates)
+        .eq('id', id)
+
+    if (error) {
+        console.error('Error updating product:', error)
+        return { success: false, message: 'Failed to update product' }
+    }
+
+    revalidatePath('/admin/products')
+    revalidatePath('/produits')
+    redirect('/admin/products')
+}
