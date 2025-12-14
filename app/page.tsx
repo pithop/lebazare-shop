@@ -5,38 +5,45 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center bg-gradient-to-b from-beige to-ocre/30">
-        <div className="container mx-auto px-4 text-center z-10">
-          <h1 className="text-6xl md:text-7xl font-serif text-terracotta mb-6">
+      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-bg.jpg"
+            alt="Artisanat marocain - Luminaires et décoration"
+            fill
+            className="object-cover object-center"
+            priority
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-black/30" /> {/* Overlay for text readability */}
+        </div>
+
+        <div className="container mx-auto px-4 text-center z-10 relative">
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif text-white mb-6 drop-shadow-lg">
             LeBazare
           </h1>
-          <h2 className="text-3xl md:text-4xl font-serif text-ocre mb-8">
-            Créations Artisanales
+          <h2 className="text-3xl md:text-4xl font-serif text-sand mb-8 drop-shadow-md">
+            L'Élégance de l'Artisanat Marocain
           </h2>
-          <p className="text-xl text-dark-text max-w-3xl mx-auto mb-12 leading-relaxed">
-            Découvrez notre collection unique de créations artisanales en matières naturelles.
-            Chaque pièce est façonnée avec passion et savoir-faire, alliant authenticité et élégance bohème.
+          <p className="text-xl text-white/90 max-w-3xl mx-auto mb-12 leading-relaxed font-light drop-shadow">
+            Une collection exclusive de luminaires en paille, mobilier en bois et décoration bohème.
+            Façonné à la main, pour un intérieur authentique.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/produits"
-              className="bg-accent-red text-white px-8 py-4 rounded-lg text-lg font-medium hover:opacity-90 transition-opacity shadow-lg"
+              className="bg-white text-dark-text px-8 py-4 rounded-full text-lg font-medium hover:bg-sand transition-colors shadow-lg"
             >
-              Découvrir nos produits
+              Découvrir la Collection
             </Link>
             <Link
               href="/a-propos"
-              className="bg-terracotta text-white px-8 py-4 rounded-lg text-lg font-medium hover:opacity-90 transition-opacity shadow-lg"
+              className="bg-terracotta/90 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-terracotta transition-colors shadow-lg"
             >
-              Notre histoire
+              Notre Savoir-Faire
             </Link>
           </div>
-        </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-terracotta rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-ocre rounded-full blur-3xl"></div>
         </div>
       </section>
 
