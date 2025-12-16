@@ -9,7 +9,7 @@ import {
 import { useCart } from '@/context/CartContext'
 import { createOrder } from '@/actions/orders'
 
-export default function CheckoutForm({ customerDetails }: { customerDetails: any }) {
+export default function CheckoutForm({ customerDetails, clientSecret }: { customerDetails: any, clientSecret: string }) {
     const stripe = useStripe()
     const elements = useElements()
     const { items, cartTotal, clearCart } = useCart()
@@ -21,10 +21,6 @@ export default function CheckoutForm({ customerDetails }: { customerDetails: any
         if (!stripe) {
             return
         }
-
-        const clientSecret = new URLSearchParams(window.location.search).get(
-            'payment_intent_client_secret'
-        )
 
         if (!clientSecret) {
             return
@@ -42,11 +38,12 @@ export default function CheckoutForm({ customerDetails }: { customerDetails: any
                     setMessage('Votre paiement a échoué, veuillez réessayer.')
                     break
                 default:
-                    setMessage('Une erreur est survenue.')
+                    // Only show error if we are redirected back with an error or if status is explicitly failed
+                    // Initial load usually has 'requires_payment_method' which is fine
                     break
             }
         })
-    }, [stripe])
+    }, [stripe, clientSecret])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -73,15 +70,11 @@ export default function CheckoutForm({ customerDetails }: { customerDetails: any
             }
 
             // 2. Update PaymentIntent with Order ID
-            const clientSecret = new URLSearchParams(window.location.search).get(
-                'payment_intent_client_secret'
-            )
-
             const updateResult = await fetch('/api/update-payment-intent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    paymentIntentId: (await stripe.retrievePaymentIntent(clientSecret!)).paymentIntent?.id,
+                    paymentIntentId: (await stripe.retrievePaymentIntent(clientSecret)).paymentIntent?.id,
                     orderId: orderResult.orderId
                 }),
             })
