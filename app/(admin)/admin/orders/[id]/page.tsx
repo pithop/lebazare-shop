@@ -49,7 +49,7 @@ export default async function OrderDetailPage({ params }: { params: { id: string
                             {order.order_items.map((item: any) => (
                                 <div key={item.id} className="py-4 flex justify-between items-center">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-stone-50 rounded-md overflow-hidden relative">
+                                        <div className="w-24 h-24 bg-stone-50 rounded-md overflow-hidden relative border border-slate-200">
                                             {/* Ideally use Next Image here if we had the URL handy */}
                                             {item.products?.images?.[0] && (
                                                 <img src={item.products.images[0]} alt="" className="w-full h-full object-cover" />
