@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2025-11-17.clover' as any,
-    typescript: true,
-});
-
 export async function POST(request: Request) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+        return NextResponse.json({ error: 'Stripe Secret Key missing' }, { status: 500 });
+    }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: '2025-11-17.clover' as any,
+        typescript: true,
+    });
+
     try {
         const { paymentIntentId, orderId } = await request.json();
 
