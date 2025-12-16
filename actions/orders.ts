@@ -1,9 +1,13 @@
 'use server'
 
-import { createClient } from '@/lib/supabase-server'
+import { createClient } from '@supabase/supabase-js'
 
 export async function createOrder(customerDetails: any, items: any[], total: number) {
-    const supabase = createClient()
+    // Use Service Role Key to bypass RLS for order creation (allows guest checkout)
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
     // 1. Create Order
     const { data: order, error: orderError } = await supabase
