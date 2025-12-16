@@ -56,54 +56,62 @@ export default function CheckoutForm({ customerDetails }: { customerDetails: any
         }
 
         setIsLoading(true)
+        setMessage(null)
 
-        // 1. Create Order in Supabase (Pending)
-        const orderItems = items.map(item => ({
-            product_id: item.id,
-            quantity: item.quantity,
-            price: item.price
-        }))
+        try {
+            // 1. Create Order in Supabase (Pending)
+            const orderItems = items.map(item => ({
+                product_id: item.id,
+                quantity: item.quantity,
+                price: item.price
+            }))
 
-        const orderResult = await createOrder(customerDetails, orderItems, cartTotal)
+            const orderResult = await createOrder(customerDetails, orderItems, cartTotal)
 
-        if (!orderResult.success) {
-            setMessage(orderResult.message || 'Erreur lors de la création de la commande.')
+            if (!orderResult.success) {
+                throw new Error(orderResult.message || 'Erreur lors de la création de la commande.')
+            }
+
+            // 2. Update PaymentIntent with Order ID
+            const clientSecret = new URLSearchParams(window.location.search).get(
+                'payment_intent_client_secret'
+            )
+
+            const updateResult = await fetch('/api/update-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    paymentIntentId: (await stripe.retrievePaymentIntent(clientSecret!)).paymentIntent?.id,
+                    orderId: orderResult.orderId
+                }),
+            })
+
+            if (!updateResult.ok) {
+                console.error('Failed to update payment intent metadata')
+                // We continue anyway as the order is created, but it's not ideal
+            }
+
+            // 3. Confirm Payment
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: `${window.location.origin}/checkout/success?orderId=${orderResult.orderId}`,
+                },
+            })
+
+            if (error) {
+                if (error.type === 'card_error' || error.type === 'validation_error') {
+                    throw new Error(error.message || 'Une erreur est survenue')
+                } else {
+                    throw new Error('Une erreur inattendue est survenue.')
+                }
+            }
+        } catch (err: any) {
+            console.error('Checkout error:', err)
+            setMessage(err.message || 'Une erreur est survenue lors du paiement.')
+        } finally {
             setIsLoading(false)
-            return
         }
-
-        // 2. Update PaymentIntent with Order ID
-        // We need a server action or API route to update the payment intent
-        // For now, let's assume we can do it via a new API route or just rely on the client for the MVP
-        // BETTER: Create a server action to update the payment intent
-        const clientSecret = new URLSearchParams(window.location.search).get(
-            'payment_intent_client_secret'
-        )
-
-        await fetch('/api/update-payment-intent', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                paymentIntentId: (await stripe.retrievePaymentIntent(clientSecret!)).paymentIntent?.id,
-                orderId: orderResult.orderId
-            }),
-        })
-
-        // 3. Confirm Payment
-        const { error } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: `${window.location.origin}/checkout/success?orderId=${orderResult.orderId}`,
-            },
-        })
-
-        if (error.type === 'card_error' || error.type === 'validation_error') {
-            setMessage(error.message || 'Une erreur est survenue')
-        } else {
-            setMessage('Une erreur inattendue est survenue.')
-        }
-
-        setIsLoading(false)
     }
 
     return (

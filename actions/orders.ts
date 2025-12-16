@@ -3,10 +3,15 @@
 import { createClient } from '@supabase/supabase-js'
 
 export async function createOrder(customerDetails: any, items: any[], total: number) {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        console.error('SUPABASE_SERVICE_ROLE_KEY is missing')
+        return { success: false, message: 'Configuration error: Service Role Key missing' }
+    }
+
     // Use Service Role Key to bypass RLS for order creation (allows guest checkout)
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
+        process.env.SUPABASE_SERVICE_ROLE_KEY
     )
 
     // 1. Create Order
