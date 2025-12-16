@@ -101,8 +101,8 @@ export default function ProductVariantSelector({
                                             key={value}
                                             onClick={() => handleOptionChange(attrName, value)}
                                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isSelected
-                                                    ? 'bg-slate-900 text-white border-slate-900'
-                                                    : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
+                                                ? 'bg-slate-900 text-white border-slate-900'
+                                                : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
                                                 }`}
                                         >
                                             {value}
@@ -120,6 +120,7 @@ export default function ProductVariantSelector({
                     selectedVariant.availableForSale ? (
                         <AddToCartButton
                             variantId={selectedVariant.id}
+                            productId={product.id}
                             productTitle={`${product.title}${selectedVariant.title !== 'Default Title' ? ` - ${selectedVariant.title}` : ''}`}
                             price={currentPrice}
                             image={product.images.edges[0]?.node.url || ''}

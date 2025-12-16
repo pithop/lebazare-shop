@@ -7,7 +7,7 @@ export default async function EditProductPage({ params }: { params: { id: string
     const supabase = createClient();
     const { data: product } = await supabase
         .from('products')
-        .select('*')
+        .select('*, product_variants(*)')
         .eq('id', params.id)
         .single();
 

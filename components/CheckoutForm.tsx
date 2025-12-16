@@ -57,8 +57,10 @@ export default function CheckoutForm({ customerDetails, clientSecret }: { custom
 
         try {
             // 1. Create Order in Supabase (Pending)
+            // 1. Create Order in Supabase (Pending)
             const orderItems = items.map(item => ({
-                product_id: item.id,
+                product_id: item.productId, // Use the parent product ID
+                variant_id: item.id, // Store variant ID if schema supports it (optional but good)
                 quantity: item.quantity,
                 price: item.price
             }))

@@ -5,12 +5,13 @@ import { useCart } from '@/context/CartContext'
 
 interface AddToCartButtonProps {
   variantId: string
+  productId: string
   productTitle: string
   price: number
   image: string
 }
 
-export default function AddToCartButton({ variantId, productTitle, price, image }: AddToCartButtonProps) {
+export default function AddToCartButton({ variantId, productId, productTitle, price, image }: AddToCartButtonProps) {
   const [isPending, setIsPending] = useState(false)
   const { addItem } = useCart()
 
@@ -21,6 +22,7 @@ export default function AddToCartButton({ variantId, productTitle, price, image 
     setTimeout(() => {
       addItem({
         id: variantId,
+        productId: productId,
         title: productTitle,
         price: price,
         image: image,

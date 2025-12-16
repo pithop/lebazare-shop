@@ -34,6 +34,7 @@ export async function createOrder(customerDetails: any, items: any[], total: num
     const orderItems = items.map(item => ({
         order_id: order.id,
         product_id: item.product_id,
+        variant_id: item.variant_id || null, // Optional
         quantity: item.quantity,
         price: item.price
     }))

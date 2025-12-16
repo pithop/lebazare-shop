@@ -182,6 +182,59 @@ export async function updateProduct(id: string, formData: FormData) {
         return { success: false, message: 'Failed to update product' }
     }
 
+    // Handle Variants
+    const variantsJson = formData.get('variants') as string
+    if (variantsJson) {
+        try {
+            const variants = JSON.parse(variantsJson)
+            if (Array.isArray(variants)) {
+                // 1. Get existing variants
+                const { data: existingVariants } = await supabase
+                    .from('product_variants')
+                    .select('id')
+                    .eq('product_id', id)
+
+                const existingIds = existingVariants?.map(v => v.id) || []
+                const incomingIds = variants.filter((v: any) => v.id).map((v: any) => v.id)
+
+                // 2. Delete removed variants
+                const idsToDelete = existingIds.filter(id => !incomingIds.includes(id))
+                if (idsToDelete.length > 0) {
+                    await supabase.from('product_variants').delete().in('id', idsToDelete)
+                }
+
+                // 3. Upsert (Update existing + Insert new)
+                const variantsToUpsert = variants.map((v: any) => ({
+                    id: v.id, // If present, it updates. If not, it's ignored by upsert? No, upsert needs ID to match.
+                    // Actually, for new items, we shouldn't pass ID if we want auto-gen. 
+                    // But Supabase upsert works by matching Primary Key.
+                    // If v.id is present, it matches. If not, we need to NOT pass it so it generates.
+                    // OR we can separate Insert and Update.
+                    product_id: id,
+                    name: v.name,
+                    price: v.price || null,
+                    stock: v.stock,
+                    attributes: v.attributes
+                }))
+
+                // Separate Insert and Update for clarity and safety
+                const toInsert = variantsToUpsert.filter((v: any) => !v.id)
+                const toUpdate = variantsToUpsert.filter((v: any) => v.id)
+
+                if (toInsert.length > 0) {
+                    await supabase.from('product_variants').insert(toInsert)
+                }
+
+                if (toUpdate.length > 0) {
+                    // Upsert handles updates if ID matches
+                    await supabase.from('product_variants').upsert(toUpdate)
+                }
+            }
+        } catch (e) {
+            console.error('Error updating variants:', e)
+        }
+    }
+
     revalidatePath('/admin/products')
     revalidatePath('/produits')
     redirect('/admin/products')

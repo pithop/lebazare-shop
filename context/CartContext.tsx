@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 export interface CartItem {
     id: string
+    productId: string // Added to link to parent product
     title: string
     price: number
     image: string
