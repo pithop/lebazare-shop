@@ -17,6 +17,10 @@ export default async function OrderDetailPage({ params }: { params: { id: string
         products (
           title,
           images
+        ),
+        product_variants (
+          name,
+          attributes
         )
       )
     `)
@@ -56,7 +60,14 @@ export default async function OrderDetailPage({ params }: { params: { id: string
                                             )}
                                         </div>
                                         <div>
-                                            <p className="font-medium text-slate-900">{item.products?.title || 'Produit supprimé'}</p>
+                                            <p className="font-medium text-slate-900">
+                                                {item.products?.title || 'Produit supprimé'}
+                                            </p>
+                                            {item.product_variants && (
+                                                <p className="text-sm text-slate-500">
+                                                    Variante: {item.product_variants.name}
+                                                </p>
+                                            )}
                                             <p className="text-sm text-slate-500">Qté: {item.quantity}</p>
                                         </div>
                                     </div>
