@@ -43,10 +43,12 @@ export default async function ProduitsPage({ searchParams }: Props) {
   const minPrice = typeof searchParams.minPrice === 'string' ? parseFloat(searchParams.minPrice) : 0;
   const maxPrice = typeof searchParams.maxPrice === 'string' ? parseFloat(searchParams.maxPrice) : 1000;
 
+  // Get unique categories
+  const categories = ['all', ...Array.from(new Set(products.map(p => p.category).filter(Boolean)))];
+
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title.toLowerCase().includes(query);
-    // Mock category check - in real app, check product.productType or tags
-    const matchesCategory = category === 'all' || product.title.toLowerCase().includes(category);
+    const matchesCategory = category === 'all' || product.category === category;
     const price = parseFloat(product.priceRange.minVariantPrice.amount);
     const matchesPrice = price >= minPrice && price <= maxPrice;
 
@@ -60,6 +62,22 @@ export default async function ProduitsPage({ searchParams }: Props) {
         <p className="text-lg text-dark-text max-w-2xl mx-auto">
           Découvrez notre collection de créations artisanales uniques.
         </p>
+
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mt-8">
+          {categories.map((cat) => (
+            <a
+              key={cat as string}
+              href={`/produits?category=${cat}`}
+              className={`px-6 py-2 rounded-full border transition-all ${category === cat
+                  ? 'bg-terracotta text-white border-terracotta'
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-terracotta hover:text-terracotta'
+                }`}
+            >
+              {cat === 'all' ? 'Tous' : cat}
+            </a>
+          ))}
+        </div>
 
         {usingExamples && (
           <div className="mt-6 bg-ocre/20 border border-ocre rounded-lg p-4 max-w-2xl mx-auto">

@@ -1,37 +1,50 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useState } from 'react'
+import { useCart } from '@/context/CartContext'
 
 interface AddToCartButtonProps {
-  variantId: string;
-  productTitle: string;
+  variantId: string
+  productTitle: string
+  price: number
+  image: string
 }
 
-export default function AddToCartButton({ variantId, productTitle }: AddToCartButtonProps) {
-  const [isAdding, setIsAdding] = useState(false);
-  const [message, setMessage] = useState('');
+export default function AddToCartButton({ variantId, productTitle, price, image }: AddToCartButtonProps) {
+  const [isPending, setIsPending] = useState(false)
+  const { addItem } = useCart()
 
   const handleAddToCart = () => {
-    // For now, since we don't have a Supabase cart yet and Shopify is removed,
-    // we redirect to the cart page which explains the Etsy flow.
-    window.location.href = '/panier';
-  };
+    setIsPending(true)
+
+    // Simulate a small delay for better UX
+    setTimeout(() => {
+      addItem({
+        id: variantId,
+        title: productTitle,
+        price: price,
+        image: image,
+        quantity: 1,
+        maxStock: 10 // Default max stock for now
+      })
+      setIsPending(false)
+    }, 500)
+  }
 
   return (
-    <div className="space-y-2">
-      <button
-        onClick={handleAddToCart}
-        disabled={isAdding}
-        className="w-full bg-accent-red text-white px-8 py-4 rounded-lg text-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isAdding ? 'Ajout en cours...' : 'Ajouter au panier'}
-      </button>
-
-      {message && (
-        <p className={`text-center text-sm ${message.includes('Erreur') ? 'text-red-600' : 'text-green-600'}`}>
-          {message}
-        </p>
+    <button
+      onClick={handleAddToCart}
+      disabled={isPending}
+      className="w-full bg-slate-900 text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-slate-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+    >
+      {isPending ? (
+        <>
+          <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          Ajout...
+        </>
+      ) : (
+        'Ajouter au panier'
       )}
-    </div>
-  );
+    </button>
+  )
 }

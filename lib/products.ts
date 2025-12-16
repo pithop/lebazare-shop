@@ -8,6 +8,7 @@ function mapSupabaseToProduct(sbProduct: any): Product {
     title: sbProduct.title,
     handle: sbProduct.slug,
     description: sbProduct.description || '',
+    category: sbProduct.category,
     images: {
       edges: (sbProduct.images || []).map((url: string) => ({
         node: {

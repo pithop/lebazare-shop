@@ -133,6 +133,8 @@ export default async function ProductPage({ params }: { params: { handle: string
                 <AddToCartButton
                   variantId={defaultVariant.id}
                   productTitle={product.title}
+                  price={price}
+                  image={mainImage?.url || ''}
                 />
               ) : (
                 <button

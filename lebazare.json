@@ -1,0 +1,730 @@
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/31f680/6834663095/il_fullxfull.6834663095_jjfy.jpg",
+          "name": "Handcrafted wicker storage trunk – Boho decorative basket made of natural fibers",
+          "url": "https://www.etsy.com/listing/1902123371/handcrafted-wicker-storage-trunk-boho",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "24.52",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/956af9/7505932000/il_fullxfull.7505932000_cd9p.jpg",
+          "name": "Handcrafted stool in light wood with a woven seat – natural and ethical decor",
+          "url": "https://www.etsy.com/listing/4423891476/handcrafted-stool-in-light-wood-with-a",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "48.92",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/706f5a/7553819519/il_fullxfull.7553819519_1mgs.jpg",
+          "name": "Straw tote bag with double leather handles – Handmade Moroccan boho chic bag",
+          "url": "https://www.etsy.com/listing/4423875348/straw-tote-bag-with-double-leather",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "56.89",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/253bfe/6992064555/il_fullxfull.6992064555_grcf.jpg",
+          "name": "Large Embroidered Moroccan Tote Bag - Chic & Colorful Oriental Fabric - Shoulder Bag with Interior Pocket - 13 Colors",
+          "url": "https://www.etsy.com/listing/4321281924/large-embroidered-moroccan-tote-bag-chic",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "48.06",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/d0e0aa/7000129971/il_fullxfull.7000129971_3k86.jpg",
+          "name": "Moroccan brocade fabric by the meter – 13 colors – Width 1.45 m, Luxury oriental fabric for sewing, decoration, clothing, DIY",
+          "url": "https://www.etsy.com/listing/4322808326/moroccan-brocade-fabric-by-the-meter-13",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "23.30",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/b06ddb/6952370097/il_fullxfull.6952370097_fvyh.jpg",
+          "name": "Round woven palm leaf basket – Handmade laundry basket or decorative storage",
+          "url": "https://www.etsy.com/listing/4313657948/round-woven-palm-leaf-basket-handmade",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "41.69",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/238b9a/6588923957/il_fullxfull.6588923957_r0sj.jpg",
+          "name": "Moroccan Brocade Velvet Zippered Pouch - Handcrafted Makeup Bag - Handmade Ethnic Handbag - 10 Refined Shades",
+          "url": "https://www.etsy.com/listing/1852924699/moroccan-brocade-velvet-zippered-pouch",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "21.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/d81c10/7011306242/il_fullxfull.7011306242_2v4k.jpg",
+          "name": "Handmade Raffia Wall Sconce - Natural Boho Chic Wall Decor - Moroccan Handcrafted Hanging Lampshade",
+          "url": "https://www.etsy.com/listing/4333719929/handmade-raffia-wall-sconce-natural-boho",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "65.23",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/8978ad/7484375476/il_fullxfull.7484375476_ptv4.jpg",
+          "name": "Set of 3 natural wicker baskets – Decorative handcrafted storage – Handmade baskets",
+          "url": "https://www.etsy.com/listing/4419789026/set-of-3-natural-wicker-baskets",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "98.09",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/dcac57/7450228567/il_fullxfull.7450228567_tdbn.jpg",
+          "name": "Sequin-embroidered straw tote bag – Colorful handcrafted basket with leather handles – Boho chic bag",
+          "url": "https://www.etsy.com/listing/4405835372/sequin-embroidered-straw-tote-bag",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "66.70",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/d9ace0/6836596865/il_fullxfull.6836596865_h226.jpg",
+          "name": "Moroccan Boucherouite Cord Stool – Colored or White",
+          "url": "https://www.etsy.com/listing/1881513892/moroccan-boucherouite-cord-stool-colored",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "40.30",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/bd567d/6944434559/il_fullxfull.6944434559_ndds.jpg",
+          "name": "Handcrafted Moroccan stool in wood and rope – Boho seat in woven natural straw",
+          "url": "https://www.etsy.com/listing/4312178324/handcrafted-moroccan-stool-in-wood-and",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "48.92",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/cd875f/6765248686/il_fullxfull.6765248686_4kuu.jpg",
+          "name": "Circular storage trunk made of palm leaves - Natural and authentic craftsmanship",
+          "url": "https://www.etsy.com/listing/1883603568/circular-storage-trunk-made-of-palm",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "41.69",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/a16aa8/6913809208/il_fullxfull.6913809208_gg01.jpg",
+          "name": "Half Ball Palm Leaf Pendant Light - Handmade Boho Natural Lighting - Wicker Artisan Lampshade",
+          "url": "https://www.etsy.com/listing/4315437853/half-ball-palm-leaf-pendant-light",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "37.40",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/edad06/7108907327/il_fullxfull.7108907327_q3ii.jpg",
+          "name": "Handmade raffia and leather bag – Handcrafted elegance with a boho chic style",
+          "url": "https://www.etsy.com/listing/4342898614/handmade-raffia-and-leather-bag",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "64.98",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/7109c0/7058104116/il_fullxfull.7058104116_67if.jpg",
+          "name": "Moroccan Handwoven Sequin Straw Tote Bag - Colorful Sequin Beach and Market Basket with Leather Handles",
+          "url": "https://www.etsy.com/listing/4342361325/moroccan-handwoven-sequin-straw-tote-bag",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "74.06",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/d6ff7f/6601246359/il_fullxfull.6601246359_cdo1.jpg",
+          "name": "Wicker basket and toy chest - Chic and practical storage in nature",
+          "url": "https://www.etsy.com/listing/1841433440/wicker-basket-and-toy-chest-chic-and",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "24.52",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/f42a0b/7324213536/il_fullxfull.7324213536_t8ir.jpg",
+          "name": "Moroccan handcrafted stool in wood and green rope",
+          "url": "https://www.etsy.com/listing/4388827874/moroccan-handcrafted-stool-in-wood-and",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "48.92",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/30929e/7100733423/il_fullxfull.7100733423_5cam.jpg",
+          "name": "Straw tote bag embroidered with gold sequins – Leather handles and mesh closure – Chic and boho Moroccan craftsmanship",
+          "url": "https://www.etsy.com/listing/4341389918/straw-tote-bag-embroidered-with-gold",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "66.82",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/7cc8d8/7098982253/il_fullxfull.7098982253_70d5.jpg",
+          "name": "Straw tote bag embroidered with gray sequins – Leather handles and mesh closure – Chic and boho Moroccan craftsmanship",
+          "url": "https://www.etsy.com/listing/4341091173/straw-tote-bag-embroidered-with-gray",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "66.70",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 21,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/a2fb43/6843805863/il_fullxfull.6843805863_cquj.jpg",
+          "name": "Small natural wicker storage trunk – Boho style & portable storage",
+          "url": "https://www.etsy.com/listing/1886605888/small-natural-wicker-storage-trunk-boho",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "18.39",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 22,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/e91895/7092705543/il_fullxfull.7092705543_d65y.jpg",
+          "name": "Openwork woven straw ball pendant light – Boho lampshade for a natural and warm atmosphere",
+          "url": "https://www.etsy.com/listing/4340013657/openwork-woven-straw-ball-pendant-light",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "29.25",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 23,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/aebfa5/7219370435/il_fullxfull.7219370435_8gco.jpg",
+          "name": "Handmade Moroccan Bar Stool - Eucalyptus Wood & Palm Leaf - Boho Handcrafted High Chair",
+          "url": "https://www.etsy.com/listing/4338634596/handmade-moroccan-bar-stool-eucalyptus",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "129.97",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 24,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/5dda0f/6969630788/il_fullxfull.6969630788_7e6r.jpg",
+          "name": "Hand-woven openwork raffia pendant light – Organic lampshade made from natural fibers",
+          "url": "https://www.etsy.com/listing/4326102508/hand-woven-openwork-raffia-pendant-light",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "95.81",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 25,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/a95339/6897487084/il_fullxfull.6897487084_5sfe.jpg",
+          "name": "Handcrafted Wooden and Palm Leaf Stool - Handmade in Morocco - Boho & Rustic Accent Seat",
+          "url": "https://www.etsy.com/listing/1884710798/handcrafted-wooden-and-palm-leaf-stool",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "39.08",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 26,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/e1e548/7184901620/il_fullxfull.7184901620_dpkh.jpg",
+          "name": "Openwork Half Ball Palm Leaf Pendant Light - Handmade Natural Boho Lampshade - Eco-Friendly Artisan Lighting",
+          "url": "https://www.etsy.com/listing/4366592603/openwork-half-ball-palm-leaf-pendant",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "29.25",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 27,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/df4dd7/6698628021/il_fullxfull.6698628021_o5sx.jpg",
+          "name": "Conical pendant light in woven straw – Boho lighting for a warm atmosphere",
+          "url": "https://www.etsy.com/listing/1875529153/conical-pendant-light-in-woven-straw",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "48.38",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 28,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/b6e188/6530837440/il_fullxfull.6530837440_jp5j.jpg",
+          "name": "Hand woven palm leaf basket",
+          "url": "https://www.etsy.com/listing/1836394590/hand-woven-palm-leaf-basket",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "21.09",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 29,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/e8b737/7402372754/il_fullxfull.7402372754_ob3r.jpg",
+          "name": "Straw and leather shoulder bag – Moroccan handmade bag with fringe – Small handmade boho chic bag",
+          "url": "https://www.etsy.com/listing/4405843368/straw-and-leather-shoulder-bag-moroccan",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "65.23",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 30,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/4af85c/7402332726/il_fullxfull.7402332726_hnyw.jpg",
+          "name": "Gold and white embroidered straw tote bag – Handmade Moroccan basket – Boho chic bag with leather handles – Shiny handmade basket",
+          "url": "https://www.etsy.com/listing/4405845987/gold-and-white-embroidered-straw-tote",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "66.82",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 31,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/91edea/7068842876/il_fullxfull.7068842876_q9f8.jpg",
+          "name": "Handcrafted Wicker Storage Trunk – Bohemian Handcrafted Storage Chests",
+          "url": "https://www.etsy.com/listing/4333697139/handcrafted-wicker-storage-trunk",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "18.27",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 32,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/628876/7377202200/il_fullxfull.7377202200_ohe3.jpg",
+          "name": "Boho pendant light made of palm leaves – Fringed openwork lamp",
+          "url": "https://www.etsy.com/listing/4401911191/boho-pendant-light-made-of-palm-leaves",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "29.25",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 33,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/55cdc3/7505889648/il_fullxfull.7505889648_k076.jpg",
+          "name": "Boho palm leaf pendant light – Woven light fixture with natural fringe",
+          "url": "https://www.etsy.com/listing/4401882365/boho-palm-leaf-pendant-light-woven-light",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "49.04",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 34,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/9246fd/6682953460/il_fullxfull.6682953460_cpbe.jpg",
+          "name": "Moroccan Bar Stool – Authentic and Handcrafted",
+          "url": "https://www.etsy.com/listing/1867622852/moroccan-bar-stool-authentic-and",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "129.97",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 35,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/69b95b/7027427365/il_fullxfull.7027427365_g6t4.jpg",
+          "name": "Woven straw basket with leather handles – Boho chic tote bag – Handmade summer bag",
+          "url": "https://www.etsy.com/listing/4327916674/woven-straw-basket-with-leather-handles",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "73.23",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 36,
+        "item": {
+          "@type": "Product",
+          "image": "https://i.etsystatic.com/35406440/r/il/4b019c/7231381448/il_fullxfull.7231381448_75ds.jpg",
+          "name": "Straw tote bag embroidered with white and gold sequins – Leather handles and mesh closure – Chic and boho Moroccan craftsmanship",
+          "url": "https://www.etsy.com/listing/4330141191/straw-tote-bag-embroidered-with-white",
+          "brand": {
+            "@type": "Brand",
+            "name": "LeBazare"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "66.82",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      }
+    ],
+    "numberOfItems": 97,
+    "url": "https://www.etsy.com/shop/LeBazare"
+  }
+]

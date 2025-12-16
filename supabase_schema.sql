@@ -12,6 +12,7 @@ create table public.products (
   stock integer default 0,
   slug text unique not null,
   etsy_id text unique, -- Important for sync
+  category text,
   is_active boolean default true
 );
 

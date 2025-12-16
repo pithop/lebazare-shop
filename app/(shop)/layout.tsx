@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import '../globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { CartProvider } from '@/context/CartContext'
+import CartDrawer from '@/components/CartDrawer'
 
 export const metadata: Metadata = {
   title: 'LeBazare - Boutique Artisanale',
@@ -16,11 +18,14 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <CartDrawer />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   )

@@ -3,6 +3,7 @@ export interface Product {
   title: string;
   handle: string;
   description: string;
+  category?: string;
   images: {
     edges: Array<{
       node: {
