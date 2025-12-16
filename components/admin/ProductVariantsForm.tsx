@@ -66,10 +66,20 @@ export default function ProductVariantsForm({
                 nameParts.push(combo[idx])
             })
 
+            const name = nameParts.join(' / ')
+
+            // Try to find existing variant with same attributes to preserve ID and stock/price
+            const existing = variants.find(v => {
+                // Check if attributes match
+                const attrMatch = Object.entries(attrs).every(([k, val]) => v.attributes[k] === val)
+                return attrMatch
+            })
+
             return {
-                name: nameParts.join(' / '),
-                price: 0, // Default to 0 (inherit from parent) or user sets it
-                stock: 1,
+                id: existing?.id, // Keep ID if exists
+                name: name,
+                price: existing?.price || 0,
+                stock: existing?.stock || 1,
                 attributes: attrs
             }
         })

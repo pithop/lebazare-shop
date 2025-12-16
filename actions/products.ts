@@ -161,16 +161,33 @@ export async function updateProduct(id: string, formData: FormData) {
         newImageUrls.push(imageString)
     }
 
-    if (newImageUrls.length > 0) {
-        // Fetch existing images to append or replace? 
-        // Usually update replaces or appends. Let's append for now or maybe just replace if user uploaded new ones?
-        // The user said "add multiple photos", implying adding to existing or creating new set.
-        // For simplicity in this form, if new images are uploaded, we might want to keep old ones or replace.
-        // Let's fetch current product to append.
+    // Handle Images
+    // 1. Get kept images (from JSON)
+    const keptImagesJson = formData.get('kept_images') as string
+    let finalImages: string[] = []
+
+    if (keptImagesJson) {
+        try {
+            finalImages = JSON.parse(keptImagesJson)
+        } catch (e) {
+            console.error('Error parsing kept_images:', e)
+        }
+    } else {
+        // Fallback: if no kept_images sent (e.g. old form), fetch existing? 
+        // No, the form should always send it now. If null, maybe we assume keep all? 
+        // But for safety, let's fetch if not provided to avoid accidental deletion?
+        // Actually, if it's not provided, it might mean no changes intended to images if we didn't touch them.
+        // But our form sends it.
         const { data: currentProduct } = await supabase.from('products').select('images').eq('id', id).single()
-        const currentImages = currentProduct?.images || []
-        updates.images = [...currentImages, ...newImageUrls]
+        finalImages = currentProduct?.images || []
     }
+
+    // 2. Append new uploads
+    if (newImageUrls.length > 0) {
+        finalImages = [...finalImages, ...newImageUrls]
+    }
+
+    updates.images = finalImages
 
     const { error } = await supabase
         .from('products')
