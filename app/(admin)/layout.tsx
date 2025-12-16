@@ -30,13 +30,19 @@ export default function AdminLayout({
                         </Link>
                         <Link
                             href="/admin/products"
-                            className="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors"
+                            className="block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors"
                         >
                             Produits
                         </Link>
                         <Link
+                            href="/admin/orders"
+                            className="block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors"
+                        >
+                            Commandes
+                        </Link>
+                        <Link
                             href="/admin/etsy-sync"
-                            className="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors"
+                            className="block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors"
                         >
                             Sync Etsy
                         </Link>

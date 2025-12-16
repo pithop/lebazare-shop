@@ -85,3 +85,19 @@ export interface Cart {
     };
   };
 }
+
+export interface Order {
+  id: string;
+  created_at: string;
+  status: string;
+  total: number;
+  customer_details: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+  };
+}
