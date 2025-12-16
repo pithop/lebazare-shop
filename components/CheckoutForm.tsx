@@ -67,7 +67,7 @@ export default function CheckoutForm({ customerDetails }: { customerDetails: any
         const orderResult = await createOrder(customerDetails, orderItems, cartTotal)
 
         if (!orderResult.success) {
-            setMessage('Erreur lors de la création de la commande.')
+            setMessage(orderResult.message || 'Erreur lors de la création de la commande.')
             setIsLoading(false)
             return
         }

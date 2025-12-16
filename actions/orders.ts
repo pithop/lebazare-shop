@@ -18,7 +18,7 @@ export async function createOrder(customerDetails: any, items: any[], total: num
 
     if (orderError) {
         console.error('Error creating order:', orderError)
-        return { success: false, message: 'Failed to create order' }
+        return { success: false, message: `Failed to create order: ${orderError.message}` }
     }
 
     // 2. Create Order Items
