@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import AddToCartButton from '@/components/AddToCartButton';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic'; // Removed to allow ISR
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { handle: string } }) {

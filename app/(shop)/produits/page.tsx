@@ -3,7 +3,7 @@ import { exampleProducts } from '@/lib/example-products';
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/lib/types';
 
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic'; // Removed to allow ISR
 export const revalidate = 60;
 
 export const metadata = {
@@ -70,8 +70,8 @@ export default async function ProduitsPage({ searchParams }: Props) {
               key={cat as string}
               href={`/produits?category=${cat}`}
               className={`px-6 py-2 rounded-full border transition-all ${category === cat
-                  ? 'bg-terracotta text-white border-terracotta'
-                  : 'bg-white text-slate-600 border-slate-200 hover:border-terracotta hover:text-terracotta'
+                ? 'bg-terracotta text-white border-terracotta'
+                : 'bg-white text-slate-600 border-slate-200 hover:border-terracotta hover:text-terracotta'
                 }`}
             >
               {cat === 'all' ? 'Tous' : cat}
