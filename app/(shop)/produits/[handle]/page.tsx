@@ -1,4 +1,4 @@
-import { getProductByHandle } from '@/lib/products';
+import { getProductByHandle, getRelatedProducts } from '@/lib/products';
 import { exampleProducts } from '@/lib/example-products';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: { params: { handle: string } 
 
 import ProductGallery from '@/components/shop/ProductGallery';
 import ProductVariantSelector from '@/components/shop/ProductVariantSelector';
+import RelatedProducts from '@/components/shop/RelatedProducts';
 
 // ... (imports)
 
@@ -58,9 +59,36 @@ export default async function ProductPage({ params }: { params: { handle: string
 
   const images = product.images.edges.map((edge) => edge.node);
   const variants = product.variants.edges.map((edge) => edge.node);
+  const relatedProducts = await getRelatedProducts(product.id, product.category);
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.description,
+    image: images.map((img) => img.url),
+    sku: product.handle, // Fallback to handle as SKU is not in type
+    brand: {
+      '@type': 'Brand',
+      name: 'LeBazare',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: variants[0]?.priceV2.amount || '0',
+      priceCurrency: variants[0]?.priceV2.currencyCode || 'EUR',
+      availability: variants[0]?.availableForSale
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      url: `https://www.lebazare.fr/produits/${product.handle}`,
+    },
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 lg:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-w-7xl mx-auto">
         {/* Image Gallery */}
         <ProductGallery images={images} title={product.title} />
@@ -102,6 +130,7 @@ export default async function ProductPage({ params }: { params: { handle: string
           </div>
         </div>
       </div>
+      <RelatedProducts products={relatedProducts} />
     </div>
   );
 }

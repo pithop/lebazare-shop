@@ -68,6 +68,11 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
+    // Protect customer account routes
+    if (!user && request.nextUrl.pathname.startsWith('/compte')) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
     // Optional: Check for admin role/email
     // const ADMIN_EMAILS = ['admin@lebazare.com'];
     // if (user && !ADMIN_EMAILS.includes(user.email!)) {

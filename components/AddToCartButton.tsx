@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useCart } from '@/context/CartContext'
+import { toast } from 'sonner'
 
 interface AddToCartButtonProps {
   variantId: string
@@ -30,6 +31,13 @@ export default function AddToCartButton({ variantId, productId, productTitle, pr
         maxStock: 10 // Default max stock for now
       })
       setIsPending(false)
+      toast.success('Produit ajouté au panier', {
+        description: `${productTitle} a été ajouté à votre panier.`,
+        action: {
+          label: 'Voir le panier',
+          onClick: () => document.querySelector('button[aria-label="Open cart"]')?.dispatchEvent(new MouseEvent('click', { bubbles: true })),
+        },
+      })
     }, 500)
   }
 

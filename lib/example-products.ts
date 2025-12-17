@@ -6,6 +6,7 @@ export const exampleProducts = [
     id: 'example-1',
     title: 'Panier en Raphia Naturel Tressé',
     handle: 'panier-raphia-naturel-tresse',
+    category: 'Vannerie',
     description: 'Magnifique panier artisanal tissé à la main en raphia naturel. Chaque pièce est unique et apporte une touche bohème authentique à votre intérieur. Parfait pour le rangement ou comme élément décoratif.',
     images: {
       edges: [
@@ -43,6 +44,7 @@ export const exampleProducts = [
     id: 'example-2',
     title: 'Suspension Murale en Paille',
     handle: 'suspension-murale-paille',
+    category: 'Luminaires',
     description: 'Décoration murale unique en paille tressée. Design bohème et naturel qui apporte une touche chaleureuse à votre espace. Fabriqué à la main avec des matériaux durables.',
     images: {
       edges: [
@@ -80,6 +82,7 @@ export const exampleProducts = [
     id: 'example-3',
     title: 'Boîte de Rangement en Bois',
     handle: 'boite-rangement-bois',
+    category: 'Bois',
     description: 'Boîte artisanale en bois naturel avec couvercle. Idéale pour ranger vos petits objets avec style. Chaque boîte est façonnée à la main et possède son caractère unique.',
     images: {
       edges: [
@@ -117,6 +120,7 @@ export const exampleProducts = [
     id: 'example-4',
     title: 'Set de Dessous de Plat en Raphia',
     handle: 'set-dessous-plat-raphia',
+    category: 'Art de la table',
     description: 'Ensemble de 4 dessous de plat en raphia tressé. Protégez votre table avec style grâce à ces accessoires artisanaux et naturels. Résistants à la chaleur et faciles à nettoyer.',
     images: {
       edges: [
@@ -154,6 +158,7 @@ export const exampleProducts = [
     id: 'example-5',
     title: 'Miroir Rond en Bois et Raphia',
     handle: 'miroir-rond-bois-raphia',
+    category: 'Décoration',
     description: 'Miroir décoratif avec cadre en bois et détails en raphia. Pièce centrale parfaite pour une décoration bohème et naturelle. Diamètre 40cm.',
     images: {
       edges: [
@@ -191,6 +196,7 @@ export const exampleProducts = [
     id: 'example-6',
     title: 'Plateau en Bois de Manguier',
     handle: 'plateau-bois-manguier',
+    category: 'Art de la table',
     description: 'Grand plateau de service en bois de manguier massif. Parfait pour servir vos boissons et collations avec élégance. Finition naturelle huilée.',
     images: {
       edges: [
@@ -228,6 +234,7 @@ export const exampleProducts = [
     id: 'example-7',
     title: 'Corbeille à Pain en Paille',
     handle: 'corbeille-pain-paille',
+    category: 'Vannerie',
     description: 'Corbeille à pain artisanale en paille naturelle. Garde votre pain frais tout en ajoutant une touche rustique à votre table. Lavable et durable.',
     images: {
       edges: [
@@ -265,6 +272,7 @@ export const exampleProducts = [
     id: 'example-8',
     title: 'Vase en Bois Sculpté',
     handle: 'vase-bois-sculpte',
+    category: 'Décoration',
     description: 'Vase décoratif en bois sculpté à la main. Chaque pièce est unique avec ses propres veines et nuances naturelles. Parfait pour des fleurs séchées ou comme objet décoratif.',
     images: {
       edges: [

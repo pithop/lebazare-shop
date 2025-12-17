@@ -90,3 +90,44 @@ export async function getProductByHandle(handle: string): Promise<Product | null
 
   return mapSupabaseToProduct(product);
 }
+
+export async function getRelatedProducts(currentProductId: string, category?: string, limit: number = 4): Promise<Product[]> {
+  const supabase = createClient();
+
+  let query = supabase
+    .from('products')
+    .select('*, product_variants(*)')
+    .eq('is_active', true)
+    .neq('id', currentProductId)
+    .limit(limit);
+
+  if (category) {
+    query = query.eq('category', category);
+  }
+
+  const { data: products, error } = await query;
+
+  if (error) {
+    console.error('Error fetching related products:', error);
+    return [];
+  }
+
+  // If not enough products in category, fetch random ones to fill the gap
+  if (!products || products.length < limit) {
+    const { data: randomProducts } = await supabase
+      .from('products')
+      .select('*, product_variants(*)')
+      .eq('is_active', true)
+      .neq('id', currentProductId)
+      .limit(limit);
+      
+    if (randomProducts) {
+      // Combine and deduplicate
+      const combined = [...(products || []), ...randomProducts];
+      const unique = combined.filter((v, i, a) => a.findIndex(t => t.id === v.id) === i).slice(0, limit);
+      return unique.map(mapSupabaseToProduct);
+    }
+  }
+
+  return products.map(mapSupabaseToProduct);
+}
