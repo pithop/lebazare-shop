@@ -7,6 +7,11 @@ export async function middleware(request: NextRequest) {
         return NextResponse.next()
     }
 
+    // Allow access to admin login page
+    if (request.nextUrl.pathname === '/admin/login') {
+        return NextResponse.next()
+    }
+
     let response = NextResponse.next({
         request: {
             headers: request.headers,
@@ -63,9 +68,8 @@ export async function middleware(request: NextRequest) {
 
     // If accessing admin and not logged in, redirect to home (or login if we had one)
     if (!user && request.nextUrl.pathname.startsWith('/admin')) {
-        // For now, redirect to home as we don't have a dedicated login page yet
-        // In a real app, this would go to /login
-        return NextResponse.redirect(new URL('/login', request.url))
+        // Redirect to admin login
+        return NextResponse.redirect(new URL('/admin/login', request.url))
     }
 
     // Protect customer account routes
