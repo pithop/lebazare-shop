@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   },
 }
 
+import ClarityAnalytics from '@/components/ClarityAnalytics'
+import { Analytics } from "@vercel/analytics/next"
+
 export default function RootLayout({
   children,
 }: {
@@ -49,6 +52,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
+        <ClarityAnalytics />
+        <Analytics />
         <CartProvider>
           <Header />
           <CartDrawer />

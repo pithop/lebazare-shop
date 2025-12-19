@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.7",
+    "@microsoft/clarity": "^1.0.2",
     "@shopify/app-bridge": "^3.7.9",
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.0",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.87.1",
+    "@vercel/analytics": "^1.6.1",
     "framer-motion": "^12.23.26",
     "graphql": "^16.8.1",
     "next": "^14.2.33",
