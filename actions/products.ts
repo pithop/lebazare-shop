@@ -253,6 +253,8 @@ export async function updateProduct(id: string, formData: FormData) {
     }
 
     revalidatePath('/admin/products')
+    revalidatePath(`/admin/products/${id}`)
     revalidatePath('/produits')
-    redirect('/admin/products')
+
+    return { success: true, message: 'Product updated successfully' }
 }

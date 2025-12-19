@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase-server';
+import { createClient as createStaticClient } from '@supabase/supabase-js';
 import { Product } from './types';
 
 // Helper to map Supabase product to Shopify-style Product interface
@@ -61,13 +62,34 @@ export async function getAllProducts(limit: number = 20): Promise<Product[]> {
 
   const { data: products, error } = await supabase
     .from('products')
-    .select('*, product_variants(*)')
+    .select('id, title, price, stock, category, images, slug, created_at, is_active, product_variants(id, name, price, stock, attributes)')
     .eq('is_active', true)
     .limit(limit)
     .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Error fetching products from Supabase:', error);
+    return [];
+  }
+
+  return products.map(mapSupabaseToProduct);
+}
+
+export async function getStaticProducts(limit: number = 20): Promise<Product[]> {
+  const supabase = createStaticClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('id, title, price, stock, category, images, slug, created_at, is_active, product_variants(id, name, price, stock, attributes)')
+    .eq('is_active', true)
+    .limit(limit)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching static products:', error);
     return [];
   }
 
@@ -120,7 +142,7 @@ export async function getRelatedProducts(currentProductId: string, category?: st
       .eq('is_active', true)
       .neq('id', currentProductId)
       .limit(limit);
-      
+
     if (randomProducts) {
       // Combine and deduplicate
       const combined = [...(products || []), ...randomProducts];

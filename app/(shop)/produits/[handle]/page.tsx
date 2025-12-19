@@ -1,4 +1,11 @@
-import { getProductByHandle, getRelatedProducts } from '@/lib/products';
+import { getAllProducts, getProductByHandle, getRelatedProducts, getStaticProducts } from '@/lib/products';
+
+export async function generateStaticParams() {
+  const products = await getStaticProducts(20);
+  return products.map((product) => ({
+    handle: product.handle,
+  }));
+}
 import { exampleProducts } from '@/lib/example-products';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';

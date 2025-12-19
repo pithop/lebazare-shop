@@ -3,6 +3,7 @@
 import { updateProduct } from '@/actions/products'
 import { useState } from 'react'
 import Image from 'next/image'
+import { toast } from 'sonner'
 import ProductVariantsForm, { Variant } from '@/components/admin/ProductVariantsForm'
 
 export default function EditProductForm({ product }: { product: any }) {
@@ -51,9 +52,15 @@ export default function EditProductForm({ product }: { product: any }) {
         formData.append('kept_images', JSON.stringify(images))
 
         try {
-            await updateProduct(product.id, formData)
+            const result = await updateProduct(product.id, formData)
+            if (result && !result.success) {
+                toast.error(result.message || "Erreur lors de la mise à jour")
+            } else {
+                toast.success("Produit mis à jour avec succès")
+            }
         } catch (error) {
             console.error(error)
+            toast.error("Une erreur inattendue est survenue")
         } finally {
             setLoading(false)
         }
