@@ -142,6 +142,8 @@ export default function NewProductPage() {
                             setImages={() => { }} // No reordering of existing images
                             videoUrl={videoUrl}
                             setVideoUrl={setVideoUrl}
+                            videoFile={videoFile}
+                            setVideoFile={setVideoFile}
                             newImages={newImages}
                             setNewImages={setNewImages}
                             onDeleteImage={() => { }}
