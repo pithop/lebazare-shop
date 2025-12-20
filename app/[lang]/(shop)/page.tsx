@@ -9,7 +9,7 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-bg.jpg"
+            src="/public/hero-bg.jpg"
             alt="Artisanat marocain - Luminaires et décoration"
             fill
             className="object-cover object-center"
