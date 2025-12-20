@@ -6,7 +6,14 @@ export default function Header({ dictionary }: { dictionary: any }) {
   return (
     <header className="sticky top-0 z-50 bg-beige/80 backdrop-blur-md border-b border-stone-100">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-serif font-bold text-terracotta">
+        <Link href="/" className="flex items-center gap-2 text-2xl font-serif font-bold text-terracotta">
+          <div className="relative w-10 h-10">
+            <img
+              src="/logo-transparent.png"
+              alt="LeBazare Logo"
+              className="object-contain w-full h-full"
+            />
+          </div>
           LeBazare
         </Link>
 
