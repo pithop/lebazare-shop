@@ -211,19 +211,29 @@ export async function updateProduct(id: string, formData: FormData) {
     if (variantsJson) {
         try {
             const variants = JSON.parse(variantsJson)
+            console.log('Processing variants:', variants) // Debug log
+
             if (Array.isArray(variants)) {
                 // 1. Get existing variants
-                const { data: existingVariants } = await supabase
+                const { data: existingVariants, error: fetchError } = await supabase
                     .from('product_variants')
                     .select('id')
                     .eq('product_id', id)
 
+                if (fetchError) {
+                    console.error('Error fetching existing variants:', fetchError)
+                }
+
                 const existingIds = existingVariants?.map(v => v.id) || []
                 const incomingIds = variants.filter((v: any) => v.id).map((v: any) => v.id)
+
+                console.log('Existing IDs:', existingIds)
+                console.log('Incoming IDs:', incomingIds)
 
                 // 2. Delete removed variants
                 const idsToDelete = existingIds.filter(id => !incomingIds.includes(id))
                 if (idsToDelete.length > 0) {
+                    console.log('Deleting variants:', idsToDelete)
                     await supabase.from('product_variants').delete().in('id', idsToDelete)
                 }
 
@@ -245,13 +255,18 @@ export async function updateProduct(id: string, formData: FormData) {
                 const toInsert = variantsToUpsert.filter((v: any) => !v.id)
                 const toUpdate = variantsToUpsert.filter((v: any) => v.id)
 
+                console.log('Variants to insert:', toInsert)
+                console.log('Variants to update:', toUpdate)
+
                 if (toInsert.length > 0) {
-                    await supabase.from('product_variants').insert(toInsert)
+                    const { error: insertError } = await supabase.from('product_variants').insert(toInsert)
+                    if (insertError) console.error('Error inserting variants:', insertError)
                 }
 
                 if (toUpdate.length > 0) {
                     // Upsert handles updates if ID matches
-                    await supabase.from('product_variants').upsert(toUpdate)
+                    const { error: updateError } = await supabase.from('product_variants').upsert(toUpdate)
+                    if (updateError) console.error('Error updating variants:', updateError)
                 }
             }
         } catch (e) {
