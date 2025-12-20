@@ -2,37 +2,38 @@ import { getAllProducts } from '@/lib/products'
 import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = 'https://www.lebazare.fr' // Replace with actual domain
+    const baseUrl = 'https://www.lebazare.fr'
 
     // Get all products
     const products = await getAllProducts(1000)
 
     const productUrls = products.map((product) => ({
-        url: `${baseUrl}/produits/${product.handle}`,
+        url: `${baseUrl}/fr/produits/${product.handle}`,
         lastModified: new Date(),
-        changeFrequency: 'daily' as const,
+        changeFrequency: 'weekly' as const,
         priority: 0.8,
     }))
 
+    const staticRoutes = [
+        '',
+        '/produits',
+        '/a-propos',
+        '/contact',
+        '/faq',
+        '/livraison',
+        '/mentions-legales',
+        '/cgv',
+    ]
+
+    const staticUrls = staticRoutes.map((route) => ({
+        url: `${baseUrl}/fr${route}`,
+        lastModified: new Date(),
+        changeFrequency: route === '' ? 'daily' as const : 'monthly' as const,
+        priority: route === '' ? 1 : 0.5,
+    }))
+
     return [
-        {
-            url: baseUrl,
-            lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 1,
-        },
-        {
-            url: `${baseUrl}/produits`,
-            lastModified: new Date(),
-            changeFrequency: 'daily',
-            priority: 0.9,
-        },
-        {
-            url: `${baseUrl}/a-propos`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
-        },
+        ...staticUrls,
         ...productUrls,
     ]
 }

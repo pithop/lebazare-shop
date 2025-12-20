@@ -1,0 +1,20 @@
+{
+    "Navigation": {
+        "home": "Inicio",
+        "products": "Productos",
+        "about": "Sobre Nosotros",
+        "contact": "Contacto"
+    },
+    "Common": {
+        "addToCart": "Añadir al carrito",
+        "buyNow": "Comprar ahora",
+        "price": "Precio",
+        "description": "Descripción"
+    },
+    "Footer": {
+        "about": "Sobre LeBazare",
+        "links": "Enlaces útiles",
+        "contact": "Contáctenos",
+        "copyright": "© 2024 LeBazare. Todos los derechos reservados."
+    }
+}

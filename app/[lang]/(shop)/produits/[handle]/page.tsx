@@ -1,4 +1,13 @@
 import { getAllProducts, getProductByHandle, getRelatedProducts, getStaticProducts } from '@/lib/products';
+import { exampleProducts } from '@/lib/example-products';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import AddToCartButton from '@/components/AddToCartButton';
+import ProductGallery from '@/components/shop/ProductGallery';
+import ProductVariantSelector from '@/components/shop/ProductVariantSelector';
+import RelatedProducts from '@/components/shop/RelatedProducts';
+import JsonLd from '@/components/JsonLd';
+import { Product } from '@/lib/types';
 
 export async function generateStaticParams() {
   const products = await getStaticProducts(20);
@@ -6,12 +15,7 @@ export async function generateStaticParams() {
     handle: product.handle,
   }));
 }
-import { exampleProducts } from '@/lib/example-products';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import AddToCartButton from '@/components/AddToCartButton';
 
-// export const dynamic = 'force-dynamic'; // Removed to allow ISR
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { handle: string } }) {
@@ -26,28 +30,43 @@ export async function generateMetadata({ params }: { params: { handle: string } 
     if (!product) {
       return {
         title: 'Produit introuvable - LeBazare',
+        robots: {
+          index: false,
+          follow: true,
+        },
       };
     }
 
     return {
       title: `${product.title} - LeBazare`,
       description: product.description || `Découvrez ${product.title} sur LeBazare`,
+      openGraph: {
+        title: product.title,
+        description: product.description || `Découvrez ${product.title} sur LeBazare`,
+        url: `https://www.lebazare.fr/produits/${product.handle}`,
+        images: product.images.edges.map(edge => ({
+          url: edge.node.url,
+          alt: edge.node.altText || product?.title,
+        })),
+        type: 'website',
+      },
+      alternates: {
+        canonical: `https://www.lebazare.fr/produits/${product.handle}`,
+      },
     };
   } catch (error) {
     return {
       title: 'Produit - LeBazare',
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 }
 
-import ProductGallery from '@/components/shop/ProductGallery';
-import ProductVariantSelector from '@/components/shop/ProductVariantSelector';
-import RelatedProducts from '@/components/shop/RelatedProducts';
-
-// ... (imports)
-
 export default async function ProductPage({ params }: { params: { handle: string } }) {
-  let product = null;
+  let product: Product | null | undefined = null;
 
   try {
     product = await getProductByHandle(params.handle);
@@ -74,7 +93,7 @@ export default async function ProductPage({ params }: { params: { handle: string
     name: product.title,
     description: product.description,
     image: images.map((img) => img.url),
-    sku: product.handle, // Fallback to handle as SKU is not in type
+    sku: product.handle,
     brand: {
       '@type': 'Brand',
       name: 'LeBazare',
@@ -87,15 +106,13 @@ export default async function ProductPage({ params }: { params: { handle: string
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
       url: `https://www.lebazare.fr/produits/${product.handle}`,
+      itemCondition: 'https://schema.org/NewCondition',
     },
   }
 
   return (
     <div className="container mx-auto px-4 py-8 lg:py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-w-7xl mx-auto">
         {/* Image Gallery */}
         <ProductGallery images={images} title={product.title} />

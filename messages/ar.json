@@ -1,0 +1,20 @@
+{
+    "Navigation": {
+        "home": "الرئيسية",
+        "products": "المنتجات",
+        "about": "من نحن",
+        "contact": "اتصل بنا"
+    },
+    "Common": {
+        "addToCart": "أضف إلى السلة",
+        "buyNow": "اشتر الآن",
+        "price": "السعر",
+        "description": "الوصف"
+    },
+    "Footer": {
+        "about": "عن البازار",
+        "links": "روابط مفيدة",
+        "contact": "اتصل بنا",
+        "copyright": "© 2024 البازار. جميع الحقوق محفوظة."
+    }
+}

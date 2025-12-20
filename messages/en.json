@@ -1,0 +1,20 @@
+{
+    "Navigation": {
+        "home": "Home",
+        "products": "Products",
+        "about": "About",
+        "contact": "Contact"
+    },
+    "Common": {
+        "addToCart": "Add to Cart",
+        "buyNow": "Buy Now",
+        "price": "Price",
+        "description": "Description"
+    },
+    "Footer": {
+        "about": "About LeBazare",
+        "links": "Useful Links",
+        "contact": "Contact Us",
+        "copyright": "© 2024 LeBazare. All rights reserved."
+    }
+}

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Search from './Search';
 import CartIcon from './CartIcon';
 
-export default function Header() {
+export default function Header({ dictionary }: { dictionary: any }) {
   return (
     <header className="sticky top-0 z-50 bg-beige/80 backdrop-blur-md border-b border-stone-100">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
@@ -12,13 +12,13 @@ export default function Header() {
 
         <nav className="hidden md:flex items-center space-x-8">
           <Link href="/" className="text-dark-text hover:text-terracotta transition-colors font-medium">
-            Accueil
+            {dictionary.Navigation.home}
           </Link>
           <Link href="/produits" className="text-dark-text hover:text-terracotta transition-colors font-medium">
-            Boutique
+            {dictionary.Navigation.products}
           </Link>
           <Link href="/a-propos" className="text-dark-text hover:text-terracotta transition-colors font-medium">
-            Notre Histoire
+            {dictionary.Navigation.about}
           </Link>
         </nav>
 

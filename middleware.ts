@@ -1,100 +1,51 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { i18n } from './i18n-config'
+import { match as matchLocale } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
 
-export async function middleware(request: NextRequest) {
-    // Only run on /admin routes
-    if (!request.nextUrl.pathname.startsWith('/admin')) {
-        return NextResponse.next()
-    }
+function getLocale(request: NextRequest): string | undefined {
+    // Negotiator expects plain object so we need to transform headers
+    const negotiatorHeaders: Record<string, string> = {}
+    request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
-    // Allow access to admin login page
-    if (request.nextUrl.pathname === '/admin/login') {
-        return NextResponse.next()
-    }
+    // @ts-ignore locales are readonly
+    const locales: string[] = i18n.locales
 
-    let response = NextResponse.next({
-        request: {
-            headers: request.headers,
-        },
-    })
-
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                get(name: string) {
-                    return request.cookies.get(name)?.value
-                },
-                set(name: string, value: string, options: CookieOptions) {
-                    request.cookies.set({
-                        name,
-                        value,
-                        ...options,
-                    })
-                    response = NextResponse.next({
-                        request: {
-                            headers: request.headers,
-                        },
-                    })
-                    response.cookies.set({
-                        name,
-                        value,
-                        ...options,
-                    })
-                },
-                remove(name: string, options: CookieOptions) {
-                    request.cookies.set({
-                        name,
-                        value: '',
-                        ...options,
-                    })
-                    response = NextResponse.next({
-                        request: {
-                            headers: request.headers,
-                        },
-                    })
-                    response.cookies.set({
-                        name,
-                        value: '',
-                        ...options,
-                    })
-                },
-            },
-        }
+    // Use negotiator and intl-localematcher to get best locale
+    let languages = new Negotiator({ headers: negotiatorHeaders }).languages(
+        locales
     )
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const locale = matchLocale(languages, locales, i18n.defaultLocale)
 
-    // If accessing admin and not logged in, redirect to home (or login if we had one)
-    if (!user && request.nextUrl.pathname.startsWith('/admin')) {
-        // Redirect to admin login
-        return NextResponse.redirect(new URL('/admin/login', request.url))
+    return locale
+}
+
+export function middleware(request: NextRequest) {
+    const pathname = request.nextUrl.pathname
+
+    // Check if there is any supported locale in the pathname
+    const pathnameIsMissingLocale = i18n.locales.every(
+        (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+    )
+
+    // Redirect if there is no locale
+    if (pathnameIsMissingLocale) {
+        const locale = getLocale(request)
+
+        // e.g. incoming request is /products
+        // The new URL is now /en/products
+        return NextResponse.redirect(
+            new URL(
+                `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+                request.url
+            )
+        )
     }
-
-    // Protect customer account routes
-    if (!user && request.nextUrl.pathname.startsWith('/compte')) {
-        return NextResponse.redirect(new URL('/login', request.url))
-    }
-
-    // Optional: Check for admin role/email
-    // const ADMIN_EMAILS = ['admin@lebazare.com'];
-    // if (user && !ADMIN_EMAILS.includes(user.email!)) {
-    //   return NextResponse.redirect(new URL('/', request.url))
-    // }
-
-    return response
 }
 
 export const config = {
-    matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         * Feel free to modify this pattern to include more paths.
-         */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-    ],
+    // Matcher ignoring `/_next/` and `/api/` and `/admin`
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico|admin).*)'],
 }

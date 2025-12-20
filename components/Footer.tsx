@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function Footer() {
+export default function Footer({ dictionary }: { dictionary: any }) {
   return (
     <footer className="bg-deep-blue text-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -9,18 +9,18 @@ export default function Footer() {
           <div className="space-y-4">
             <h3 className="text-2xl font-serif font-bold text-sand">LeBazare</h3>
             <p className="text-stone-300 text-sm leading-relaxed">
-              Une sélection unique de créations artisanales marocaines, alliant tradition et modernité pour votre intérieur.
+              {dictionary.Footer.about}
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-serif text-lg mb-6 text-sand">Navigation</h4>
+            <h4 className="font-serif text-lg mb-6 text-sand">{dictionary.Footer.links}</h4>
             <ul className="space-y-3 text-sm text-stone-300">
-              <li><Link href="/" className="hover:text-white transition-colors">Accueil</Link></li>
-              <li><Link href="/produits" className="hover:text-white transition-colors">Boutique</Link></li>
-              <li><Link href="/a-propos" className="hover:text-white transition-colors">Notre Histoire</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors">{dictionary.Navigation.home}</Link></li>
+              <li><Link href="/produits" className="hover:text-white transition-colors">{dictionary.Navigation.products}</Link></li>
+              <li><Link href="/a-propos" className="hover:text-white transition-colors">{dictionary.Navigation.about}</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">{dictionary.Navigation.contact}</Link></li>
             </ul>
           </div>
 
