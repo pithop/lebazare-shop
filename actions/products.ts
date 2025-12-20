@@ -211,8 +211,6 @@ export async function updateProduct(id: string, formData: FormData) {
     if (variantsJson) {
         try {
             const variants = JSON.parse(variantsJson)
-            console.log('Processing variants:', variants) // Debug log
-
             if (Array.isArray(variants)) {
                 // 1. Get existing variants
                 const { data: existingVariants, error: fetchError } = await supabase
@@ -227,13 +225,9 @@ export async function updateProduct(id: string, formData: FormData) {
                 const existingIds = existingVariants?.map(v => v.id) || []
                 const incomingIds = variants.filter((v: any) => v.id).map((v: any) => v.id)
 
-                console.log('Existing IDs:', existingIds)
-                console.log('Incoming IDs:', incomingIds)
-
                 // 2. Delete removed variants
                 const idsToDelete = existingIds.filter(id => !incomingIds.includes(id))
                 if (idsToDelete.length > 0) {
-                    console.log('Deleting variants:', idsToDelete)
                     await supabase.from('product_variants').delete().in('id', idsToDelete)
                 }
 
@@ -252,11 +246,11 @@ export async function updateProduct(id: string, formData: FormData) {
                 }))
 
                 // Separate Insert and Update for clarity and safety
-                const toInsert = variantsToUpsert.filter((v: any) => !v.id)
-                const toUpdate = variantsToUpsert.filter((v: any) => v.id)
+                const toInsert = variantsToUpsert
+                    .filter((v: any) => !v.id)
+                    .map(({ id, ...rest }: any) => rest) // Remove undefined id to allow DB default to trigger
 
-                console.log('Variants to insert:', toInsert)
-                console.log('Variants to update:', toUpdate)
+                const toUpdate = variantsToUpsert.filter((v: any) => v.id)
 
                 if (toInsert.length > 0) {
                     const { error: insertError } = await supabase.from('product_variants').insert(toInsert)
