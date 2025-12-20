@@ -126,7 +126,7 @@ export default async function ProductPage({ params }: { params: { handle: string
       <JsonLd data={jsonLd} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-w-7xl mx-auto">
         {/* Image Gallery */}
-        <ProductGallery images={images} title={product.title} />
+        <ProductGallery images={images} title={product.title} videoUrl={product.video_url} />
 
         {/* Product Details */}
         <div className="flex flex-col space-y-8 lg:pt-8">

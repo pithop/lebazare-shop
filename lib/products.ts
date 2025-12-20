@@ -37,6 +37,7 @@ function mapSupabaseToProduct(sbProduct: any): Product {
     handle: sbProduct.slug,
     description: sbProduct.description || '',
     category: sbProduct.category,
+    video_url: sbProduct.video_url,
     images: {
       edges: (sbProduct.images || []).map((url: string) => ({
         node: {

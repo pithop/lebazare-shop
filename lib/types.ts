@@ -4,6 +4,7 @@ export interface Product {
   handle: string;
   description: string;
   category?: string;
+  video_url?: string | null;
   images: {
     edges: Array<{
       node: {
