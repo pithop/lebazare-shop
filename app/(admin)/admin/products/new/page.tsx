@@ -6,11 +6,15 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import ProductVariantsForm, { Variant } from '@/components/admin/ProductVariantsForm'
+import MediaManager from '@/components/admin/MediaManager'
 
 export default function NewProductPage() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [variants, setVariants] = useState<Variant[]>([])
+    const [newImages, setNewImages] = useState<File[]>([])
+    const [videoUrl, setVideoUrl] = useState<string | null>(null)
+    const [videoFile, setVideoFile] = useState<File | null>(null)
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -20,6 +24,21 @@ export default function NewProductPage() {
         // Append variants as JSON
         if (variants.length > 0) {
             formData.append('variants', JSON.stringify(variants))
+        }
+
+        // Append new images
+        newImages.forEach(file => {
+            formData.append('new_images', file)
+        })
+
+        // Append video URL
+        if (videoUrl) {
+            formData.append('video_url', videoUrl)
+        }
+
+        // Append video file
+        if (videoFile) {
+            formData.append('video_file', videoFile)
         }
 
         try {
@@ -117,24 +136,16 @@ export default function NewProductPage() {
                             </select>
                         </div>
 
-                        <div>
-                            <label htmlFor="image" className="block text-sm font-medium text-slate-700 mb-1">
-                                Images (vous pouvez en sélectionner plusieurs)
-                            </label>
-                            <div className="space-y-4">
-                                <input
-                                    type="file"
-                                    id="image"
-                                    name="image"
-                                    accept="image/*"
-                                    multiple
-                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
-                                />
-                                <p className="text-xs text-slate-500">
-                                    Ou entrez une URL externe (optionnel si fichier sélectionné)
-                                </p>
-                            </div>
-                        </div>
+                        {/* Media Section */}
+                        <MediaManager
+                            images={[]} // No existing images for new product
+                            setImages={() => { }} // No reordering of existing images
+                            videoUrl={videoUrl}
+                            setVideoUrl={setVideoUrl}
+                            newImages={newImages}
+                            setNewImages={setNewImages}
+                            onDeleteImage={() => { }}
+                        />
                     </div>
 
                     <div className="space-y-6">

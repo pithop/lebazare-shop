@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import ProductVariantsForm, { Variant } from '@/components/admin/ProductVariantsForm'
+import MediaManager from '@/components/admin/MediaManager'
 
 export default function EditProductForm({ product }: { product: any }) {
     const [loading, setLoading] = useState(false)
@@ -21,6 +22,9 @@ export default function EditProductForm({ product }: { product: any }) {
     const [variants, setVariants] = useState<Variant[]>(initialVariants)
 
     const [images, setImages] = useState<string[]>(product.images || [])
+    const [newImages, setNewImages] = useState<File[]>([])
+    const [videoUrl, setVideoUrl] = useState<string | null>(product.video_url || null)
+
     const [imagesToDelete, setImagesToDelete] = useState<string[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [imageToDelete, setImageToDelete] = useState<string | null>(null)
@@ -48,8 +52,23 @@ export default function EditProductForm({ product }: { product: any }) {
             formData.append('variants', JSON.stringify(variants))
         }
 
-        // Append kept images
+        // Append kept images (in their new order)
         formData.append('kept_images', JSON.stringify(images))
+
+        // Append new images
+        newImages.forEach(file => {
+            formData.append('new_images', file)
+        })
+
+        // Append video URL
+        if (videoUrl) {
+            formData.append('video_url', videoUrl)
+        }
+
+        // Append video file
+        if (videoFile) {
+            formData.append('video_file', videoFile)
+        }
 
         try {
             const result = await updateProduct(product.id, formData)
@@ -175,64 +194,18 @@ export default function EditProductForm({ product }: { product: any }) {
                         </select>
                     </div>
 
-                    {/* Images Section */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-3">
-                            Images
-                        </label>
-
-                        {images.length > 0 && (
-                            <div className="mb-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                {images.map((img, idx) => (
-                                    <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-slate-200 group">
-                                        <Image
-                                            src={img}
-                                            alt={`Product image ${idx + 1}`}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleDeleteClick(img)}
-                                            className="absolute top-2 right-2 bg-white/90 text-red-600 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-red-50"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        <div className="space-y-4">
-                            <input
-                                type="file"
-                                id="image"
-                                name="image"
-                                accept="image/*"
-                                multiple
-                                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
-                            />
-                            <p className="text-xs text-slate-500">
-                                Sélectionnez de nouvelles images pour les AJOUTER.
-                            </p>
-
-                            {/* URL Input */}
-                            <div className="pt-2 border-t border-slate-100">
-                                <label htmlFor="image_url" className="block text-xs font-medium text-slate-500 mb-1">
-                                    Ou ajouter par URL externe
-                                </label>
-                                <input
-                                    type="url"
-                                    id="image_url"
-                                    name="image_url"
-                                    placeholder="https://..."
-                                    className="w-full px-3 py-1.5 text-sm border border-slate-200 rounded-md focus:ring-1 focus:ring-slate-900 outline-none"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    {/* Media Section */}
+                    <MediaManager
+                        images={images}
+                        setImages={setImages}
+                        videoUrl={videoUrl}
+                        setVideoUrl={setVideoUrl}
+                        videoFile={videoFile}
+                        setVideoFile={setVideoFile}
+                        newImages={newImages}
+                        setNewImages={setNewImages}
+                        onDeleteImage={handleDeleteClick}
+                    />
 
                 </div>
 

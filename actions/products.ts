@@ -12,7 +12,30 @@ export async function createProduct(formData: FormData) {
     const price = parseFloat(formData.get('price') as string)
     const stock = parseInt(formData.get('stock') as string)
     const category = formData.get('category') as string
-    const imageFiles = formData.getAll('image') as File[]
+    const videoUrl = formData.get('video_url') as string
+    const videoFile = formData.get('video_file') as File | null
+    let finalVideoUrl = videoUrl
+
+    if (videoFile && videoFile.size > 0) {
+        const filename = `video-${Date.now()}-${Math.random().toString(36).substring(7)}-${videoFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`
+        const { error: uploadError } = await supabase.storage
+            .from('products')
+            .upload(filename, videoFile, {
+                cacheControl: '3600',
+                upsert: false
+            })
+
+        if (uploadError) {
+            console.error('Error uploading video:', uploadError)
+        } else {
+            const { data: { publicUrl } } = supabase.storage
+                .from('products')
+                .getPublicUrl(filename)
+            finalVideoUrl = publicUrl
+        }
+    }
+
+    const imageFiles = formData.getAll('new_images') as File[]
     const imageUrls: string[] = []
 
     for (const imageFile of imageFiles) {
@@ -38,12 +61,6 @@ export async function createProduct(formData: FormData) {
         }
     }
 
-    // Fallback for manual URL entry (if we keep it)
-    const imageString = formData.get('image_url') as string
-    if (imageString && imageString.startsWith('http')) {
-        imageUrls.push(imageString)
-    }
-
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
     const { data: product, error } = await supabase.from('products').insert({
@@ -53,6 +70,7 @@ export async function createProduct(formData: FormData) {
         stock,
         category,
         images: imageUrls,
+        video_url: finalVideoUrl || null,
         slug,
         is_active: true,
     }).select().single()
@@ -127,16 +145,40 @@ export async function updateProduct(id: string, formData: FormData) {
         return { success: false, message: 'Invalid stock' }
     }
 
+    const videoUrl = formData.get('video_url') as string
+    const videoFile = formData.get('video_file') as File | null
+    let finalVideoUrl = videoUrl
+
+    if (videoFile && videoFile.size > 0) {
+        const filename = `video-${Date.now()}-${Math.random().toString(36).substring(7)}-${videoFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`
+        const { error: uploadError } = await supabase.storage
+            .from('products')
+            .upload(filename, videoFile, {
+                cacheControl: '3600',
+                upsert: false
+            })
+
+        if (uploadError) {
+            console.error('Error uploading video:', uploadError)
+        } else {
+            const { data: { publicUrl } } = supabase.storage
+                .from('products')
+                .getPublicUrl(filename)
+            finalVideoUrl = publicUrl
+        }
+    }
+
     const updates: any = {
         title,
         description,
         price,
         stock,
         category,
+        video_url: finalVideoUrl || null,
         updated_at: new Date().toISOString(),
     }
 
-    const imageFiles = formData.getAll('image') as File[]
+    const imageFiles = formData.getAll('new_images') as File[]
     const newImageUrls: string[] = []
 
     for (const imageFile of imageFiles) {
@@ -162,14 +204,8 @@ export async function updateProduct(id: string, formData: FormData) {
         }
     }
 
-    // Check for manual URL fallback if provided
-    const imageString = formData.get('image_url') as string
-    if (imageString && imageString.startsWith('http')) {
-        newImageUrls.push(imageString)
-    }
-
     // Handle Images
-    // 1. Get kept images (from JSON)
+    // 1. Get kept images (from JSON) - This preserves the order sent by frontend
     const keptImagesJson = formData.get('kept_images') as string
     let finalImages: string[] = []
 
@@ -180,11 +216,6 @@ export async function updateProduct(id: string, formData: FormData) {
             console.error('Error parsing kept_images:', e)
         }
     } else {
-        // Fallback: if no kept_images sent (e.g. old form), fetch existing? 
-        // No, the form should always send it now. If null, maybe we assume keep all? 
-        // But for safety, let's fetch if not provided to avoid accidental deletion?
-        // Actually, if it's not provided, it might mean no changes intended to images if we didn't touch them.
-        // But our form sends it.
         const { data: currentProduct } = await supabase.from('products').select('images').eq('id', id).single()
         finalImages = currentProduct?.images || []
     }
