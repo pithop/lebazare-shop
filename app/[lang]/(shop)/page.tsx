@@ -1,51 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { getStaticProducts } from '@/lib/products';
+import HeroCarousel from '@/components/HeroCarousel';
 
-export default function Home() {
+export default async function Home() {
+  // Fetch trending/featured products for the carousel
+  const featuredProducts = await getStaticProducts(5);
+
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/public/hero-bg.jpg"
-            alt="Artisanat marocain - Luminaires et décoration"
-            fill
-            className="object-cover object-center"
-            priority
-            quality={90}
-          />
-          <div className="absolute inset-0 bg-black/30" /> {/* Overlay for text readability */}
-        </div>
-
-        <div className="container mx-auto px-4 text-center z-10 relative">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif text-white mb-6 drop-shadow-lg">
-            LeBazare
-          </h1>
-          <h2 className="text-3xl md:text-4xl font-serif text-sand mb-8 drop-shadow-md">
-            L'Élégance de l'Artisanat Marocain
-          </h2>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto mb-12 leading-relaxed font-light drop-shadow">
-            Une collection exclusive de luminaires en paille, mobilier en bois et décoration bohème.
-            Façonné à la main, pour un intérieur authentique.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/produits"
-              className="bg-white text-dark-text px-8 py-4 rounded-full text-lg font-medium hover:bg-sand transition-colors shadow-lg"
-            >
-              Découvrir la Collection
-            </Link>
-            <Link
-              href="/a-propos"
-              className="bg-terracotta/90 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-terracotta transition-colors shadow-lg"
-            >
-              Notre Savoir-Faire
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HeroCarousel products={featuredProducts} />
 
       {/* About Section */}
       <section className="py-20 bg-white">

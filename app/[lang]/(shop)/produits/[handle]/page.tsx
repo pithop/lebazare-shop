@@ -9,11 +9,22 @@ import RelatedProducts from '@/components/shop/RelatedProducts';
 import JsonLd from '@/components/JsonLd';
 import { Product } from '@/lib/types';
 
+import { i18n } from '@/i18n-config';
+
 export async function generateStaticParams() {
   const products = await getStaticProducts(20);
-  return products.map((product) => ({
-    handle: product.handle,
-  }));
+
+  const params = [];
+  for (const locale of i18n.locales) {
+    for (const product of products) {
+      params.push({
+        lang: locale,
+        handle: product.handle,
+      });
+    }
+  }
+
+  return params;
 }
 
 export const revalidate = 60;
