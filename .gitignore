@@ -40,6 +40,8 @@ logs_result.json*.sql
 # Etsy Import
 EtsyListingsDownload.csv
 scripts/seed-etsy.ts
+scripts/seed-etsy-v2.ts
 scripts/verify-seed.ts
 analyze_csv.js
+analyze_tags_v2.js
 check_duplicates.js

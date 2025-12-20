@@ -1,16 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getStaticProducts } from '@/lib/products';
-import HeroCarousel from '@/components/HeroCarousel';
+import HeroCreative from '@/components/HeroCreative';
 
 export default async function Home() {
   // Fetch trending/featured products for the carousel
-  const featuredProducts = await getStaticProducts(5);
+  const featuredProducts = await getStaticProducts(3);
 
   return (
     <>
       {/* Hero Section */}
-      <HeroCarousel products={featuredProducts} />
+      <HeroCreative products={featuredProducts} />
 
       {/* About Section */}
       <section className="py-20 bg-white">
