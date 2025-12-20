@@ -50,6 +50,51 @@ export default function NewProductPage() {
         }
     }
 
+    /*
+    const [analyzing, setAnalyzing] = useState(false)
+
+    const handleAIAnalysis = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setAnalyzing(true)
+        const formData = new FormData()
+        formData.append('image', file)
+
+        try {
+            const response = await fetch('/api/ai/analyze-product-image', {
+                method: 'POST',
+                body: formData
+            })
+
+            if (!response.ok) throw new Error('Analysis failed')
+
+            const data = await response.json()
+
+            // Update form fields
+            const titleInput = document.getElementById('title') as HTMLInputElement
+            const descInput = document.getElementById('description') as HTMLTextAreaElement
+            const priceInput = document.getElementById('price') as HTMLInputElement
+            const categoryInput = document.getElementById('category') as HTMLSelectElement
+
+            if (titleInput) titleInput.value = data.title
+            if (descInput) descInput.value = data.description
+            if (priceInput) priceInput.value = data.price
+            if (categoryInput) categoryInput.value = data.category
+
+            // Add the image to the media manager
+            setNewImages(prev => [...prev, file])
+
+            // toast.success("Produit rempli avec l'IA !") // toast not imported yet
+        } catch (error) {
+            console.error(error)
+            // toast.error("Erreur lors de l'analyse IA")
+        } finally {
+            setAnalyzing(false)
+        }
+    }
+    */
+
     return (
         <div className="max-w-6xl mx-auto pb-20">
             <form onSubmit={handleSubmit}>
@@ -60,6 +105,42 @@ export default function NewProductPage() {
                             ← Retour
                         </Link>
                         <h1 className="text-2xl font-serif text-slate-900">Nouveau Produit</h1>
+
+                        {/* AI Button (Disabled for now) */}
+                        {/* <div className="relative">
+                            <input
+                                type="file"
+                                id="ai-upload"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleAIAnalysis}
+                                disabled={analyzing}
+                            />
+                            <label
+                                htmlFor="ai-upload"
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${analyzing
+                                    ? 'bg-purple-100 text-purple-400 cursor-not-allowed'
+                                    : 'bg-purple-50 text-purple-700 hover:bg-purple-100'
+                                    }`}
+                            >
+                                {analyzing ? (
+                                    <>
+                                        <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Analyse en cours...
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                            <path fillRule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813a3.75 3.75 0 002.576-2.576l.813-2.846A.75.75 0 019 4.5zM6.375 9a.75.75 0 01.75.75v2.25H9.375a.75.75 0 010 1.5H7.125v2.25a.75.75 0 01-1.5 0v-2.25H3.375a.75.75 0 010-1.5h2.25V9.75A.75.75 0 016.375 9z" clipRule="evenodd" />
+                                        </svg>
+                                        Remplir avec l'IA
+                                    </>
+                                )}
+                            </label>
+                        </div> */}
                     </div>
                     <button
                         type="submit"

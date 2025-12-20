@@ -86,6 +86,8 @@ export default function EditProductForm({ product }: { product: any }) {
         }
     }
 
+
+
     return (
         <>
             {/* Custom Delete Modal */}
@@ -117,7 +119,10 @@ export default function EditProductForm({ product }: { product: any }) {
             <form onSubmit={handleSubmit} className="max-w-6xl mx-auto pb-20">
                 {/* Sticky Header */}
                 <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200 -mx-8 px-8 py-4 mb-8 flex items-center justify-between">
-                    <h1 className="text-2xl font-serif text-slate-900">Modifier le produit</h1>
+                    <div className="flex items-center gap-4">
+                        <h1 className="text-2xl font-serif text-slate-900">Modifier le produit</h1>
+                    </div>
+
                     <div className="flex items-center gap-4">
                         <button
                             type="button"
