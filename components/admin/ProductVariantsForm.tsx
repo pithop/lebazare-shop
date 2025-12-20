@@ -21,6 +21,33 @@ export default function ProductVariantsForm({
     const [newAttrName, setNewAttrName] = useState('')
     const [newAttrValue, setNewAttrValue] = useState('')
 
+    // Initialize attributes from existing variants on mount
+    useEffect(() => {
+        if (variants.length > 0 && attributes.length === 0) {
+            const extractedAttributes: Record<string, Set<string>> = {}
+
+            variants.forEach(variant => {
+                if (variant.attributes) {
+                    Object.entries(variant.attributes).forEach(([key, value]) => {
+                        if (!extractedAttributes[key]) {
+                            extractedAttributes[key] = new Set()
+                        }
+                        extractedAttributes[key].add(value)
+                    })
+                }
+            })
+
+            const newAttributes = Object.entries(extractedAttributes).map(([name, valuesSet]) => ({
+                name,
+                values: Array.from(valuesSet)
+            }))
+
+            if (newAttributes.length > 0) {
+                setAttributes(newAttributes)
+            }
+        }
+    }, []) // Run once on mount
+
     const addAttribute = () => {
         if (!newAttrName) return
         setAttributes([...attributes, { name: newAttrName, values: [] }])
