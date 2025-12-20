@@ -36,3 +36,10 @@ yarn-error.log*
 next-env.d.ts
 Rapport SEO Technique E-commerce Vintage.txt
 logs_result.json*.sql
+
+# Etsy Import
+EtsyListingsDownload.csv
+scripts/seed-etsy.ts
+scripts/verify-seed.ts
+analyze_csv.js
+check_duplicates.js
