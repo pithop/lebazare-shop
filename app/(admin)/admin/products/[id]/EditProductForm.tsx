@@ -24,6 +24,7 @@ export default function EditProductForm({ product }: { product: any }) {
     const [images, setImages] = useState<string[]>(product.images || [])
     const [newImages, setNewImages] = useState<File[]>([])
     const [videoUrl, setVideoUrl] = useState<string | null>(product.video_url || null)
+    const [videoFile, setVideoFile] = useState<File | null>(null)
 
     const [imagesToDelete, setImagesToDelete] = useState<string[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState(false)
