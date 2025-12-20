@@ -39,13 +39,13 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                     {/* Split Layout */}
                     <div className="flex flex-col md:flex-row h-full">
                         {/* Left: Text Content */}
-                        <div className="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16 z-10 bg-beige/90 md:bg-beige">
-                            <div className="max-w-xl">
+                        <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-16 z-10 bg-beige/90 md:bg-beige order-2 md:order-1 h-1/2 md:h-full">
+                            <div className="max-w-xl text-center md:text-left">
                                 <motion.span
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.2 }}
-                                    className="inline-block text-terracotta font-medium tracking-widest uppercase text-sm mb-4"
+                                    className="inline-block text-terracotta font-medium tracking-widest uppercase text-xs md:text-sm mb-2 md:mb-4"
                                 >
                                     Tendance Artisanale
                                 </motion.span>
@@ -54,7 +54,7 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 }}
-                                    className="text-5xl md:text-7xl font-serif text-dark-text mb-6 leading-tight"
+                                    className="text-3xl md:text-6xl lg:text-7xl font-serif text-dark-text mb-3 md:mb-6 leading-tight"
                                 >
                                     {currentProduct.title}
                                 </motion.h1>
@@ -63,7 +63,7 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.4 }}
-                                    className="text-lg text-slate-600 mb-8 line-clamp-3 leading-relaxed font-light"
+                                    className="text-sm md:text-lg text-slate-600 mb-4 md:mb-8 line-clamp-2 md:line-clamp-3 leading-relaxed font-light"
                                 >
                                     {currentProduct.description}
                                 </motion.p>
@@ -75,10 +75,10 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                                 >
                                     <Link
                                         href={`/produits/${currentProduct.handle}`}
-                                        className="inline-flex items-center gap-2 bg-dark-text text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-terracotta transition-colors shadow-lg group"
+                                        className="inline-flex items-center gap-2 bg-dark-text text-white px-6 py-3 md:px-8 md:py-4 rounded-full text-sm md:text-lg font-medium hover:bg-terracotta transition-colors shadow-lg group"
                                     >
                                         Découvrir la Pièce
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                                         </svg>
                                     </Link>
@@ -87,8 +87,8 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                         </div>
 
                         {/* Right: Image */}
-                        <div className="w-full md:w-1/2 relative h-full">
-                            <div className="absolute inset-0 bg-black/10 z-10" /> {/* Subtle overlay */}
+                        <div className="w-full md:w-1/2 relative h-1/2 md:h-full order-1 md:order-2">
+                            <div className="absolute inset-0 bg-black/5 z-10" /> {/* Subtle overlay */}
                             {currentProduct.images.edges[0] && (
                                 <Image
                                     src={currentProduct.images.edges[0].node.url}
