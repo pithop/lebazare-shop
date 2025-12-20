@@ -120,6 +120,13 @@ export async function updateProduct(id: string, formData: FormData) {
     const category = formData.get('category') as string
     const imageFile = formData.get('image') as File | null
 
+    if (isNaN(price)) {
+        return { success: false, message: 'Invalid price' }
+    }
+    if (isNaN(stock)) {
+        return { success: false, message: 'Invalid stock' }
+    }
+
     const updates: any = {
         title,
         description,
@@ -196,7 +203,7 @@ export async function updateProduct(id: string, formData: FormData) {
 
     if (error) {
         console.error('Error updating product:', error)
-        return { success: false, message: 'Failed to update product' }
+        return { success: false, message: `Failed to update product: ${error.message}` }
     }
 
     // Handle Variants
