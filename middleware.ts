@@ -25,6 +25,11 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
 
+    // Skip middleware for static files (images, etc.)
+    if (pathname.match(/\.(png|jpg|jpeg|svg|gif|webp)$/)) {
+        return NextResponse.next()
+    }
+
     // Check if there is any supported locale in the pathname
     const pathnameIsMissingLocale = i18n.locales.every(
         (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
