@@ -66,6 +66,12 @@ export async function generateMetadata({ params }: { params: { lang: string } })
         'max-snippet': -1,
       },
     },
+    verification: {
+      google: 'votre-code-google-search-console', // Remplacez par votre code
+      other: {
+        'msvalidate.01': 'votre-code-bing-webmaster', // Remplacez par votre code
+      },
+    },
   }
 }
 
