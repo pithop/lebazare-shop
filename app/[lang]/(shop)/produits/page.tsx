@@ -12,10 +12,11 @@ export const metadata = {
 };
 
 type Props = {
+  params: { lang: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export default async function ProduitsPage({ searchParams }: Props) {
+export default async function ProduitsPage({ params: { lang }, searchParams }: Props) {
   let products: Product[] = [];
   let error: Error | null = null;
   let usingExamples = false;
@@ -68,7 +69,7 @@ export default async function ProduitsPage({ searchParams }: Props) {
           {categories.map((cat) => (
             <a
               key={cat as string}
-              href={`/produits?category=${cat}`}
+              href={`/${lang}/produits?category=${cat}`}
               className={`px-6 py-2 rounded-full border transition-all ${category === cat
                 ? 'bg-terracotta text-white border-terracotta'
                 : 'bg-white text-slate-600 border-slate-200 hover:border-terracotta hover:text-terracotta'

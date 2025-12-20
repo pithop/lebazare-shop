@@ -1,16 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 export default function Search() {
     const [query, setQuery] = useState('');
     const router = useRouter();
+    const params = useParams();
+    const lang = params.lang as string || 'fr';
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (query.trim()) {
-            router.push(`/produits?q=${encodeURIComponent(query)}`);
+            router.push(`/${lang}/produits?q=${encodeURIComponent(query)}`);
         }
     };
 
