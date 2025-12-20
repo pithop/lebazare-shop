@@ -45,3 +45,4 @@ scripts/verify-seed.ts
 analyze_csv.js
 analyze_tags_v2.js
 check_duplicates.js
+*.png

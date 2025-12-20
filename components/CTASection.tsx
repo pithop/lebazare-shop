@@ -11,42 +11,50 @@ interface CTASectionProps {
 
 export default function CTASection({ product }: CTASectionProps) {
     return (
-        <section className="relative py-32 md:py-48 overflow-hidden flex items-center justify-center">
-            {/* Background Image with Parallax-like fixed position or absolute */}
-            <div className="absolute inset-0 z-0">
-                {product ? (
-                    <Image
-                        src={product.images.edges[0]?.node.url}
-                        alt="Background"
-                        fill
-                        className="object-cover brightness-[0.3]"
-                    />
-                ) : (
-                    <div className="w-full h-full bg-stone-900" />
-                )}
-            </div>
-
-            <div className="container mx-auto px-4 relative z-10 text-center">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <h2 className="text-4xl md:text-6xl font-serif text-white mb-6 md:mb-8 leading-tight">
-                        Créez un Intérieur <br />
-                        <span className="text-terracotta italic">Qui Vous Ressemble</span>
-                    </h2>
-                    <p className="text-lg md:text-xl text-stone-200 mb-10 max-w-2xl mx-auto font-light">
-                        Laissez-vous inspirer par nos collections uniques et apportez une touche d'authenticité à votre quotidien.
-                    </p>
-                    <Link
-                        href="/produits"
-                        className="inline-block bg-white text-dark-text px-8 py-4 md:px-10 md:py-5 rounded-full text-lg font-medium hover:bg-terracotta hover:text-white transition-all duration-300 shadow-lg hover:shadow-terracotta/50 hover:-translate-y-1"
+        <section className="relative py-32 overflow-hidden bg-stone-900 text-white">
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-12 max-w-6xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="md:w-1/2"
                     >
-                        Explorer la Collection
-                    </Link>
-                </motion.div>
+                        <h2 className="text-4xl md:text-5xl font-serif mb-6 leading-tight">
+                            Une Collection <br />
+                            <span className="text-terracotta italic">Authentique</span>
+                        </h2>
+                        <p className="text-stone-400 text-lg font-light mb-8 max-w-md">
+                            Découvrez nos dernières trouvailles, sélectionnées avec passion pour leur caractère unique et leur histoire.
+                        </p>
+                        <Link
+                            href="/produits"
+                            className="inline-block border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-full text-lg hover:bg-white hover:text-stone-900 transition-all duration-300"
+                        >
+                            Voir la Collection
+                        </Link>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="md:w-1/2 relative h-[300px] md:h-[400px] w-full rounded-2xl overflow-hidden"
+                    >
+                        {product ? (
+                            <Image
+                                src={product.images.edges[0]?.node.url}
+                                alt="Collection"
+                                fill
+                                className="object-cover opacity-80 hover:scale-105 transition-transform duration-700"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-stone-800" />
+                        )}
+                    </motion.div>
+                </div>
             </div>
         </section>
     );

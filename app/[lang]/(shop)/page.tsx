@@ -6,6 +6,8 @@ import AboutSection from '@/components/AboutSection';
 import ValuesSection from '@/components/ValuesSection';
 import CTASection from '@/components/CTASection';
 
+export const revalidate = 0; // Force dynamic rendering to ensure fresh data
+
 export default async function Home() {
   // Fetch trending/featured products for the carousel and other sections
   // Fetching 5 products: 3 for Hero, 1 for About, 1 for CTA

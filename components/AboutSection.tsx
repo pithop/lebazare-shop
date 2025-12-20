@@ -10,57 +10,49 @@ interface AboutSectionProps {
 
 export default function AboutSection({ product }: AboutSectionProps) {
     return (
-        <section className="py-20 md:py-32 bg-white overflow-hidden">
-            <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
-                    {/* Image Column */}
+        <section className="py-24 md:py-32 bg-white overflow-hidden">
+            <div className="container mx-auto px-4 max-w-6xl">
+                <div className="flex flex-col md:flex-row items-center gap-16 md:gap-24">
+                    {/* Image Column - Minimalist */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="w-full md:w-1/2 relative h-[400px] md:h-[600px] rounded-2xl overflow-hidden"
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="w-full md:w-1/2 relative h-[500px] md:h-[700px] bg-stone-50"
                     >
                         {product ? (
                             <Image
                                 src={product.images.edges[0]?.node.url}
                                 alt="Artisanat Marocain"
                                 fill
-                                className="object-cover hover:scale-105 transition-transform duration-700"
+                                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out"
                             />
                         ) : (
-                            <div className="w-full h-full bg-stone-100 flex items-center justify-center text-stone-300">
-                                Image non disponible
+                            <div className="w-full h-full flex items-center justify-center text-stone-300 font-light">
+                                Image indisponible
                             </div>
                         )}
-                        {/* Decorative element */}
-                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-terracotta/10 rounded-full blur-3xl" />
                     </motion.div>
 
-                    {/* Text Column */}
+                    {/* Text Column - Clean Typography */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
                         className="w-full md:w-1/2"
                     >
-                        <span className="text-terracotta font-medium tracking-widest uppercase text-sm mb-4 block">
-                            Notre Histoire
-                        </span>
-                        <h2 className="text-4xl md:text-5xl font-serif text-dark-text mb-6 leading-tight">
-                            L'Art du Naturel & <br />
-                            <span className="italic text-stone-400">de l'Authenticité</span>
+                        <h2 className="text-4xl md:text-6xl font-serif text-dark-text mb-8 leading-tight tracking-tight">
+                            L'Essence du <br />
+                            <span className="text-stone-400 italic">Fait Main</span>
                         </h2>
-                        <div className="space-y-6 text-lg text-stone-600 font-light leading-relaxed">
+                        <div className="space-y-8 text-lg md:text-xl text-stone-600 font-light leading-relaxed">
                             <p>
-                                LeBazare est née d'une passion profonde pour les matières naturelles et le savoir-faire ancestral des artisans marocains.
+                                Une célébration de la matière brute et du geste précis. LeBazare sélectionne des pièces qui racontent une histoire silencieuse mais puissante.
                             </p>
                             <p>
-                                Chaque pièce de notre collection raconte une histoire unique. Tressée à la main, sculptée avec patience, elle porte en elle l'âme de son créateur et la chaleur de sa terre d'origine.
-                            </p>
-                            <p>
-                                Nous croyons en une décoration qui a du sens, durable et respectueuse, qui apporte une touche de poésie bohème à votre intérieur.
+                                Du raphia tressé au bois sculpté, chaque objet est un témoin du temps et du savoir-faire ancestral, réinterprété pour l'intérieur contemporain.
                             </p>
                         </div>
                     </motion.div>
