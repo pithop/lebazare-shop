@@ -115,12 +115,23 @@ export default async function ProduitsPage({ params: { lang }, searchParams }: P
           )}
 
           {filteredProducts.length === 0 ? (
-            <div className="text-center py-20 bg-stone-50 rounded-lg border border-stone-100 border-dashed">
-              <p className="text-xl text-slate-500 mb-2">Aucun produit trouvé</p>
-              <p className="text-slate-400 text-sm">Essayez de modifier vos filtres</p>
+            <div className="flex flex-col items-center justify-center py-20 bg-stone-50 rounded-xl border border-stone-100 border-dashed text-center px-4">
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-2xl">
+                🔍
+              </div>
+              <h3 className="text-xl font-serif text-slate-900 mb-2">Aucun résultat trouvé</h3>
+              <p className="text-slate-500 max-w-md mx-auto">
+                Nous n'avons trouvé aucun produit correspondant à vos critères. Essayez de modifier vos filtres ou d'élargir votre recherche.
+              </p>
+              <button
+                onClick={() => window.location.href = window.location.pathname}
+                className="mt-6 text-terracotta font-medium hover:underline underline-offset-4"
+              >
+                Effacer tous les filtres
+              </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

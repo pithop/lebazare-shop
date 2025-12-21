@@ -81,12 +81,7 @@ export default function ProductVariantSelector({
 
     return (
         <div className="space-y-8">
-            <div>
-                <h1 className="text-3xl lg:text-5xl font-serif text-slate-900 mb-4 leading-tight">{product.title}</h1>
-                <p className="text-2xl lg:text-3xl font-medium text-accent-red">
-                    {formatPrice(currentPrice)}
-                </p>
-            </div>
+
 
             {hasAttributes && (
                 <div className="space-y-6">
