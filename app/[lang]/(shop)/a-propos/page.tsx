@@ -48,11 +48,13 @@ export default function AProposPage() {
               </p>
             </div>
             <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl transform md:rotate-2 hover:rotate-0 transition-transform duration-500">
-              {/* Placeholder for a story image - using a colored div if no image available, or re-using hero for now */}
-              <div className="absolute inset-0 bg-terracotta/10 flex items-center justify-center">
-                <span className="text-terracotta/50 font-serif text-4xl">Image Artisan</span>
-              </div>
-              {/* Ideally we would have a specific image here */}
+              <Image
+                src="/images/about-hero.png"
+                alt="Artisan au travail"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
           </div>
         </div>

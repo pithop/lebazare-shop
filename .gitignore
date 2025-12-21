@@ -45,7 +45,9 @@ scripts/verify-seed.ts
 analyze_csv.js
 analyze_tags_v2.js
 check_duplicates.js
-*.png
+screencapture-lebazare-fr-en-2025-12-20-21_01_02.png
+screencapture-lebazare-fr-en-produits-2025-12-21-13_14_52.png
+screencapture-lebazare-fr-en-produits-charmant-miroir-mural-dore-en-forme-de-fenetre-f4g6od-2025-12-21-13_12_43.png
 remove_bg.py
 etsy_listings_enriched.json
 json_structure_explanation.md
