@@ -23,63 +23,65 @@ export default function ProductGallery({ images, title, videoUrl }: { images: { 
     }
 
     return (
-        <div className="space-y-4 lg:sticky lg:top-24 h-fit">
-            <div className="relative aspect-square bg-stone-50 rounded-2xl overflow-hidden shadow-sm">
-                {selectedMedia.type === 'video' ? (
-                    <div className="w-full h-full flex items-center justify-center bg-black">
-                        <video
-                            src={selectedMedia.url}
-                            controls
-                            className="w-full h-full object-contain"
-                            autoPlay
-                            muted
-                            loop
-                        />
-                    </div>
-                ) : selectedMedia.url ? (
-                    <Image
-                        src={selectedMedia.url}
-                        alt={selectedMedia.alt || title}
-                        fill
-                        className="object-cover transition-all duration-500 hover:scale-105"
-                        priority
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center text-stone-300">
-                        <span className="text-4xl">📷</span>
-                    </div>
-                )}
-            </div>
-
-            {allMedia.length > 1 && (
-                <div className="grid grid-cols-4 gap-4">
+        <div className="space-y-4">
+            {/* Mobile: Carousel with Scroll Snap */}
+            <div className="lg:hidden relative group">
+                <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 scrollbar-hide">
                     {allMedia.map((media, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setSelectedMedia(media)}
-                            className={`relative aspect-square bg-stone-50 rounded-xl overflow-hidden cursor-pointer transition-all ${selectedMedia.url === media.url
-                                ? 'ring-2 ring-slate-900 ring-offset-2'
-                                : 'hover:opacity-80'
-                                }`}
-                        >
+                        <div key={index} className="relative w-[85vw] flex-shrink-0 snap-center aspect-[4/5] bg-stone-50 rounded-xl overflow-hidden">
                             {media.type === 'video' ? (
-                                <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                                </div>
+                                <video
+                                    src={media.url}
+                                    controls
+                                    className="w-full h-full object-cover"
+                                    muted
+                                    loop
+                                    playsInline
+                                />
                             ) : (
                                 <Image
                                     src={media.url}
-                                    alt={media.alt || `${title} - Image ${index + 1}`}
+                                    alt={media.alt || `${title} - ${index + 1}`}
                                     fill
                                     className="object-cover"
-                                    sizes="(max-width: 1024px) 25vw, 12.5vw"
+                                    sizes="85vw"
                                 />
                             )}
-                        </button>
+                        </div>
                     ))}
                 </div>
-            )}
+                {/* Scroll hint/indicator could be added here */}
+            </div>
+
+            {/* Desktop: Vertical Grid / Masonry-ish */}
+            <div className="hidden lg:grid grid-cols-2 gap-4">
+                {allMedia.map((media, index) => (
+                    <div
+                        key={index}
+                        className={`relative bg-stone-50 rounded-xl overflow-hidden cursor-pointer group ${index === 0 ? 'col-span-2 aspect-[4/3]' : 'aspect-[3/4]'
+                            }`}
+                        onClick={() => setSelectedMedia(media)} // Optional: Open lightbox? For now just static grid
+                    >
+                        {media.type === 'video' ? (
+                            <video
+                                src={media.url}
+                                controls
+                                className="w-full h-full object-cover"
+                                muted
+                                loop
+                            />
+                        ) : (
+                            <Image
+                                src={media.url}
+                                alt={media.alt || `${title} - ${index + 1}`}
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                sizes={index === 0 ? "50vw" : "25vw"}
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

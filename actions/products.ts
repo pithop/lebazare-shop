@@ -9,6 +9,9 @@ export async function createProduct(formData: FormData) {
 
     const title = formData.get('title') as string
     const description = formData.get('description') as string
+    const seo_title = formData.get('seo_title') as string
+    const title_en = formData.get('title_en') as string
+    const description_en = formData.get('description_en') as string
     const price = parseFloat(formData.get('price') as string)
     const stock = parseInt(formData.get('stock') as string)
     const category = formData.get('category') as string
@@ -66,6 +69,9 @@ export async function createProduct(formData: FormData) {
     const { data: product, error } = await supabase.from('products').insert({
         title,
         description,
+        seo_title: seo_title || null,
+        title_en: title_en || null,
+        description_en: description_en || null,
         price,
         stock,
         category,
@@ -133,6 +139,9 @@ export async function updateProduct(id: string, formData: FormData) {
 
     const title = formData.get('title') as string
     const description = formData.get('description') as string
+    const seo_title = formData.get('seo_title') as string
+    const title_en = formData.get('title_en') as string
+    const description_en = formData.get('description_en') as string
     const price = parseFloat(formData.get('price') as string)
     const stock = parseInt(formData.get('stock') as string)
     const category = formData.get('category') as string
@@ -171,6 +180,9 @@ export async function updateProduct(id: string, formData: FormData) {
     const updates: any = {
         title,
         description,
+        seo_title: seo_title || null,
+        title_en: title_en || null,
+        description_en: description_en || null,
         price,
         stock,
         category,

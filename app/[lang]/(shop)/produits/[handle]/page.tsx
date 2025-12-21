@@ -29,7 +29,7 @@ export async function generateStaticParams() {
 
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: { handle: string } }) {
+export async function generateMetadata({ params }: { params: { handle: string; lang: string } }) {
   try {
     let product = await getProductByHandle(params.handle);
 
@@ -48,13 +48,19 @@ export async function generateMetadata({ params }: { params: { handle: string } 
       };
     }
 
+    const isEnglish = params.lang === 'en';
+    // Use English title for English locale if available, otherwise fallback to SEO title (French) or Title (French)
+    // Ideally we would have an SEO Title EN, but Title EN is better than SEO Title FR for English users.
+    const title = (isEnglish && product.title_en) ? product.title_en : (product.seo_title || product.title);
+    const description = (isEnglish && product.description_en) ? product.description_en : (product.description || `Découvrez ${product.title} sur LeBazare`);
+
     return {
-      title: `${product.title} - LeBazare`,
-      description: product.description || `Découvrez ${product.title} sur LeBazare`,
+      title: `${title} - LeBazare`,
+      description: description,
       openGraph: {
-        title: product.title,
-        description: product.description || `Découvrez ${product.title} sur LeBazare`,
-        url: `https://www.lebazare.fr/produits/${product.handle}`,
+        title: title,
+        description: description,
+        url: `https://www.lebazare.fr/${params.lang}/produits/${product.handle}`,
         images: product.images.edges.map(edge => ({
           url: edge.node.url,
           alt: edge.node.altText || product?.title,
@@ -62,7 +68,11 @@ export async function generateMetadata({ params }: { params: { handle: string } 
         type: 'website',
       },
       alternates: {
-        canonical: `https://www.lebazare.fr/produits/${product.handle}`,
+        canonical: `https://www.lebazare.fr/${params.lang}/produits/${product.handle}`,
+        languages: {
+          'fr': `https://www.lebazare.fr/fr/produits/${product.handle}`,
+          'en': `https://www.lebazare.fr/en/produits/${product.handle}`,
+        }
       },
     };
   } catch (error) {
@@ -76,7 +86,7 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   }
 }
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
+export default async function ProductPage({ params }: { params: { handle: string; lang: string } }) {
   let product: Product | null | undefined = null;
 
   try {
@@ -94,6 +104,10 @@ export default async function ProductPage({ params }: { params: { handle: string
     notFound();
   }
 
+  const isEnglish = params.lang === 'en';
+  const displayTitle = (isEnglish && product.title_en) ? product.title_en : product.title;
+  const displayDescription = (isEnglish && product.description_en) ? product.description_en : product.description;
+
   const images = product.images.edges.map((edge) => edge.node);
   const variants = product.variants.edges.map((edge) => edge.node);
   const relatedProducts = await getRelatedProducts(product.id, product.category);
@@ -101,8 +115,8 @@ export default async function ProductPage({ params }: { params: { handle: string
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.title,
-    description: product.description,
+    name: product.seo_title || product.title,
+    description: displayDescription,
     image: images.map((img) => img.url),
     sku: product.handle,
     brand: {
@@ -116,56 +130,94 @@ export default async function ProductPage({ params }: { params: { handle: string
       availability: variants[0]?.availableForSale
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
-      url: `https://www.lebazare.fr/produits/${product.handle}`,
+      url: `https://www.lebazare.fr/${params.lang}/produits/${product.handle}`,
       itemCondition: 'https://schema.org/NewCondition',
     },
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 lg:py-16">
+    <div className="container mx-auto px-4 py-8 lg:py-12">
       <JsonLd data={jsonLd} />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-w-7xl mx-auto">
-        {/* Image Gallery */}
-        <ProductGallery images={images} title={product.title} videoUrl={product.video_url} />
 
-        {/* Product Details */}
-        <div className="flex flex-col space-y-8 lg:pt-8">
-          <ProductVariantSelector product={product} variants={variants} />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 max-w-7xl mx-auto">
+        {/* Left Column: Image Gallery (Scrollable) */}
+        <div className="lg:col-span-7 lg:pr-8">
+          <ProductGallery images={images} title={displayTitle} videoUrl={product.video_url} />
+        </div>
 
-          {product.description && (
-            <div className="prose prose-lg prose-slate max-w-none">
-              <h3 className="font-serif text-xl text-slate-900 mb-4">Description</h3>
-              <p className="text-slate-600 leading-relaxed whitespace-pre-line">
-                {product.description}
-              </p>
+        {/* Right Column: Product Details (Sticky) */}
+        <div className="lg:col-span-5 relative">
+          <div className="sticky top-24 space-y-8">
+            {/* Header */}
+            <div className="space-y-4 border-b border-slate-100 pb-6">
+              <h1 className="text-3xl lg:text-4xl font-serif text-slate-900 leading-tight">
+                {displayTitle}
+              </h1>
+              <div className="flex items-center justify-between">
+                <div className="text-2xl font-light text-slate-900">
+                  {variants[0]?.priceV2.amount} {variants[0]?.priceV2.currencyCode}
+                </div>
+                {/* Stock Status Badge */}
+                {variants[0]?.availableForSale ? (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                    En stock
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700">
+                    Épuisé
+                  </span>
+                )}
+              </div>
             </div>
-          )}
 
-          {/* Product Info */}
-          <div className="border-t border-slate-200 pt-8">
-            <h3 className="font-serif text-lg text-slate-900 mb-4">Pourquoi choisir ce produit ?</h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <li className="flex items-center p-4 bg-stone-50 rounded-lg">
-                <span className="text-terracotta mr-3 text-xl">✦</span>
-                <span className="text-slate-700 font-medium">Création artisanale unique</span>
-              </li>
-              <li className="flex items-center p-4 bg-stone-50 rounded-lg">
-                <span className="text-terracotta mr-3 text-xl">🌿</span>
-                <span className="text-slate-700 font-medium">Matières naturelles</span>
-              </li>
-              <li className="flex items-center p-4 bg-stone-50 rounded-lg">
-                <span className="text-terracotta mr-3 text-xl">❤️</span>
-                <span className="text-slate-700 font-medium">Fait main avec passion</span>
-              </li>
-              <li className="flex items-center p-4 bg-stone-50 rounded-lg">
-                <span className="text-terracotta mr-3 text-xl">🚚</span>
-                <span className="text-slate-700 font-medium">Livraison soignée</span>
-              </li>
-            </ul>
+            {/* Variant Selector & Add to Cart */}
+            <ProductVariantSelector product={{ ...product, title: displayTitle }} variants={variants} />
+
+            {/* Description */}
+            {displayDescription && (
+              <div className="prose prose-slate prose-p:text-slate-600 prose-headings:font-serif prose-headings:font-normal max-w-none">
+                <h3 className="text-lg mb-2">À propos</h3>
+                <p className="whitespace-pre-line leading-relaxed text-sm">
+                  {displayDescription}
+                </p>
+              </div>
+            )}
+
+            {/* Features (Minimalist) */}
+            <div className="grid grid-cols-2 gap-4 pt-6 border-t border-slate-100">
+              <div className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-stone-50 text-terracotta">
+                  🌿
+                </span>
+                <span className="text-xs font-medium text-slate-700">100% Naturel</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-stone-50 text-terracotta">
+                  ✋
+                </span>
+                <span className="text-xs font-medium text-slate-700">Fait Main</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-stone-50 text-terracotta">
+                  ✨
+                </span>
+                <span className="text-xs font-medium text-slate-700">Pièce Unique</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-stone-50 text-terracotta">
+                  🚚
+                </span>
+                <span className="text-xs font-medium text-slate-700">Livraison Rapide</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <RelatedProducts products={relatedProducts} />
+
+      <div className="mt-24 border-t border-slate-100 pt-16">
+        <h2 className="text-2xl font-serif text-slate-900 mb-8 text-center">Vous aimerez aussi</h2>
+        <RelatedProducts products={relatedProducts} />
+      </div>
     </div>
   );
 }

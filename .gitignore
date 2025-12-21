@@ -47,3 +47,10 @@ analyze_tags_v2.js
 check_duplicates.js
 *.png
 remove_bg.py
+etsy_listings_enriched.json
+json_structure_explanation.md
+apply-migration.ts
+verify-seo.ts
+seed-etsy-v3.ts
+verify-enriched-data.ts
+*.sql

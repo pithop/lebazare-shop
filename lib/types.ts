@@ -1,6 +1,9 @@
 export interface Product {
   id: string;
   title: string;
+  seo_title?: string;
+  title_en?: string;
+  description_en?: string;
   handle: string;
   description: string;
   category?: string;

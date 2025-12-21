@@ -196,6 +196,54 @@ export default function NewProductPage() {
                             </div>
                         </div>
 
+
+
+
+                        {/* SEO & Internationalization Card */}
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-6">
+                            <h2 className="text-lg font-medium text-slate-900">SEO & Internationalisation</h2>
+
+                            <div>
+                                <label htmlFor="seo_title" className="block text-sm font-medium text-slate-700 mb-1">
+                                    Titre SEO (Français)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="seo_title"
+                                    name="seo_title"
+                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
+                                    placeholder="Titre long optimisé pour le référencement"
+                                />
+                                <p className="text-xs text-slate-500 mt-1">Utilisé pour la balise &lt;title&gt; et les moteurs de recherche.</p>
+                            </div>
+
+                            <div>
+                                <label htmlFor="title_en" className="block text-sm font-medium text-slate-700 mb-1">
+                                    Titre (Anglais)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="title_en"
+                                    name="title_en"
+                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
+                                    placeholder="English Title"
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="description_en" className="block text-sm font-medium text-slate-700 mb-1">
+                                    Description (Anglais)
+                                </label>
+                                <textarea
+                                    id="description_en"
+                                    name="description_en"
+                                    rows={6}
+                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all resize-none"
+                                    placeholder="English Description..."
+                                />
+                            </div>
+                        </div>
+
                         {/* Media Card */}
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                             <h2 className="text-lg font-medium text-slate-900 mb-6">Médias</h2>
@@ -282,7 +330,7 @@ export default function NewProductPage() {
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
