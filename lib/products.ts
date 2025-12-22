@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase-server';
-import { createClient as createStaticClient } from '@supabase/supabase-js';
 import { Product } from './types';
 
 // Helper to map Supabase product to Shopify-style Product interface
@@ -77,10 +76,7 @@ export async function getAllProducts(limit: number = 20): Promise<Product[]> {
 }
 
 export async function getStaticProducts(limit: number = 20): Promise<Product[]> {
-  const supabase = createStaticClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = createClient();
 
   const { data: products, error } = await supabase
     .from('products')
