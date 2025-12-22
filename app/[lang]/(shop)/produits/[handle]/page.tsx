@@ -11,21 +11,21 @@ import { ProductSchema } from '@/components/seo/ProductSchema';
 
 import { i18n } from '@/i18n-config';
 
-export async function generateStaticParams() {
-  const products = await getStaticProducts(20);
+// export async function generateStaticParams() {
+//   const products = await getStaticProducts(20);
 
-  const params = [];
-  for (const locale of i18n.locales) {
-    for (const product of products) {
-      params.push({
-        lang: locale,
-        handle: product.handle,
-      });
-    }
-  }
+//   const params = [];
+//   for (const locale of i18n.locales) {
+//     for (const product of products) {
+//       params.push({
+//         lang: locale,
+//         handle: product.handle,
+//       });
+//     }
+//   }
 
-  return params;
-}
+//   return params;
+// }
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
