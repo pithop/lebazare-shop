@@ -101,9 +101,12 @@ export default async function ProductPage({ params }: { params: { handle: string
     product = exampleProducts.find(p => p.handle === params.handle) || null;
   }
 
+
   if (!product) {
     notFound();
   }
+
+  console.log(`[DEBUG] Rendering Product Page: ${product.title} (ID: ${product.id})`);
 
 
 
