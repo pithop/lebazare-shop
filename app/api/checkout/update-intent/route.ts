@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { calculateShipping } from '@/utils/shippingCalculator';
+import { calculateShipping, CartItem } from '@/utils/shippingCalculator';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialisation Stripe
@@ -36,21 +36,31 @@ export async function POST(req: Request) {
         }
 
         // 3. Construction du panier enrichi avec les données DB (Poids, Dims, Prix)
-        const formattedItems = items.map((item: any) => {
-            const dbProduct = dbProducts.find(p => p.id === item.id);
-            if (!dbProduct) throw new Error(`Produit introuvable: ${item.id}`);
+        // GRACEFUL FAIL: On filtre les produits qui n'existent plus (ex: vieux panier)
+        const formattedItems = items
+            .map((item: any) => {
+                const dbProduct = dbProducts.find(p => p.id === item.id);
+                if (!dbProduct) {
+                    console.warn(`Produit ignoré (non trouvé en DB): ${item.id}`);
+                    return null;
+                }
 
-            return {
-                productId: dbProduct.id,
-                quantity: item.quantity,
-                weightGrams: dbProduct.weight_grams || 0,
-                dimensions: dbProduct.dimensions || { length: 0, width: 0, height: 0 },
-                originCountry: dbProduct.origin_country || 'MA',
-                isStackable: dbProduct.is_stackable || false,
-                price: dbProduct.price, // Prix DB !
-                handlingTier: dbProduct.handling_tier || 'standard'
-            };
-        });
+                return {
+                    productId: dbProduct.id,
+                    quantity: item.quantity,
+                    weightGrams: dbProduct.weight_grams || 0,
+                    dimensions: dbProduct.dimensions || { length: 0, width: 0, height: 0 },
+                    originCountry: dbProduct.origin_country || 'MA',
+                    isStackable: dbProduct.is_stackable || false,
+                    price: dbProduct.price, // Prix DB !
+                    handlingTier: dbProduct.handling_tier || 'standard'
+                };
+            })
+            .filter((item: any): item is CartItem => item !== null); // On garde uniquement les produits valides
+
+        if (formattedItems.length === 0) {
+            throw new Error("Aucun produit valide dans le panier (Stock épuisé ou expiré). Veuillez vider votre panier.");
+        }
 
         // 4. Exécution de l'algorithme de livraison
         const { totalCost: shippingCostCents } = await calculateShipping(

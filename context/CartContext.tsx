@@ -33,7 +33,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     // Load from local storage
     useEffect(() => {
-        const savedCart = localStorage.getItem('lebazare_cart')
+        const savedCart = localStorage.getItem('lebazare_cart_v1')
         if (savedCart) {
             try {
                 setItems(JSON.parse(savedCart))
@@ -47,7 +47,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     // Save to local storage
     useEffect(() => {
         if (isLoaded) {
-            localStorage.setItem('lebazare_cart', JSON.stringify(items))
+            localStorage.setItem('lebazare_cart_v1', JSON.stringify(items))
         }
     }, [items, isLoaded])
 
