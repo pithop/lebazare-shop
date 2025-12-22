@@ -85,7 +85,7 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Livraison</span>
-                <span className="text-green-600">Gratuit</span>
+                <span className="text-slate-500 italic text-sm">Calculé à l'étape suivante</span>
               </div>
               <div className="pt-4 border-t border-slate-200 flex justify-between text-xl font-medium text-slate-900">
                 <span>Total</span>

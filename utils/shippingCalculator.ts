@@ -150,13 +150,44 @@ async function getRateFromMatrix(origin: string, dest: string, weightGrams: numb
     */
 
     // Fallback Mock Logic (as requested in report)
+    // Fallback Mock Logic (as requested in report)
+
+    // 1. Maroc -> France (Zone 1)
     if (origin === 'MA' && dest === 'FR') {
-        // Chronopost International Maroc -> France (Tarifs indicatifs)
-        // Base 25€ + 4€ par Kg supplémentaire
+        // Base 25€ + 4€ par Kg
         return 2500 + (weightGrams / 1000) * 400;
     }
 
-    // Colissimo France -> France (Tarifs indicatifs)
-    // Base 8€ + 1€ par Kg
-    return 800 + (weightGrams / 1000) * 100;
+    // 2. Maroc -> Europe (Zone 2)
+    const europeCodes = ['BE', 'CH', 'DE', 'ES', 'IT', 'NL', 'LU', 'GB', 'PT', 'AT', 'SE', 'DK', 'FI', 'IE'];
+    if (origin === 'MA' && europeCodes.includes(dest)) {
+        // Base 35€ + 5€ par Kg
+        return 3500 + (weightGrams / 1000) * 500;
+    }
+
+    // 3. Maroc -> Monde (Zone 3 - USA, Canada, etc.)
+    if (origin === 'MA') {
+        // Base 55€ + 8€ par Kg (DHL Express estimation)
+        return 5500 + (weightGrams / 1000) * 800;
+    }
+
+    // 4. France -> France
+    if (origin === 'FR' && dest === 'FR') {
+        // Base 8€ + 1€ par Kg
+        return 800 + (weightGrams / 1000) * 100;
+    }
+
+    // 5. France -> Europe
+    if (origin === 'FR' && europeCodes.includes(dest)) {
+        // Base 15€ + 2€ par Kg
+        return 1500 + (weightGrams / 1000) * 200;
+    }
+
+    // 6. France -> Monde
+    if (origin === 'FR') {
+        // Base 30€ + 5€ par Kg
+        return 3000 + (weightGrams / 1000) * 500;
+    }
+
+    return 5000; // Default fallback safety
 }

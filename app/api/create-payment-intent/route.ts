@@ -26,7 +26,10 @@ export async function POST(request: Request) {
             },
         });
 
-        return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+        return NextResponse.json({
+            clientSecret: paymentIntent.client_secret,
+            paymentIntentId: paymentIntent.id
+        });
     } catch (error: any) {
         console.error('Internal Error:', error);
         return NextResponse.json(
