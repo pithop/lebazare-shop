@@ -23,40 +23,73 @@ export async function POST(req: Request) {
             process.env.SUPABASE_SERVICE_ROLE_KEY!
         );
 
-        // 2. Récupération des VRAIS produits depuis la DB (Source de Vérité)
-        // On ne fait confiance qu'aux IDs et Quantités envoyés par le client
-        const productIds = items.map((item: any) => item.id);
-        const { data: dbProducts, error } = await supabase
+        // 2. Récupération des données (Variants OU Produits)
+        // Le frontend envoie des IDs qui peuvent être des IDs de variants OU des IDs de produits
+        const targetIds = items.map((item: any) => item.id);
+
+        // A. Chercher dans les variants (cas le plus fréquent pour un panier)
+        const { data: variants, error: variantError } = await supabase
+            .from('product_variants')
+            .select('*, products(*)') // Join parent product
+            .in('id', targetIds);
+
+        if (variantError) {
+            console.error("Erreur fetch variants:", variantError);
+            throw new Error("Erreur lors de la récupération des variants");
+        }
+
+        // B. Chercher dans les produits (pour les produits simples sans variants ou si l'ID est un ID produit)
+        const { data: products, error: productError } = await supabase
             .from('products')
             .select('*')
-            .in('id', productIds);
+            .in('id', targetIds);
 
-        if (error || !dbProducts) {
+        if (productError) {
+            console.error("Erreur fetch products:", productError);
             throw new Error("Erreur lors de la récupération des produits");
         }
 
         // 3. Construction du panier enrichi avec les données DB (Poids, Dims, Prix)
-        // GRACEFUL FAIL: On filtre les produits qui n'existent plus (ex: vieux panier)
+        // GRACEFUL FAIL: On filtre les produits qui n'existent plus
         const formattedItems = items
             .map((item: any) => {
-                const dbProduct = dbProducts.find(p => p.id === item.id);
-                if (!dbProduct) {
-                    console.warn(`Produit ignoré (non trouvé en DB): ${item.id}`);
-                    return null;
+                // Priorité 1: C'est un variant
+                const variant = variants?.find(v => v.id === item.id);
+                if (variant && variant.products) {
+                    // @ts-ignore - Supabase typing for joined relation can be tricky
+                    const parentProduct = variant.products;
+                    return {
+                        productId: parentProduct.id,
+                        variantId: variant.id,
+                        quantity: item.quantity,
+                        weightGrams: parentProduct.weight_grams || 0,
+                        dimensions: parentProduct.dimensions || { length: 0, width: 0, height: 0 },
+                        originCountry: parentProduct.origin_country || 'MA',
+                        isStackable: parentProduct.is_stackable || false,
+                        price: variant.price, // Prix du VARIANT
+                        handlingTier: parentProduct.handling_tier || 'standard'
+                    };
                 }
 
-                return {
-                    productId: dbProduct.id,
-                    quantity: item.quantity,
-                    weightGrams: dbProduct.weight_grams || 0,
-                    dimensions: dbProduct.dimensions || { length: 0, width: 0, height: 0 },
-                    originCountry: dbProduct.origin_country || 'MA',
-                    isStackable: dbProduct.is_stackable || false,
-                    price: dbProduct.price, // Prix DB !
-                    handlingTier: dbProduct.handling_tier || 'standard'
-                };
+                // Priorité 2: C'est un produit direct
+                const product = products?.find(p => p.id === item.id);
+                if (product) {
+                    return {
+                        productId: product.id,
+                        quantity: item.quantity,
+                        weightGrams: product.weight_grams || 0,
+                        dimensions: product.dimensions || { length: 0, width: 0, height: 0 },
+                        originCountry: product.origin_country || 'MA',
+                        isStackable: product.is_stackable || false,
+                        price: product.price, // Prix du PRODUIT
+                        handlingTier: product.handling_tier || 'standard'
+                    };
+                }
+
+                console.warn(`Produit/Variant ignoré (non trouvé en DB): ${item.id}`);
+                return null;
             })
-            .filter((item: any): item is CartItem => item !== null); // On garde uniquement les produits valides
+            .filter((item: any): item is CartItem => item !== null);
 
         if (formattedItems.length === 0) {
             throw new Error("Aucun produit valide dans le panier (Stock épuisé ou expiré). Veuillez vider votre panier.");
