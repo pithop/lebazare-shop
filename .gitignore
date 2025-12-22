@@ -64,3 +64,4 @@ enriched_output.json
 etsy_listings_enriched.json
 scripts/seed-etsy-v3.ts
 scripts/verify-logistics.ts
+scripts/check-product-id.ts

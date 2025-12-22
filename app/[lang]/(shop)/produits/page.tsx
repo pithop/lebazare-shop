@@ -4,8 +4,8 @@ import ProductCard from '@/components/ProductCard';
 import { Product } from '@/lib/types';
 import ProductFilters from '@/components/shop/ProductFilters';
 
-// export const dynamic = 'force-dynamic'; // Removed to allow ISR
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata = {
   title: 'Produits - LeBazare',
