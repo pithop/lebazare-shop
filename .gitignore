@@ -66,3 +66,4 @@ scripts/seed-etsy-v3.ts
 scripts/verify-logistics.ts
 scripts/check-product-id.ts
 RAPPORT_CONTEXTE_PROJET.md
+logs_result.csv
