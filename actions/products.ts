@@ -19,6 +19,19 @@ export async function createProduct(formData: FormData) {
     const videoFile = formData.get('video_file') as File | null
     let finalVideoUrl = videoUrl
 
+    // Logistics Fields
+    const origin_country = formData.get('origin_country') as string || 'MA'
+    const weight_grams = parseInt(formData.get('weight_grams') as string) || 0
+    const material_type = formData.get('material_type') as string
+    const is_stackable = formData.get('is_stackable') === 'on'
+    const handling_tier = formData.get('handling_tier') as string || 'standard'
+
+    // Dimensions
+    const length = parseInt(formData.get('dim_length') as string) || 0
+    const width = parseInt(formData.get('dim_width') as string) || 0
+    const height = parseInt(formData.get('dim_height') as string) || 0
+    const dimensions = { length, width, height, unit: 'cm' }
+
     if (videoFile && videoFile.size > 0) {
         const filename = `video-${Date.now()}-${Math.random().toString(36).substring(7)}-${videoFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`
         const { error: uploadError } = await supabase.storage
@@ -79,6 +92,13 @@ export async function createProduct(formData: FormData) {
         video_url: finalVideoUrl || null,
         slug,
         is_active: true,
+        // Logistics
+        origin_country,
+        weight_grams,
+        material_type,
+        is_stackable,
+        handling_tier,
+        dimensions
     }).select().single()
 
     if (error) {
@@ -158,6 +178,19 @@ export async function updateProduct(id: string, formData: FormData) {
     const videoFile = formData.get('video_file') as File | null
     let finalVideoUrl = videoUrl
 
+    // Logistics Fields
+    const origin_country = formData.get('origin_country') as string
+    const weight_grams = parseInt(formData.get('weight_grams') as string) || 0
+    const material_type = formData.get('material_type') as string
+    const is_stackable = formData.get('is_stackable') === 'on'
+    const handling_tier = formData.get('handling_tier') as string
+
+    // Dimensions
+    const length = parseInt(formData.get('dim_length') as string) || 0
+    const width = parseInt(formData.get('dim_width') as string) || 0
+    const height = parseInt(formData.get('dim_height') as string) || 0
+    const dimensions = { length, width, height, unit: 'cm' }
+
     if (videoFile && videoFile.size > 0) {
         const filename = `video-${Date.now()}-${Math.random().toString(36).substring(7)}-${videoFile.name.replace(/[^a-zA-Z0-9.]/g, '')}`
         const { error: uploadError } = await supabase.storage
@@ -188,6 +221,13 @@ export async function updateProduct(id: string, formData: FormData) {
         category,
         video_url: finalVideoUrl || null,
         updated_at: new Date().toISOString(),
+        // Logistics
+        origin_country,
+        weight_grams,
+        material_type,
+        is_stackable,
+        handling_tier,
+        dimensions
     }
 
     const imageFiles = formData.getAll('new_images') as File[]

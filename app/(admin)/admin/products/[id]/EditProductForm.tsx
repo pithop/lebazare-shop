@@ -261,6 +261,97 @@ export default function EditProductForm({ product }: { product: any }) {
 
                     {/* Right Column - Sidebar */}
                     <div className="space-y-8">
+                        {/* Logistics Card */}
+                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-6">
+                            <h2 className="text-lg font-medium text-slate-900">Logistique</h2>
+
+                            <div>
+                                <label htmlFor="origin_country" className="block text-sm font-medium text-slate-700 mb-1">
+                                    Origine
+                                </label>
+                                <select
+                                    id="origin_country"
+                                    name="origin_country"
+                                    defaultValue={product.origin_country || 'MA'}
+                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
+                                >
+                                    <option value="MA">Maroc (MA)</option>
+                                    <option value="FR">France (FR)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label htmlFor="weight_grams" className="block text-sm font-medium text-slate-700 mb-1">
+                                    Poids (grammes)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="weight_grams"
+                                    name="weight_grams"
+                                    defaultValue={product.weight_grams || 0}
+                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                    Dimensions (cm)
+                                </label>
+                                <div className="grid grid-cols-3 gap-2">
+                                    <input
+                                        type="number"
+                                        name="dim_length"
+                                        placeholder="L"
+                                        defaultValue={product.dimensions?.length || ''}
+                                        className="px-3 py-2 border border-slate-200 rounded-lg"
+                                    />
+                                    <input
+                                        type="number"
+                                        name="dim_width"
+                                        placeholder="l"
+                                        defaultValue={product.dimensions?.width || ''}
+                                        className="px-3 py-2 border border-slate-200 rounded-lg"
+                                    />
+                                    <input
+                                        type="number"
+                                        name="dim_height"
+                                        placeholder="H"
+                                        defaultValue={product.dimensions?.height || ''}
+                                        className="px-3 py-2 border border-slate-200 rounded-lg"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="is_stackable"
+                                    name="is_stackable"
+                                    defaultChecked={product.is_stackable}
+                                    className="w-4 h-4 text-slate-900 rounded border-slate-300 focus:ring-slate-900"
+                                />
+                                <label htmlFor="is_stackable" className="text-sm font-medium text-slate-700">
+                                    Empilable (Nesting)
+                                </label>
+                            </div>
+
+                            <div>
+                                <label htmlFor="handling_tier" className="block text-sm font-medium text-slate-700 mb-1">
+                                    Manutention
+                                </label>
+                                <select
+                                    id="handling_tier"
+                                    name="handling_tier"
+                                    defaultValue={product.handling_tier || 'standard'}
+                                    className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition-all"
+                                >
+                                    <option value="standard">Standard</option>
+                                    <option value="fragile">Fragile (+Frais)</option>
+                                    <option value="oversize">Hors Gabarit</option>
+                                </select>
+                            </div>
+                        </div>
+
                         {/* Status & Organization Card */}
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-6">
                             <h2 className="text-lg font-medium text-slate-900">Organisation</h2>

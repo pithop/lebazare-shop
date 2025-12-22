@@ -6,8 +6,8 @@ import AddToCartButton from '@/components/AddToCartButton';
 import ProductGallery from '@/components/shop/ProductGallery';
 import ProductVariantSelector from '@/components/shop/ProductVariantSelector';
 import RelatedProducts from '@/components/shop/RelatedProducts';
-import JsonLd from '@/components/JsonLd';
 import { Product } from '@/lib/types';
+import { ProductSchema } from '@/components/seo/ProductSchema';
 
 import { i18n } from '@/i18n-config';
 
@@ -104,6 +104,10 @@ export default async function ProductPage({ params }: { params: { handle: string
     notFound();
   }
 
+
+
+  // ... (inside component)
+
   const isEnglish = params.lang === 'en';
   const displayTitle = (isEnglish && product.title_en) ? product.title_en : product.title;
   const displayDescription = (isEnglish && product.description_en) ? product.description_en : product.description;
@@ -112,32 +116,30 @@ export default async function ProductPage({ params }: { params: { handle: string
   const variants = product.variants.edges.map((edge) => edge.node);
   const relatedProducts = await getRelatedProducts(product.id, product.category);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.seo_title || product.title,
-    description: displayDescription,
-    image: images.map((img) => img.url),
-    sku: product.handle,
-    brand: {
-      '@type': 'Brand',
-      name: 'LeBazare',
-    },
-    offers: {
-      '@type': 'Offer',
-      price: variants[0]?.priceV2.amount || '0',
-      priceCurrency: variants[0]?.priceV2.currencyCode || 'EUR',
-      availability: variants[0]?.availableForSale
-        ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock',
-      url: `https://www.lebazare.fr/${params.lang}/produits/${product.handle}`,
-      itemCondition: 'https://schema.org/NewCondition',
-    },
-  }
+  // Logic to determine shipping for Schema
+  // In a real scenario, this might come from a pre-calculated field or default values
+  const isMorocco = product.origin_country === 'MA';
+  const shippingSchema = {
+    cost: isMorocco ? 25.00 : 8.00, // Example base costs
+    minDays: isMorocco ? 5 : 2,
+    maxDays: isMorocco ? 10 : 4
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 lg:py-12">
-      <JsonLd data={jsonLd} />
+      <ProductSchema
+        product={{
+          name: product.seo_title || product.title,
+          description: displayDescription || '',
+          images: images.map((img) => img.url),
+          sku: product.handle,
+          price: parseFloat(variants[0]?.priceV2.amount || '0'),
+          currency: variants[0]?.priceV2.currencyCode || 'EUR',
+          availability: variants[0]?.availableForSale ? 'InStock' : 'OutOfStock',
+          brand: 'LeBazare'
+        }}
+        shipping={shippingSchema}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 max-w-7xl mx-auto">
         {/* Left Column: Image Gallery (Scrollable) */}
@@ -207,7 +209,9 @@ export default async function ProductPage({ params }: { params: { handle: string
                 <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-stone-50 text-terracotta">
                   🚚
                 </span>
-                <span className="text-xs font-medium text-slate-700">Livraison Rapide</span>
+                <span className="text-xs font-medium text-slate-700">
+                  {isMorocco ? 'Expédié du Maroc (5-10j)' : 'Expédié de France (2-4j)'}
+                </span>
               </div>
             </div>
           </div>
