@@ -49,14 +49,18 @@ screencapture-lebazare-fr-en-2025-12-20-21_01_02.png
 screencapture-lebazare-fr-en-produits-2025-12-21-13_14_52.png
 screencapture-lebazare-fr-en-produits-charmant-miroir-mural-dore-en-forme-de-fenetre-f4g6od-2025-12-21-13_12_43.png
 remove_bg.py
-etsy_listings_enriched.json
+
 json_structure_explanation.md
 apply-migration.ts
 verify-seo.ts
-seed-etsy-v3.ts
+
 verify-enriched-data.ts
 *.sql
 supabase_migrations/20251222132100_logistics_overhaul.txt
 rapport_technique_logistique.md
 Supabase Snippet E‑commerce products & orders schema with RLS and storage.csv
 scripts/debug-product-rls.ts
+enriched_output.json
+etsy_listings_enriched.json
+scripts/seed-etsy-v3.ts
+scripts/verify-logistics.ts
