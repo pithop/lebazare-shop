@@ -13,7 +13,7 @@ import { toast } from 'sonner'
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 export default function CheckoutPage() {
-    const { items, cartTotal } = useCart()
+    const { items, cartTotal, removeItem } = useCart()
     const [clientSecret, setClientSecret] = useState('')
     const [paymentIntentId, setPaymentIntentId] = useState('')
     const [step, setStep] = useState<'details' | 'payment'>('details')
@@ -93,10 +93,20 @@ export default function CheckoutPage() {
                 setTotalAmount(data.newAmount / 100)
                 return true
             } else {
-                toast.error("Erreur lors du calcul de la livraison")
+                // Handle specific "Product not found" error
+                if (data.error && data.error.includes("Produit introuvable")) {
+                    const invalidId = data.error.split(': ')[1]?.trim();
+                    if (invalidId) {
+                        removeItem(invalidId);
+                        toast.error("Un produit de votre panier n'est plus disponible et a été retiré.");
+                        return false;
+                    }
+                }
+
+                toast.error(data.error || "Erreur lors du calcul de la livraison")
                 return false
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error calculating shipping:", error)
             toast.error("Impossible de calculer les frais de port")
             return false
