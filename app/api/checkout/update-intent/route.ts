@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { calculateShipping } from '@/utils/shippingCalculator';
-import { createClient } from '@/lib/supabase-server';
+import { createClient } from '@supabase/supabase-js';
 
 // Initialisation Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -17,8 +17,11 @@ export async function POST(req: Request) {
             throw new Error("Panier vide ou invalide");
         }
 
-        // 1. Vérification de la session (Optionnel selon auth)
-        const supabase = createClient();
+        // 1. Initialisation Supabase Admin (Service Role) pour contourner RLS
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
 
         // 2. Récupération des VRAIS produits depuis la DB (Source de Vérité)
         // On ne fait confiance qu'aux IDs et Quantités envoyés par le client

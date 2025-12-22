@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase-server';
+import { createClient } from '@supabase/supabase-js';
 
 // Définition des types pour la rigueur
 export interface Dimensions {
@@ -121,7 +121,10 @@ function getVolume(d: Dimensions): number {
 
 // Fonction d'accès DB
 async function getRateFromMatrix(origin: string, dest: string, weightGrams: number): Promise<number> {
-    const supabase = createClient();
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
     // Try to fetch real rates from DB
     const { data: rates, error } = await supabase
