@@ -33,7 +33,8 @@ export default function AddressAutocomplete({ onSelect, onChange, defaultValue =
         setQuery(value)
         if (onChange) onChange(value)
 
-        if (value.length > 2) {
+        const trimmedValue = value.trim()
+        if (trimmedValue.length > 3) {
             try {
                 const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(value)}&limit=5`)
                 const data = await response.json()

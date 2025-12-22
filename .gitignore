@@ -58,3 +58,5 @@ verify-enriched-data.ts
 *.sql
 supabase_migrations/20251222132100_logistics_overhaul.txt
 rapport_technique_logistique.md
+Supabase Snippet E‑commerce products & orders schema with RLS and storage.csv
+scripts/debug-product-rls.ts
