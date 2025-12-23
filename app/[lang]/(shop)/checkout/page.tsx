@@ -91,6 +91,7 @@ export default function CheckoutPage() {
                 setShippingCost(data.shippingCost / 100) // Convert cents to Euro
                 setTax(data.tax / 100)
                 setTotalAmount(data.newAmount / 100)
+                console.log("Shipping calculated successfully:", data);
                 return true
             } else {
                 // Handle specific "Product not found" error
@@ -119,7 +120,9 @@ export default function CheckoutPage() {
         e.preventDefault()
 
         // Calculate shipping before proceeding
+        console.log("Submitting details, calculating shipping...");
         const success = await calculateShipping()
+        console.log("Shipping calculation result:", success);
         if (!success) return
 
         const formData = new FormData(e.currentTarget)
@@ -132,6 +135,7 @@ export default function CheckoutPage() {
             postalCode: addressForm.postalCode,
             country: addressForm.country,
         }
+        console.log("Setting customer details and moving to payment step:", details);
         setCustomerDetails(details)
         setStep('payment')
     }
@@ -326,8 +330,8 @@ export default function CheckoutPage() {
                             </span>
                         </div>
                         {tax > 0 && (
-                            <div className="flex justify-between text-slate-600">
-                                <span>Taxes (TVA)</span>
+                            <div className="flex justify-between text-slate-500 text-sm">
+                                <span>Dont TVA (inclus)</span>
                                 <span>{tax.toFixed(2)} €</span>
                             </div>
                         )}

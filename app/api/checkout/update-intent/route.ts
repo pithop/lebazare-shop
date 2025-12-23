@@ -96,22 +96,33 @@ export async function POST(req: Request) {
         }
 
         // 4. Exécution de l'algorithme de livraison
-        const { totalCost: shippingCostCents } = await calculateShipping(
+        let { totalCost: shippingCostCents } = await calculateShipping(
             formattedItems,
             shippingAddress.country
         );
 
-        // 5. Calcul des Taxes (Règle IOSS simplifiée)
-        // TVA 20% si destination FR et montant < 150€
+        // FREE SHIPPING THRESHOLD (200€)
+        const FREE_SHIPPING_THRESHOLD_CENTS = 20000;
         const productTotalCents = formattedItems.reduce((acc: number, item: any) => acc + (item.price * 100 * item.quantity), 0);
+
+        if (productTotalCents >= FREE_SHIPPING_THRESHOLD_CENTS) {
+            shippingCostCents = 0;
+        }
+
+        // 5. Calcul des Taxes (TVA incluse)
+        // Le prix du produit inclut déjà la TVA (20%).
+        // On calcule juste le montant de la TVA pour l'affichage (1/6 du prix TTC = 20% du HT)
+        // Si shipping est payant, la TVA s'applique aussi dessus.
 
         let taxCents = 0;
         if (shippingAddress.country === 'FR') {
-            // En théorie IOSS < 150€. Ici on simplifie : TVA toujours collectée pour FR
-            taxCents = Math.round((productTotalCents + shippingCostCents) * 0.20);
+            // Montant TVA = (Total TTC / 1.2) * 0.2  => Total TTC / 6
+            // On affiche la part de TVA contenue dans le total payé
+            taxCents = Math.round((productTotalCents + shippingCostCents) / 6);
         }
 
-        const finalTotalAmount = Math.round(productTotalCents + shippingCostCents + taxCents);
+        // LE TOTAL A PAYER EST JUSTE PRODUITS + LIVRAISON (TVA DEJA INCLUSE)
+        const finalTotalAmount = Math.round(productTotalCents + shippingCostCents);
 
         // 6. Mise à jour atomique du PaymentIntent
         await stripe.paymentIntents.update(paymentIntentId, {
@@ -128,13 +139,14 @@ export async function POST(req: Request) {
             },
             metadata: {
                 shipping_cost_cents: shippingCostCents,
-                tax_cents: taxCents,
+                tax_cents: taxCents, // Juste pour info
                 calculation_status: 'finalized',
                 // On stocke le breakdown pour l'admin
                 logistics_breakdown: JSON.stringify({
                     items_count: formattedItems.length,
                     shipping_cost: shippingCostCents,
-                    tax: taxCents
+                    tax_included: taxCents,
+                    free_shipping_applied: shippingCostCents === 0 && productTotalCents >= FREE_SHIPPING_THRESHOLD_CENTS
                 })
             }
         });
