@@ -26,7 +26,7 @@ Utilise le format Markdown pour tes réponses.`
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "model": "google/gemma-3-12b-it:free",
+                "model": "google/gemini-2.0-flash-lite-preview-02-05:free",
                 "messages": [
                     { "role": "system", "content": systemPrompt },
                     ...messages
@@ -37,7 +37,7 @@ Utilise le format Markdown pour tes réponses.`
         if (!response.ok) {
             const errorText = await response.text()
             console.error('OpenRouter API Error:', errorText)
-            return { error: `Erreur API: ${response.statusText}` }
+            return { error: `Erreur API: ${response.statusText} - ${errorText}` }
         }
 
         const data = await response.json()

@@ -1,9 +1,11 @@
 'use client'
 
 import { createProduct } from '@/actions/products'
+import { chatWithAI } from '@/actions/ai'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Sparkles } from 'lucide-react'
 
 import ProductVariantsForm, { Variant } from '@/components/admin/ProductVariantsForm'
 import MediaManager from '@/components/admin/MediaManager'
@@ -169,9 +171,29 @@ export default function NewProductPage() {
                             <h2 className="text-lg font-medium text-slate-900">Informations de base</h2>
 
                             <div>
-                                <label htmlFor="title" className="block text-sm font-medium text-slate-700 mb-1">
-                                    Titre du produit
-                                </label>
+                                <div className="flex justify-between items-center mb-1">
+                                    <label htmlFor="title" className="block text-sm font-medium text-slate-700">
+                                        Titre du produit
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            const category = (document.getElementById('category') as HTMLSelectElement).value;
+                                            const response = await chatWithAI([
+                                                { role: 'user', content: `Génère 3 titres accrocheurs pour un produit de la catégorie "${category}". Donne juste les titres séparés par des virgules.` }
+                                            ], 'Page Création Produit');
+                                            if (response.message) {
+                                                const titles = response.message.content.split(',').map((t: string) => t.trim());
+                                                const titleInput = document.getElementById('title') as HTMLInputElement;
+                                                if (titleInput && titles[0]) titleInput.value = titles[0].replace(/"/g, '');
+                                            }
+                                        }}
+                                        className="text-xs text-purple-600 hover:text-purple-800 flex items-center gap-1 font-medium"
+                                    >
+                                        <Sparkles className="w-3 h-3" />
+                                        Suggérer un titre
+                                    </button>
+                                </div>
                                 <input
                                     type="text"
                                     id="title"
@@ -183,9 +205,33 @@ export default function NewProductPage() {
                             </div>
 
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-slate-700 mb-1">
-                                    Description
-                                </label>
+                                <div className="flex justify-between items-center mb-1">
+                                    <label htmlFor="description" className="block text-sm font-medium text-slate-700">
+                                        Description
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            const title = (document.getElementById('title') as HTMLInputElement).value;
+                                            const category = (document.getElementById('category') as HTMLSelectElement).value;
+                                            if (!title) {
+                                                alert('Veuillez d\'abord entrer un titre.');
+                                                return;
+                                            }
+                                            const response = await chatWithAI([
+                                                { role: 'user', content: `Rédige une description commerciale et SEO pour le produit "${title}" dans la catégorie "${category}". Utilise un ton chaleureux et professionnel. Format Markdown.` }
+                                            ], 'Page Création Produit');
+                                            if (response.message) {
+                                                const descInput = document.getElementById('description') as HTMLTextAreaElement;
+                                                if (descInput) descInput.value = response.message.content;
+                                            }
+                                        }}
+                                        className="text-xs text-purple-600 hover:text-purple-800 flex items-center gap-1 font-medium"
+                                    >
+                                        <Sparkles className="w-3 h-3" />
+                                        Générer avec l'IA
+                                    </button>
+                                </div>
                                 <textarea
                                     id="description"
                                     name="description"
