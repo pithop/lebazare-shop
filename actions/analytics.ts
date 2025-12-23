@@ -1,9 +1,9 @@
 'use server'
 
-import { createClient } from '@/lib/supabase-server'
+import { createAdminClient } from '@/lib/supabase-admin'
 
 export async function getDashboardStats() {
-    const supabase = createClient()
+    const supabase = createAdminClient()
 
     // 1. Total Revenue & Orders Count
     const { data: orders, error: ordersError } = await supabase

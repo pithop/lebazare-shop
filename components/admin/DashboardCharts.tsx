@@ -1,21 +1,12 @@
-'use client'
+interface DashboardStats {
+    totalRevenue: number
+    totalOrders: number
+    chartData: { date: string; amount: number }[]
+    topProducts: { title: string; count: number; image: string }[]
+}
 
-import { useEffect, useState } from 'react'
-import { getDashboardStats } from '@/actions/analytics'
-
-export default function DashboardCharts() {
-    const [stats, setStats] = useState<any>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        getDashboardStats().then(data => {
-            setStats(data)
-            setLoading(false)
-        })
-    }, [])
-
-    if (loading) return <div className="animate-pulse h-64 bg-slate-100 rounded-xl"></div>
-    if (!stats) return <div className="text-red-500">Erreur de chargement des statistiques</div>
+export default function DashboardCharts({ stats }: { stats: DashboardStats }) {
+    if (!stats) return <div className="text-red-500">Données non disponibles</div>
 
     // Helper for Line Chart
     const maxAmount = Math.max(...stats.chartData.map((d: any) => d.amount), 100)
@@ -29,17 +20,17 @@ export default function DashboardCharts() {
         <div className="space-y-8">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                    <h3 className="text-slate-500 text-sm font-medium uppercase mb-2">Chiffre d'affaires</h3>
-                    <p className="text-3xl font-serif text-slate-800">{stats.totalRevenue.toFixed(2)} €</p>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32">
+                    <h3 className="text-slate-500 text-xs font-bold uppercase tracking-wider">Chiffre d'affaires</h3>
+                    <p className="text-3xl font-serif text-slate-900">{stats.totalRevenue.toFixed(2)} €</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                    <h3 className="text-slate-500 text-sm font-medium uppercase mb-2">Commandes Totales</h3>
-                    <p className="text-3xl font-serif text-slate-800">{stats.totalOrders}</p>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32">
+                    <h3 className="text-slate-500 text-xs font-bold uppercase tracking-wider">Commandes</h3>
+                    <p className="text-3xl font-serif text-slate-900">{stats.totalOrders}</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                    <h3 className="text-slate-500 text-sm font-medium uppercase mb-2">Panier Moyen</h3>
-                    <p className="text-3xl font-serif text-slate-800">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col justify-between h-32">
+                    <h3 className="text-slate-500 text-xs font-bold uppercase tracking-wider">Panier Moyen</h3>
+                    <p className="text-3xl font-serif text-slate-900">
                         {(stats.totalOrders > 0 ? stats.totalRevenue / stats.totalOrders : 0).toFixed(2)} €
                     </p>
                 </div>
@@ -50,7 +41,7 @@ export default function DashboardCharts() {
                 <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                     <h3 className="text-lg font-medium text-slate-900 mb-6">Évolution du Chiffre d'affaires (30 jours)</h3>
                     <div className="h-64 w-full relative">
-                        {stats.chartData.length > 1 ? (
+                        {stats.chartData.length > 0 ? (
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full overflow-visible">
                                 {/* Grid lines */}
                                 <line x1="0" y1="0" x2="100" y2="0" stroke="#f1f5f9" strokeWidth="1" />
@@ -90,7 +81,7 @@ export default function DashboardCharts() {
                     <div className="space-y-6">
                         {stats.topProducts.map((product: any, idx: number) => (
                             <div key={idx} className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-stone-50 rounded-lg overflow-hidden relative flex-shrink-0">
+                                <div className="w-12 h-12 bg-stone-50 rounded-lg overflow-hidden relative flex-shrink-0 border border-slate-100">
                                     {product.image && (
                                         <img src={product.image} alt="" className="w-full h-full object-cover" />
                                     )}

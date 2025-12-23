@@ -15,7 +15,7 @@ export default function AdminLayout({
         <html lang="fr">
             <body className="bg-stone-50 min-h-screen flex">
                 {/* Sidebar */}
-                <aside className="w-64 bg-slate-900 text-white hidden md:flex flex-col">
+                <aside className="w-64 bg-slate-900 text-white flex flex-col">
                     <div className="p-6">
                         <h1 className="text-2xl font-serif font-bold text-sand">LeBazare</h1>
                         <p className="text-xs text-slate-400 uppercase tracking-wider mt-1">Admin</p>
