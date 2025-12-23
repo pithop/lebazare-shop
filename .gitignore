@@ -58,7 +58,6 @@ verify-enriched-data.ts
 *.sql
 supabase_migrations/20251222132100_logistics_overhaul.txt
 rapport_technique_logistique.md
-Supabase Snippet E‑commerce products & orders schema with RLS and storage.csv
 scripts/debug-product-rls.ts
 enriched_output.json
 etsy_listings_enriched.json
@@ -68,3 +67,4 @@ scripts/check-product-id.ts
 RAPPORT_CONTEXTE_PROJET.md
 logs_result.csv
 scripts/debug-product-variants.ts
+Supabase Snippet E‑commerce products & orders schema with RLS and storage.csv

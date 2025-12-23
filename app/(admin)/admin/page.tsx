@@ -1,15 +1,24 @@
 import DashboardCharts from '@/components/admin/DashboardCharts';
 import { createClient } from '@/lib/supabase-server';
+import { createAdminClient } from '@/lib/supabase-admin';
+import { redirect } from 'next/navigation';
 
 export default async function AdminDashboard() {
     const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect('/admin/login');
+    }
+
+    const adminClient = createAdminClient();
 
     // Fetch basic stats
-    const { count: orderCount } = await supabase.from('orders').select('*', { count: 'exact', head: true });
-    const { count: productCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
+    const { count: orderCount } = await adminClient.from('orders').select('*', { count: 'exact', head: true });
+    const { count: productCount } = await adminClient.from('products').select('*', { count: 'exact', head: true });
 
     // Calculate total revenue (approximate)
-    const { data: orders } = await supabase.from('orders').select('total').eq('status', 'paid');
+    const { data: orders } = await adminClient.from('orders').select('total').eq('status', 'paid');
     const totalRevenue = orders?.reduce((acc, order) => acc + order.total, 0) || 0;
 
     return (

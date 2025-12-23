@@ -1,14 +1,22 @@
 import { createClient } from '@/lib/supabase-server'
+import { createAdminClient } from '@/lib/supabase-admin'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import OrderStatusSelect from '@/components/admin/OrderStatusSelect'
 import OrderShippingForm from '@/components/admin/OrderShippingForm'
 
 export default async function OrderDetailPage({ params }: { params: { id: string } }) {
     const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    const { data: order, error } = await supabase
+    if (!user) {
+        redirect('/admin/login')
+    }
+
+    const adminClient = createAdminClient()
+
+    const { data: order, error } = await adminClient
         .from('orders')
         .select(`
       *,

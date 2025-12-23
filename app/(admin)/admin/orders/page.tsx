@@ -1,10 +1,19 @@
 import { createClient } from '@/lib/supabase-server'
+import { createAdminClient } from '@/lib/supabase-admin'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Order } from '@/lib/types'
 
 export default async function AdminOrdersPage() {
     const supabase = createClient()
-    const { data: orders, error } = await supabase
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+        redirect('/admin/login')
+    }
+
+    const adminClient = createAdminClient()
+    const { data: orders, error } = await adminClient
         .from('orders')
         .select('*')
         .order('created_at', { ascending: false })
@@ -46,8 +55,8 @@ export default async function AdminOrdersPage() {
                                 </td>
                                 <td className="px-6 py-4">
                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${order.status === 'paid' ? 'bg-green-100 text-green-700' :
-                                            order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                                'bg-slate-100 text-slate-700'
+                                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                            'bg-slate-100 text-slate-700'
                                         }`}>
                                         {order.status === 'paid' ? 'Payé' :
                                             order.status === 'pending' ? 'En attente' : order.status}
