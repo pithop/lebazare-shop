@@ -26,7 +26,7 @@ Utilise le format Markdown pour tes réponses.`
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "model": "google/gemini-2.0-flash-lite-preview-02-05:free",
+                "model": "google/gemma-3-12b-it:free",
                 "messages": [
                     { "role": "system", "content": systemPrompt },
                     ...messages
