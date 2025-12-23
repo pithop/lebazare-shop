@@ -2,7 +2,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-export async function createOrder(customerDetails: any, items: any[], total: number) {
+export async function createOrder(customerDetails: any, items: any[], total: number, shippingTotalCents: number = 0, taxTotalCents: number = 0) {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
         console.error('SUPABASE_SERVICE_ROLE_KEY is missing')
         return { success: false, message: 'Configuration error: Service Role Key missing' }
@@ -19,6 +19,8 @@ export async function createOrder(customerDetails: any, items: any[], total: num
         .from('orders')
         .insert({
             total,
+            shipping_total_cents: shippingTotalCents,
+            tax_total_cents: taxTotalCents,
             status: 'pending', // In a real app, this would be 'pending_payment' then 'paid'
             customer_details: customerDetails
         })

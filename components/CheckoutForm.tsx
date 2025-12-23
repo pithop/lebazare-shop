@@ -9,10 +9,22 @@ import {
 import { useCart } from '@/context/CartContext'
 import { createOrder } from '@/actions/orders'
 
-export default function CheckoutForm({ customerDetails, clientSecret }: { customerDetails: any, clientSecret: string }) {
+export default function CheckoutForm({
+    customerDetails,
+    clientSecret,
+    amount,
+    shippingCost,
+    tax
+}: {
+    customerDetails: any,
+    clientSecret: string,
+    amount: number,
+    shippingCost: number,
+    tax: number
+}) {
     const stripe = useStripe()
     const elements = useElements()
-    const { items, cartTotal, clearCart } = useCart()
+    const { items, clearCart } = useCart()
 
     const [message, setMessage] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -65,10 +77,16 @@ export default function CheckoutForm({ customerDetails, clientSecret }: { custom
                 price: item.price
             }))
 
-            const orderResult = await createOrder(customerDetails, orderItems, cartTotal)
+            const orderResult = await createOrder(
+                customerDetails,
+                orderItems,
+                amount,
+                Math.round(shippingCost * 100), // Convert to cents
+                Math.round(tax * 100) // Convert to cents
+            )
 
             if (!orderResult.success) {
-                throw new Error(orderResult.message || 'Erreur lors de la création de la commande.')
+                throw new Error(orderResult.message || 'Erreur lors du traitement de la commande.')
             }
 
             // 2. Update PaymentIntent with Order ID
@@ -119,7 +137,7 @@ export default function CheckoutForm({ customerDetails, clientSecret }: { custom
                 className="w-full bg-slate-900 text-white py-4 rounded-lg font-medium hover:bg-slate-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
             >
                 <span id="button-text">
-                    {isLoading ? <div className="spinner" id="spinner">Traitement...</div> : `Payer ${cartTotal.toFixed(2)} €`}
+                    {isLoading ? <div className="spinner" id="spinner">Traitement...</div> : `Payer ${amount.toFixed(2)} €`}
                 </span>
             </button>
 

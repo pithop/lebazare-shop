@@ -75,9 +75,27 @@ export default async function OrderDetailPage({ params }: { params: { id: string
                                 </div>
                             ))}
                         </div>
-                        <div className="border-t border-slate-100 mt-4 pt-4 flex justify-between items-center">
-                            <span className="font-medium text-slate-700">Total</span>
-                            <span className="text-xl font-bold text-slate-900">{order.total.toFixed(2)} €</span>
+                        <div className="border-t border-slate-100 mt-4 pt-4 space-y-2">
+                            <div className="flex justify-between text-slate-600">
+                                <span>Sous-total</span>
+                                <span>{(order.total - (order.shipping_total_cents || 0) / 100).toFixed(2)} €</span>
+                            </div>
+                            <div className="flex justify-between text-slate-600">
+                                <span>Livraison</span>
+                                <span className={order.shipping_total_cents === 0 ? "text-green-600 font-medium" : ""}>
+                                    {order.shipping_total_cents ? (order.shipping_total_cents / 100).toFixed(2) + ' €' : 'Gratuit'}
+                                </span>
+                            </div>
+                            {order.tax_total_cents > 0 && (
+                                <div className="flex justify-between text-slate-500 text-sm">
+                                    <span>Dont TVA (inclus)</span>
+                                    <span>{(order.tax_total_cents / 100).toFixed(2)} €</span>
+                                </div>
+                            )}
+                            <div className="flex justify-between items-center pt-2 border-t border-slate-100 mt-2">
+                                <span className="font-medium text-slate-700">Total</span>
+                                <span className="text-xl font-bold text-slate-900">{order.total.toFixed(2)} €</span>
+                            </div>
                         </div>
                     </div>
 
