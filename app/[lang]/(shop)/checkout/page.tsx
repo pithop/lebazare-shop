@@ -91,7 +91,6 @@ export default function CheckoutPage() {
                 setShippingCost(data.shippingCost / 100) // Convert cents to Euro
                 setTax(data.tax / 100)
                 setTotalAmount(data.newAmount / 100)
-                console.log("Shipping calculated successfully:", data);
                 return true
             } else {
                 // Handle specific "Product not found" error
@@ -118,14 +117,13 @@ export default function CheckoutPage() {
 
     const handleDetailsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const form = e.currentTarget // Capture form before await
 
         // Calculate shipping before proceeding
-        console.log("Submitting details, calculating shipping...");
         const success = await calculateShipping()
-        console.log("Shipping calculation result:", success);
         if (!success) return
 
-        const formData = new FormData(e.currentTarget)
+        const formData = new FormData(form)
         const details = {
             email: formData.get('email'),
             firstName: formData.get('firstName'),
@@ -135,7 +133,6 @@ export default function CheckoutPage() {
             postalCode: addressForm.postalCode,
             country: addressForm.country,
         }
-        console.log("Setting customer details and moving to payment step:", details);
         setCustomerDetails(details)
         setStep('payment')
     }
