@@ -17,6 +17,19 @@ Réponds de manière professionnelle, concise et utile. Si tu dois générer du 
 Utilise le format Markdown pour tes réponses.`
 
     try {
+        // Some models (like Gemma 3) don't support the 'system' role.
+        // We prepend the system prompt to the first message instead.
+        const combinedMessages = [...messages];
+        if (combinedMessages.length > 0) {
+            combinedMessages[0] = {
+                ...combinedMessages[0],
+                content: `${systemPrompt}\n\n---\n\n${combinedMessages[0].content}`
+            };
+        } else {
+            // Fallback if no messages provided (shouldn't happen)
+            combinedMessages.push({ role: 'user', content: systemPrompt });
+        }
+
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -27,10 +40,7 @@ Utilise le format Markdown pour tes réponses.`
             },
             body: JSON.stringify({
                 "model": "google/gemma-3-12b-it:free",
-                "messages": [
-                    { "role": "system", "content": systemPrompt },
-                    ...messages
-                ]
+                "messages": combinedMessages
             })
         });
 
