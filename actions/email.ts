@@ -2,11 +2,13 @@
 
 import { createClient } from '@supabase/supabase-js'
 import React from 'react'
-import { renderToStream } from '@react-pdf/renderer'
-import { renderToStaticMarkup } from 'react-dom/server'
-import { OrderReceipt } from '@/components/emails/OrderReceipt'
-import { OrderInvoice } from '@/components/pdf/OrderInvoice'
 import { sendEmail } from '@/lib/email'
+
+// Dynamic imports are used inside the function to avoid build issues with server-only modules
+// import { renderToStream } from '@react-pdf/renderer'
+// import { renderToStaticMarkup } from 'react-dom/server'
+// import { OrderReceipt } from '@/components/emails/OrderReceipt'
+// import { OrderInvoice } from '@/components/pdf/OrderInvoice'
 
 export async function sendOrderConfirmation(orderId: string) {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -57,15 +59,21 @@ export async function sendOrderConfirmation(orderId: string) {
             shipping_details: order.customer_details.shipping_details || order.customer_details // Handle structure
         }
 
-        // 4. Generate PDF
+        // 4. Generate PDF & Email HTML
+        // Dynamically import libraries and components to prevent build errors
+        const { renderToStream } = await import('@react-pdf/renderer');
+        const { renderToStaticMarkup } = await import('react-dom/server');
+        const { OrderInvoice } = await import('@/components/pdf/OrderInvoice');
+        const { OrderReceipt } = await import('@/components/emails/OrderReceipt');
+
         const pdfStream = await renderToStream(
-            React.createElement(OrderInvoice, { order: fullOrder, products: products || [] })
+            React.createElement(OrderInvoice, { order: fullOrder, products: products || [] }) as any
         )
 
         // Convert stream to buffer
-        const chunks: Uint8Array[] = []
+        const chunks: any[] = []
         for await (const chunk of pdfStream) {
-            chunks.push(chunk)
+            chunks.push(Buffer.from(chunk))
         }
         const pdfBuffer = Buffer.concat(chunks)
 
