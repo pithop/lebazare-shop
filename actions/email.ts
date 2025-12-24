@@ -53,10 +53,32 @@ export async function sendOrderConfirmation(orderId: string) {
             .in('id', productIds)
 
         // Construct full order object
+        // Construct full order object
+        // Parse customer_details if it's a string (handles potential legacy data or text column type)
+        let customerDetails = order.customer_details;
+        if (typeof customerDetails === 'string') {
+            try {
+                customerDetails = JSON.parse(customerDetails);
+            } catch (e) {
+                console.error('Failed to parse customer_details:', e);
+            }
+        }
+
+        // Map flat DB structure to nested structure expected by components
+        const shippingAddress = {
+            line1: customerDetails.address || '',
+            city: customerDetails.city || '',
+            postal_code: customerDetails.postalCode || '',
+            country: customerDetails.country || '',
+        };
+
         const fullOrder = {
             ...order,
+            customer_details: customerDetails, // Ensure we use the parsed object
             items: items,
-            shipping_details: order.customer_details.shipping_details || order.customer_details // Handle structure
+            shipping_details: {
+                address: shippingAddress
+            }
         }
 
         // 4. Generate PDF & Email HTML
