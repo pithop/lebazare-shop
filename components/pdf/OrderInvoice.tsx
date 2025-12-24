@@ -209,6 +209,14 @@ export const OrderInvoice: React.FC<OrderInvoiceProps> = ({ order, products }) =
                     </View>
                     {items.map((item, index) => {
                         const product = products.find(p => p.id === item.product_id);
+                        // Handle both array of strings (DB) and Shopify-style object (Frontend types)
+                        let image = '';
+                        if (Array.isArray(product?.images)) {
+                            image = product.images[0];
+                        } else {
+                            image = product?.images?.edges?.[0]?.node?.url || '';
+                        }
+
                         return (
                             <View key={index} style={styles.tableRow}>
                                 <Text style={styles.colProduct}>{product?.title || 'Produit'}</Text>
