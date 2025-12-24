@@ -1,8 +1,12 @@
 'use server'
 
+import { headers } from 'next/headers'
+
 export async function chatWithAI(messages: any[], context: string) {
     const apiKey = process.env.OPENROUTER_API_KEY
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    const headersList = headers()
+    const origin = headersList.get('origin') || headersList.get('host')
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (origin ? `https://${origin}` : 'https://www.lebazare.fr')
 
     if (!apiKey) {
         return { error: 'Clé API OpenRouter manquante. Veuillez configurer OPENROUTER_API_KEY.' }
@@ -18,15 +22,25 @@ Utilise le format Markdown pour tes réponses.`
 
     try {
         // Some models (like Gemma 3) don't support the 'system' role.
-        // We prepend the system prompt to the first message instead.
-        const combinedMessages = [...messages];
+        // We inject the system prompt into the conversation history.
+        let combinedMessages = [...messages];
+
         if (combinedMessages.length > 0) {
-            combinedMessages[0] = {
-                ...combinedMessages[0],
-                content: `${systemPrompt}\n\n---\n\n${combinedMessages[0].content}`
-            };
+            if (combinedMessages[0].role === 'user') {
+                // If first message is user, prepend system prompt to it
+                combinedMessages[0] = {
+                    ...combinedMessages[0],
+                    content: `${systemPrompt}\n\n---\n\n${combinedMessages[0].content}`
+                };
+            } else {
+                // If first message is assistant (or other), insert a user message with system prompt before it
+                combinedMessages = [
+                    { role: 'user', content: systemPrompt },
+                    ...combinedMessages
+                ];
+            }
         } else {
-            // Fallback if no messages provided (shouldn't happen)
+            // Fallback if no messages provided
             combinedMessages.push({ role: 'user', content: systemPrompt });
         }
 
