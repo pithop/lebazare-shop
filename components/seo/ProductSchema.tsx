@@ -25,7 +25,7 @@ export const ProductSchema: React.FC<ProductSchemaProps> = ({ product, shipping 
         "name": product.name,
         "image": product.images,
         "description": product.description,
-        "sku": product.sku,
+        "sku": product.sku || `SKU-${product.name.replace(/\s+/g, '-').toUpperCase()}`,
         "brand": {
             "@type": "Brand",
             "name": product.brand || "Lebazare Artisanat"
@@ -69,7 +69,8 @@ export const ProductSchema: React.FC<ProductSchemaProps> = ({ product, shipping 
                 "applicableCountry": "FR",
                 "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
                 "merchantReturnDays": 14,
-                "returnMethod": "https://schema.org/ReturnByMail"
+                "returnMethod": "https://schema.org/ReturnByMail",
+                "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
             }
         }
     };
