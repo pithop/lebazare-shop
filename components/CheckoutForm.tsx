@@ -107,10 +107,26 @@ export default function CheckoutForm({
             // 3. Confirm Payment
             const { error } = await stripe.confirmPayment({
                 elements,
-                confirmParams: {
-                    return_url: `${window.location.origin}/checkout/success?orderId=${orderResult.orderId}`,
-                },
+                redirect: 'if_required' // We handle redirection manually to ensure email is sent
             })
+
+            if (error) {
+                if (error.type === 'card_error' || error.type === 'validation_error') {
+                    throw new Error(error.message || 'Une erreur est survenue')
+                } else {
+                    throw new Error('Une erreur inattendue est survenue.')
+                }
+            } else {
+                // Payment succeeded!
+
+                // 4. Send Confirmation Email (Async)
+                // We import dynamically to avoid server-side code in client bundle issues if any
+                const { sendOrderConfirmation } = await import('@/actions/email');
+                await sendOrderConfirmation(orderResult.orderId);
+
+                // 5. Redirect to Success Page
+                window.location.href = `${window.location.origin}/checkout/success?orderId=${orderResult.orderId}`;
+            }
 
             if (error) {
                 if (error.type === 'card_error' || error.type === 'validation_error') {

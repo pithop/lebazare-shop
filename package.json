@@ -13,6 +13,7 @@
     "@formatjs/intl-localematcher": "^0.7.2",
     "@google/generative-ai": "^0.24.1",
     "@microsoft/clarity": "^1.0.2",
+    "@react-pdf/renderer": "^4.3.1",
     "@shopify/app-bridge": "^3.7.9",
     "@stripe/react-stripe-js": "^5.4.1",
     "@stripe/stripe-js": "^8.6.0",

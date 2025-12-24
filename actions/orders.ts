@@ -53,41 +53,7 @@ export async function createOrder(customerDetails: any, items: any[], total: num
     }
 
     // 3. Send Email
-    try {
-        // Fetch product details for the email
-        const productIds = items.map(i => i.product_id);
-        const { data: products } = await supabase
-            .from('products')
-            .select('id, title, images')
-            .in('id', productIds);
-
-        // Construct full order object for the template
-        // We ensure shipping_details is present (it's part of customerDetails in our schema)
-        const fullOrder = {
-            ...order,
-            items: orderItems,
-            shipping_details: customerDetails.shipping_details || customerDetails // Handle potential structure diffs
-        };
-
-        const { renderToStaticMarkup } = await import('react-dom/server');
-        const { OrderReceipt } = await import('@/components/emails/OrderReceipt');
-        const { sendEmail } = await import('@/lib/email');
-
-        const emailHtml = renderToStaticMarkup(
-            React.createElement(OrderReceipt, { order: fullOrder, products: products || [] })
-        );
-
-        await sendEmail({
-            to: customerDetails.email,
-            subject: `Confirmation de commande #${order.id.slice(0, 8)} - LeBazare`,
-            html: emailHtml,
-            cc: ['chahidriss01@gmail.com', 'hatimchah2@gmail.com']
-        });
-
-    } catch (emailError) {
-        console.error('Failed to send email:', emailError);
-        // Don't fail the order if email fails
-    }
+    // Email is now sent post-payment in actions/email.ts
 
     return { success: true, orderId: order.id }
 }

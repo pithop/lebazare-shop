@@ -13,11 +13,13 @@ export async function sendEmail({
     subject,
     html,
     cc,
+    attachments,
 }: {
     to: string;
     subject: string;
     html: string;
     cc?: string[];
+    attachments?: { filename: string; content: Buffer | string }[];
 }) {
     try {
         const mailOptions = {
@@ -26,6 +28,7 @@ export async function sendEmail({
             cc,
             subject,
             html,
+            attachments,
         };
 
         const info = await transporter.sendMail(mailOptions);
