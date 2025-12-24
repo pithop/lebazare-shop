@@ -109,7 +109,7 @@ export async function sendOrderConfirmation(orderId: string) {
             to: order.customer_details.email,
             subject: `Confirmation de commande #${order.id.slice(0, 8)} - LeBazare`,
             html: emailHtml,
-            cc: ['chahidriss01@gmail.com', 'hatimchah2@gmail.com'],
+            cc: ['chahidriss01@gmail.com'],
             attachments: [
                 {
                     filename: `Facture-${order.id.slice(0, 8)}.pdf`,
