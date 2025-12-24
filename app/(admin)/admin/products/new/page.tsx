@@ -247,12 +247,76 @@ export default function NewProductPage() {
 
                         {/* SEO & Internationalization Card */}
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 space-y-6">
-                            <h2 className="text-lg font-medium text-slate-900">SEO & Internationalisation</h2>
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-lg font-medium text-slate-900">SEO & Internationalisation</h2>
+                                <button
+                                    type="button"
+                                    onClick={async () => {
+                                        const title = (document.getElementById('title') as HTMLInputElement).value;
+                                        const description = (document.getElementById('description') as HTMLTextAreaElement).value;
+
+                                        if (!title || !description) {
+                                            alert('Veuillez remplir le titre et la description en français d\'abord.');
+                                            return;
+                                        }
+
+                                        const response = await chatWithAI([
+                                            { role: 'user', content: `Traduis le titre et la description suivants en anglais pour une boutique e-commerce. Retourne le résultat au format JSON strict: {"title_en": "...", "description_en": "..."}. \n\nTitre: ${title}\nDescription: ${description}` }
+                                        ], 'Page Création Produit');
+
+                                        if (response.message) {
+                                            try {
+                                                // Extract JSON from potential markdown code blocks
+                                                const jsonMatch = response.message.content.match(/\{[\s\S]*\}/);
+                                                const jsonString = jsonMatch ? jsonMatch[0] : response.message.content;
+                                                const data = JSON.parse(jsonString);
+
+                                                const titleEnInput = document.getElementById('title_en') as HTMLInputElement;
+                                                const descEnInput = document.getElementById('description_en') as HTMLTextAreaElement;
+
+                                                if (titleEnInput && data.title_en) titleEnInput.value = data.title_en;
+                                                if (descEnInput && data.description_en) descEnInput.value = data.description_en;
+                                            } catch (e) {
+                                                console.error("Erreur parsing JSON", e);
+                                                alert("Erreur lors de la traduction. Veuillez réessayer.");
+                                            }
+                                        }
+                                    }}
+                                    className="text-xs bg-purple-50 text-purple-700 hover:bg-purple-100 px-3 py-1.5 rounded-lg flex items-center gap-1 font-medium transition-colors"
+                                >
+                                    <Sparkles className="w-3 h-3" />
+                                    Tout traduire en Anglais
+                                </button>
+                            </div>
 
                             <div>
-                                <label htmlFor="seo_title" className="block text-sm font-medium text-slate-700 mb-1">
-                                    Titre SEO (Français)
-                                </label>
+                                <div className="flex justify-between items-center mb-1">
+                                    <label htmlFor="seo_title" className="block text-sm font-medium text-slate-700">
+                                        Titre SEO (Français)
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            const title = (document.getElementById('title') as HTMLInputElement).value;
+                                            const description = (document.getElementById('description') as HTMLTextAreaElement).value;
+                                            if (!title) {
+                                                alert('Veuillez d\'abord entrer un titre.');
+                                                return;
+                                            }
+                                            const response = await chatWithAI([
+                                                { role: 'user', content: `Génère un titre SEO optimisé (max 60 caractères) pour ce produit. Il doit être incitatif et contenir les mots-clés principaux. Retourne juste le titre sans guillemets.\n\nProduit: ${title}\nDescription: ${description}` }
+                                            ], 'Page Création Produit');
+                                            if (response.message) {
+                                                const seoTitleInput = document.getElementById('seo_title') as HTMLInputElement;
+                                                if (seoTitleInput) seoTitleInput.value = response.message.content.replace(/"/g, '');
+                                            }
+                                        }}
+                                        className="text-xs text-purple-600 hover:text-purple-800 flex items-center gap-1 font-medium"
+                                    >
+                                        <Sparkles className="w-3 h-3" />
+                                        Optimiser SEO
+                                    </button>
+                                </div>
                                 <input
                                     type="text"
                                     id="seo_title"
