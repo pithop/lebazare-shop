@@ -128,13 +128,7 @@ export default function CheckoutForm({
                 window.location.href = `${window.location.origin}/checkout/success?orderId=${orderResult.orderId}`;
             }
 
-            if (error) {
-                if (error.type === 'card_error' || error.type === 'validation_error') {
-                    throw new Error(error.message || 'Une erreur est survenue')
-                } else {
-                    throw new Error('Une erreur inattendue est survenue.')
-                }
-            }
+
         } catch (err: any) {
             console.error('Checkout error:', err)
             setMessage(err.message || 'Une erreur est survenue lors du paiement.')
