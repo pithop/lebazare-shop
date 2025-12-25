@@ -100,10 +100,15 @@ export async function getProductByHandle(handle: string): Promise<Product | null
     .from('products')
     .select('*, product_variants(*)')
     .eq('slug', handle)
-    .single();
+    .eq('slug', handle)
+    .maybeSingle();
 
-  if (error || !product) {
+  if (error) {
     console.error('Error fetching product by handle:', error);
+    return null;
+  }
+
+  if (!product) {
     return null;
   }
 
