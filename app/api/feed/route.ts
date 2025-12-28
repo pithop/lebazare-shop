@@ -31,6 +31,9 @@ ${products.map((product) => {
         const price = product.priceRange.minVariantPrice.amount;
         const currency = product.priceRange.minVariantPrice.currencyCode;
 
+        const weightKg = (product.weight_grams || 1000) / 1000;
+        const origin = product.origin_country || 'MA';
+
         return `
 <item>
 <g:id>${escapeXml(product.id)}</g:id>
@@ -43,6 +46,8 @@ ${products.map((product) => {
 <g:price>${price} ${currency}</g:price>
 <g:brand>LeBazare</g:brand>
 <g:google_product_category>Home &amp; Garden &gt; Decor</g:google_product_category>
+<g:shipping_label>${origin}</g:shipping_label>
+<g:shipping_weight>${weightKg} kg</g:shipping_weight>
 </item>`;
     }).join('')}
 </channel>
