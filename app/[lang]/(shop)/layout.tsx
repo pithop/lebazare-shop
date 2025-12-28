@@ -47,7 +47,6 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       images: ['/og-image.jpg'],
     },
     alternates: {
-      canonical: `/${params.lang}`,
       languages: {
         'fr': '/fr',
         'en': '/en',

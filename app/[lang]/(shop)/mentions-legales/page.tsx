@@ -1,7 +1,12 @@
-export const metadata = {
-    title: 'Mentions Légales - LeBazare',
-    description: 'Mentions Légales du site LeBazare',
-};
+export async function generateMetadata({ params }: { params: { lang: string } }) {
+    return {
+        title: 'Mentions Légales - LeBazare',
+        description: 'Mentions Légales du site LeBazare',
+        alternates: {
+            canonical: `/${params.lang}/mentions-legales`,
+        },
+    };
+}
 
 export default function MentionsLegalesPage() {
     return (

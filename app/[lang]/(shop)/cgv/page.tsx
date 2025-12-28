@@ -1,7 +1,12 @@
-export const metadata = {
-    title: 'Conditions Générales de Vente - LeBazare',
-    description: 'Conditions Générales de Vente de la boutique LeBazare',
-};
+export async function generateMetadata({ params }: { params: { lang: string } }) {
+    return {
+        title: 'Conditions Générales de Vente - LeBazare',
+        description: 'Conditions Générales de Vente de la boutique LeBazare',
+        alternates: {
+            canonical: `/${params.lang}/cgv`,
+        },
+    };
+}
 
 export default function CGVPage() {
     return (

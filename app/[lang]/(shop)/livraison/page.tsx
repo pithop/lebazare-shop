@@ -1,7 +1,12 @@
-export const metadata = {
-    title: 'Livraison & Retours - LeBazare',
-    description: 'Informations sur la livraison et les retours chez LeBazare',
-};
+export async function generateMetadata({ params }: { params: { lang: string } }) {
+    return {
+        title: 'Livraison & Retours - LeBazare',
+        description: 'Informations sur la livraison et les retours chez LeBazare',
+        alternates: {
+            canonical: `/${params.lang}/livraison`,
+        },
+    };
+}
 
 export default function LivraisonPage() {
     return (

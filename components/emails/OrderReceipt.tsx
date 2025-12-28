@@ -35,26 +35,45 @@ export const OrderReceipt: React.FC<OrderReceiptProps> = ({ order, products }) =
     const shipping = (shipping_total_cents || 0) / 100;
     const tax = (tax_total_cents || 0) / 100;
 
+    // Premium Design Tokens
+    const colors = {
+        background: '#F9F5F0', // Beige/Off-white
+        surface: '#FFFFFF',
+        primary: '#C86B48', // Terracotta
+        text: '#1A1A1A', // Dark Text
+        textSecondary: '#6B7280',
+        border: '#E5E7EB',
+    };
+
+    const fonts = {
+        serif: "'Playfair Display', Georgia, serif",
+        sans: "'Inter', Helvetica, Arial, sans-serif",
+    };
+
     return (
-        <div style={{ fontFamily: 'Helvetica, Arial, sans-serif', backgroundColor: '#f9fafb', padding: '40px 0', color: '#1f2937' }}>
-            <div style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: '#ffffff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+        <div style={{ fontFamily: fonts.sans, backgroundColor: colors.background, padding: '40px 0', color: colors.text, lineHeight: '1.6' }}>
+            <div style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: colors.surface, borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05)' }}>
+
                 {/* Header */}
-                <div style={{ backgroundColor: '#111827', padding: '32px', textAlign: 'center' }}>
-                    <h1 style={{ color: '#ffffff', margin: '0', fontSize: '24px', fontWeight: '300', letterSpacing: '1px', fontFamily: 'Georgia, serif' }}>LeBazare</h1>
+                <div style={{ padding: '48px 40px', textAlign: 'center', borderBottom: `1px solid ${colors.border}` }}>
+                    <h1 style={{ color: colors.primary, margin: '0', fontSize: '32px', fontWeight: '400', letterSpacing: '-0.5px', fontFamily: fonts.serif }}>LeBazare</h1>
+                    <p style={{ margin: '16px 0 0 0', fontSize: '14px', color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '1px' }}>Confirmation de commande</p>
                 </div>
 
                 {/* Body */}
-                <div style={{ padding: '32px' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                        <h2 style={{ fontSize: '20px', fontWeight: '600', margin: '0 0 8px 0', color: '#111827' }}>Merci pour votre commande !</h2>
-                        <p style={{ fontSize: '14px', color: '#6b7280', margin: '0' }}>Thank you for your order!</p>
-                        <p style={{ marginTop: '16px', fontSize: '16px', color: '#374151' }}>
-                            Commande <span style={{ fontWeight: 'bold' }}>#{order.id.slice(0, 8)}</span>
+                <div style={{ padding: '40px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                        <h2 style={{ fontSize: '24px', fontWeight: '400', margin: '0 0 16px 0', color: colors.text, fontFamily: fonts.serif }}>Merci, {customer_details.firstName} !</h2>
+                        <p style={{ fontSize: '16px', color: colors.textSecondary, margin: '0' }}>
+                            Nous avons bien reçu votre commande.
                         </p>
+                        <div style={{ marginTop: '24px', display: 'inline-block', padding: '8px 16px', backgroundColor: colors.background, borderRadius: '4px', fontSize: '14px', color: colors.text }}>
+                            Commande <span style={{ fontWeight: '600', color: colors.primary }}>#{order.id.slice(0, 8)}</span>
+                        </div>
                     </div>
 
                     {/* Items */}
-                    <div style={{ borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb', padding: '24px 0' }}>
+                    <div style={{ marginBottom: '32px' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <tbody>
                                 {items.map((item, index) => {
@@ -62,17 +81,17 @@ export const OrderReceipt: React.FC<OrderReceiptProps> = ({ order, products }) =
                                     const image = product?.images?.edges?.[0]?.node?.url || '';
 
                                     return (
-                                        <tr key={index} style={{ borderBottom: index !== items.length - 1 ? '1px solid #f3f4f6' : 'none' }}>
-                                            <td style={{ padding: '12px 0', width: '60px' }}>
+                                        <tr key={index} style={{ borderBottom: `1px solid ${colors.border}` }}>
+                                            <td style={{ padding: '20px 0', width: '80px' }}>
                                                 {image && (
-                                                    <img src={image} alt={item.product_id} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px', backgroundColor: '#f3f4f6' }} />
+                                                    <img src={image} alt={product?.title} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '4px', backgroundColor: colors.background }} />
                                                 )}
                                             </td>
-                                            <td style={{ padding: '12px 16px' }}>
-                                                <p style={{ margin: '0', fontWeight: '500', fontSize: '14px', color: '#111827' }}>{product?.title || 'Produit'}</p>
-                                                <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#6b7280' }}>Qté: {item.quantity}</p>
+                                            <td style={{ padding: '20px 16px', verticalAlign: 'middle' }}>
+                                                <p style={{ margin: '0', fontWeight: '500', fontSize: '15px', color: colors.text, fontFamily: fonts.serif }}>{product?.title || 'Produit'}</p>
+                                                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: colors.textSecondary }}>Qté: {item.quantity}</p>
                                             </td>
-                                            <td style={{ padding: '12px 0', textAlign: 'right', fontSize: '14px', fontWeight: '500', color: '#111827' }}>
+                                            <td style={{ padding: '20px 0', textAlign: 'right', verticalAlign: 'middle', fontSize: '15px', fontWeight: '500', color: colors.text }}>
                                                 {formatPrice(item.price * item.quantity)}
                                             </td>
                                         </tr>
@@ -83,50 +102,53 @@ export const OrderReceipt: React.FC<OrderReceiptProps> = ({ order, products }) =
                     </div>
 
                     {/* Totals */}
-                    <div style={{ padding: '24px 0' }}>
+                    <div style={{ paddingBottom: '32px', borderBottom: `1px solid ${colors.border}` }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <tbody>
                                 <tr>
-                                    <td style={{ padding: '4px 0', color: '#6b7280', fontSize: '14px' }}>Sous-total / Subtotal</td>
-                                    <td style={{ padding: '4px 0', textAlign: 'right', color: '#374151', fontSize: '14px' }}>{formatPrice(subtotal)}</td>
+                                    <td style={{ padding: '6px 0', color: colors.textSecondary, fontSize: '14px' }}>Sous-total</td>
+                                    <td style={{ padding: '6px 0', textAlign: 'right', color: colors.text, fontSize: '14px' }}>{formatPrice(subtotal)}</td>
                                 </tr>
                                 <tr>
-                                    <td style={{ padding: '4px 0', color: '#6b7280', fontSize: '14px' }}>Livraison / Shipping</td>
-                                    <td style={{ padding: '4px 0', textAlign: 'right', color: '#374151', fontSize: '14px' }}>
+                                    <td style={{ padding: '6px 0', color: colors.textSecondary, fontSize: '14px' }}>Livraison</td>
+                                    <td style={{ padding: '6px 0', textAlign: 'right', color: colors.text, fontSize: '14px' }}>
                                         {shipping === 0 ? 'Offerte' : formatPrice(shipping)}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style={{ padding: '4px 0', color: '#9ca3af', fontSize: '12px' }}>Dont TVA / VAT included</td>
-                                    <td style={{ padding: '4px 0', textAlign: 'right', color: '#9ca3af', fontSize: '12px' }}>{formatPrice(tax)}</td>
+                                    <td style={{ padding: '6px 0', color: '#9CA3AF', fontSize: '12px' }}>Dont TVA</td>
+                                    <td style={{ padding: '6px 0', textAlign: 'right', color: '#9CA3AF', fontSize: '12px' }}>{formatPrice(tax)}</td>
                                 </tr>
-                                <tr style={{ borderTop: '1px solid #e5e7eb' }}>
-                                    <td style={{ padding: '16px 0 0 0', fontWeight: '700', fontSize: '16px', color: '#111827' }}>Total</td>
-                                    <td style={{ padding: '16px 0 0 0', textAlign: 'right', fontWeight: '700', fontSize: '16px', color: '#111827' }}>{formatPrice(total)}</td>
+                                <tr>
+                                    <td style={{ padding: '20px 0 0 0', fontWeight: '400', fontSize: '18px', color: colors.text, fontFamily: fonts.serif }}>Total</td>
+                                    <td style={{ padding: '20px 0 0 0', textAlign: 'right', fontWeight: '600', fontSize: '20px', color: colors.primary, fontFamily: fonts.serif }}>{formatPrice(total)}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     {/* Customer Info */}
-                    <div style={{ backgroundColor: '#f9fafb', padding: '24px', borderRadius: '12px', marginTop: '8px' }}>
-                        <h3 style={{ fontSize: '14px', fontWeight: '600', margin: '0 0 12px 0', color: '#111827' }}>Informations de livraison</h3>
-                        <p style={{ margin: '0', fontSize: '14px', color: '#4b5563', lineHeight: '1.5' }}>
-                            {customer_details.firstName} {customer_details.lastName}<br />
-                            {shipping_details.address.line1}<br />
-                            {shipping_details.address.line2 && <>{shipping_details.address.line2}<br /></>}
-                            {shipping_details.address.postal_code} {shipping_details.address.city}<br />
-                            {shipping_details.address.country}
-                        </p>
+                    <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between' }}>
+                        <div style={{ width: '48%' }}>
+                            <h3 style={{ fontSize: '12px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px', margin: '0 0 12px 0', color: colors.textSecondary }}>Adresse de livraison</h3>
+                            <p style={{ margin: '0', fontSize: '14px', color: colors.text, lineHeight: '1.6' }}>
+                                {customer_details.firstName} {customer_details.lastName}<br />
+                                {shipping_details.address.line1}<br />
+                                {shipping_details.address.line2 && <>{shipping_details.address.line2}<br /></>}
+                                {shipping_details.address.postal_code} {shipping_details.address.city}<br />
+                                {shipping_details.address.country}
+                            </p>
+                        </div>
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div style={{ backgroundColor: '#f3f4f6', padding: '24px', textAlign: 'center', borderTop: '1px solid #e5e7eb' }}>
-                    <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: '#6b7280' }}>
-                        Une question ? Répondez à cet email ou contactez-nous à <a href="mailto:contact@lebazare.fr" style={{ color: '#111827', textDecoration: 'underline' }}>contact@lebazare.fr</a>
+                <div style={{ backgroundColor: colors.background, padding: '32px', textAlign: 'center' }}>
+                    <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: colors.textSecondary }}>
+                        Une question ? Contactez-nous à <a href="mailto:contact@lebazare.fr" style={{ color: colors.primary, textDecoration: 'none', fontWeight: '500' }}>contact@lebazare.fr</a>
                     </p>
-                    <p style={{ margin: '0', fontSize: '12px', color: '#9ca3af' }}>
+                    <div style={{ margin: '20px 0', height: '1px', backgroundColor: '#E5E7EB', width: '40px', display: 'inline-block' }}></div>
+                    <p style={{ margin: '0', fontSize: '12px', color: '#9CA3AF' }}>
                         © {new Date().getFullYear()} LeBazare. Tous droits réservés.
                     </p>
                 </div>

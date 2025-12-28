@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import AddToCartButton from './AddToCartButton';
 import { Product } from '@/lib/types';
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -9,46 +8,45 @@ export default function ProductCard({ product }: { product: Product }) {
   const price = priceRange.minVariantPrice;
 
   return (
-    <div className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-      <Link href={`/produits/${handle}`} className="block relative aspect-[4/5] overflow-hidden bg-stone-100">
+    <div className="group relative flex flex-col h-full">
+      <Link href={`/produits/${handle}`} className="block relative aspect-[3/4] overflow-hidden bg-stone-100 rounded-sm mb-4">
         {image ? (
           <Image
             src={image.url}
             alt={image.altText || title}
             fill
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-stone-300">
-            No Image
+          <div className="w-full h-full flex items-center justify-center text-stone-300 bg-stone-50">
+            <span className="font-serif italic">No Image</span>
           </div>
         )}
 
-        {/* Quick Action Overlay */}
-        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/50 to-transparent">
+        {/* Quick Action Overlay - Desktop */}
+        <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:block">
           <div className="flex justify-center">
-            <span className="bg-white text-dark-text px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:bg-terracotta hover:text-white transition-colors">
+            <span className="bg-white/90 backdrop-blur-sm text-dark-text px-6 py-3 rounded-full text-sm font-medium shadow-sm hover:bg-terracotta hover:text-white transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
               Voir le produit
             </span>
           </div>
         </div>
       </Link>
 
-      <div className="p-4">
-        <h3 className="text-lg font-serif font-medium text-dark-text mb-1 group-hover:text-terracotta transition-colors">
+      <div className="flex flex-col flex-grow">
+        <h3 className="text-lg font-serif text-dark-text mb-1 group-hover:text-terracotta transition-colors line-clamp-2 leading-tight">
           <Link href={`/produits/${handle}`}>
             {title}
           </Link>
         </h3>
-        <div className="flex items-center justify-between mt-2">
-          <p className="text-stone-600 font-medium">
+        <div className="mt-auto pt-2 flex items-center justify-between">
+          <p className="text-stone-600 font-medium font-sans text-sm tracking-wide">
             {parseFloat(price.amount).toLocaleString('fr-FR', {
               style: 'currency',
               currency: price.currencyCode,
             })}
           </p>
-          {/* We could add a mini add to cart here if needed, but keeping it clean for now */}
         </div>
       </div>
     </div>

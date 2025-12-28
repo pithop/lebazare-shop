@@ -1,7 +1,12 @@
-export const metadata = {
-  title: 'Contact - LeBazare',
-  description: 'Contactez-nous pour toute question sur nos créations artisanales',
-};
+export async function generateMetadata({ params }: { params: { lang: string } }) {
+  return {
+    title: 'Contact - LeBazare',
+    description: 'Contactez-nous pour toute question sur nos créations artisanales',
+    alternates: {
+      canonical: `/${params.lang}/contact`,
+    },
+  };
+}
 
 export default function ContactPage() {
   return (
@@ -65,7 +70,7 @@ export default function ContactPage() {
               <h2 className="font-serif text-2xl text-terracotta mb-6 text-center">
                 Questions Fréquentes
               </h2>
-              
+
               <div className="space-y-4">
                 <details className="bg-beige p-6 rounded-lg cursor-pointer">
                   <summary className="font-medium text-dark-text">

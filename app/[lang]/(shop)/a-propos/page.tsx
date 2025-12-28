@@ -1,9 +1,14 @@
 import Image from 'next/image';
 
-export const metadata = {
-  title: 'À Propos - LeBazare',
-  description: 'Découvrez l\'histoire de LeBazare et notre passion pour l\'artisanat',
-};
+export async function generateMetadata({ params }: { params: { lang: string } }) {
+  return {
+    title: 'À Propos - LeBazare',
+    description: 'Découvrez l\'histoire de LeBazare et notre passion pour l\'artisanat',
+    alternates: {
+      canonical: `/${params.lang}/a-propos`,
+    },
+  };
+}
 
 export default function AProposPage() {
   return (

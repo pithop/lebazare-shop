@@ -1,7 +1,12 @@
-export const metadata = {
-    title: 'FAQ - LeBazare',
-    description: 'Foire Aux Questions - LeBazare',
-};
+export async function generateMetadata({ params }: { params: { lang: string } }) {
+    return {
+        title: 'FAQ - LeBazare',
+        description: 'Foire Aux Questions - LeBazare',
+        alternates: {
+            canonical: `/${params.lang}/faq`,
+        },
+    };
+}
 
 export default function FAQPage() {
     const faqs = [
