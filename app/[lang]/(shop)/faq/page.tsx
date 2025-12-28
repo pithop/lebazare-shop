@@ -8,6 +8,8 @@ export async function generateMetadata({ params }: { params: { lang: string } })
     };
 }
 
+import { FAQSchema } from '@/components/seo/FAQSchema';
+
 export default function FAQPage() {
     const faqs = [
         {
@@ -34,6 +36,7 @@ export default function FAQPage() {
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
+            <FAQSchema faqs={faqs} />
             <h1 className="text-4xl font-serif text-terracotta mb-12 text-center">Questions Fréquentes</h1>
 
             <div className="space-y-6">

@@ -8,6 +8,7 @@ import ProductVariantSelector from '@/components/shop/ProductVariantSelector';
 import RelatedProducts from '@/components/shop/RelatedProducts';
 import { Product } from '@/lib/types';
 import { ProductSchema } from '@/components/seo/ProductSchema';
+import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 
 import { i18n } from '@/i18n-config';
 
@@ -143,6 +144,13 @@ export default async function ProductPage({ params }: { params: { handle: string
           brand: 'LeBazare'
         }}
         shipping={shippingSchema}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Accueil', item: `https://www.lebazare.fr/${params.lang}` },
+          { name: 'Produits', item: `https://www.lebazare.fr/${params.lang}/produits` },
+          { name: displayTitle, item: `https://www.lebazare.fr/${params.lang}/produits/${product.handle}` }
+        ]}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 max-w-7xl mx-auto">
