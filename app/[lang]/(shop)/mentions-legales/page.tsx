@@ -54,6 +54,20 @@ export default function MentionsLegalesPage() {
                     </p>
                 </section>
 
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">Médiation de la Consommation</h2>
+                    <p>
+                        Conformément aux articles L.616-1 et R.616-1 du code de la consommation, nous proposons un dispositif de médiation de la consommation.
+                        L'entité de médiation retenue est : <strong>[Nom du Médiateur - ex: FEVAD ou CM2C]</strong>.
+                    </p>
+                    <p>
+                        En cas de litige, vous pouvez déposer votre réclamation sur son site : <br />
+                        [URL du site du médiateur]<br />
+                        Ou par voie postale en écrivant à :<br />
+                        [Adresse du médiateur]
+                    </p>
+                </section>
+
             </div>
         </div>
     );

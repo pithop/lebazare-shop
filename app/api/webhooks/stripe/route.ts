@@ -34,16 +34,54 @@ export async function POST(req: Request) {
         const orderId = paymentIntent.metadata.orderId;
 
         if (orderId) {
-            const { error } = await supabase
+            // 1. Idempotent update: Only proceed if status was NOT 'paid'
+            // We use .select() to get the updated row. If no row is returned, it means the condition (neq 'paid') failed,
+            // so the order was already paid.
+            const { data: updatedOrder, error: updateError } = await supabase
                 .from('orders')
                 .update({ status: 'paid' })
-                .eq('id', orderId);
+                .eq('id', orderId)
+                .neq('status', 'paid')
+                .select()
+                .single();
 
-            if (error) {
-                console.error('Error updating order status:', error);
+            if (updateError && updateError.code !== 'PGRST116') { // PGRST116 is "JSON object requested, multiple (or no) rows returned" - which is expected if already paid
+                console.error('Error updating order status:', updateError);
                 return NextResponse.json({ error: 'Failed to update order' }, { status: 500 });
             }
-            console.log(`Order ${orderId} marked as paid.`);
+
+            if (!updatedOrder) {
+                console.log(`Order ${orderId} was already processed (idempotency check).`);
+                return NextResponse.json({ received: true });
+            }
+
+            console.log(`Order ${orderId} marked as paid. Decrementing stock...`);
+
+            // 2. Fetch items to decrement stock
+            const { data: orderItems, error: itemsError } = await supabase
+                .from('order_items')
+                .select('product_id, variant_id, quantity')
+                .eq('order_id', orderId);
+
+            if (itemsError) {
+                console.error('Error fetching order items:', itemsError);
+                // We don't fail the webhook here because the order is already paid. 
+                // We should probably log this to Sentry or similar.
+            } else if (orderItems) {
+                for (const item of orderItems) {
+                    const targetId = item.variant_id || item.product_id;
+                    if (targetId) {
+                        const { error: rpcError } = await supabase.rpc('decrement_stock', {
+                            variant_id: targetId,
+                            quantity_to_subtract: item.quantity
+                        });
+
+                        if (rpcError) {
+                            console.error(`Failed to decrement stock for item ${targetId}:`, rpcError);
+                        }
+                    }
+                }
+            }
         } else {
             console.warn('No orderId found in payment intent metadata');
         }

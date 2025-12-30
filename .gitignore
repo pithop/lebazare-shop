@@ -55,7 +55,7 @@ apply-migration.ts
 verify-seo.ts
 
 verify-enriched-data.ts
-*.sql
+
 supabase_migrations/20251222132100_logistics_overhaul.txt
 rapport_technique_logistique.md
 scripts/debug-product-rls.ts
@@ -76,3 +76,6 @@ Metadata.csv
 Critical issues.csv
 Non-critical issues.csv
 RAPPORT_PROJET_LEBAZARE.md
+LeBazare Production Readiness Analysis.txt
+production_security.txt
+*.sql

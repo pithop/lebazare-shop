@@ -41,6 +41,12 @@ export default function CGVPage() {
                     Le paiement est exigible immédiatement à la commande. Nous acceptons les paiements par carte bancaire via notre prestataire sécurisé Stripe.
                 </p>
 
+                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">6. Médiation</h2>
+                <p>
+                    Conformément aux dispositions du Code de la consommation concernant le règlement amiable des litiges, LeBazare adhère au Service du Médiateur du e-commerce de la [Nom de l'organisme, ex: FEVAD] dont les coordonnées sont les suivantes : [Adresse Postale] – [URL du site].
+                    Après démarche préalable écrite des consommateurs vis-à-vis de LeBazare, le Service du Médiateur peut être saisi pour tout litige de consommation dont le règlement n’aurait pas abouti.
+                </p>
+
                 {/* Add more sections as needed */}
             </div>
         </div>
