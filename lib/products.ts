@@ -72,7 +72,7 @@ export async function getAllProducts(limit: number = 20): Promise<Product[]> {
     return [];
   }
 
-  return products.map(mapSupabaseToProduct);
+  return (products || []).map(mapSupabaseToProduct);
 }
 
 export async function getStaticProducts(limit: number = 20): Promise<Product[]> {
@@ -90,7 +90,7 @@ export async function getStaticProducts(limit: number = 20): Promise<Product[]> 
     return [];
   }
 
-  return products.map(mapSupabaseToProduct);
+  return (products || []).map(mapSupabaseToProduct);
 }
 
 export async function getProductByHandle(handle: string): Promise<Product | null> {
@@ -153,7 +153,7 @@ export async function getRelatedProducts(currentProductId: string, category?: st
     }
   }
 
-  return products.map(mapSupabaseToProduct);
+  return (products || []).map(mapSupabaseToProduct);
 }
 
 export interface ProductFilterParams {
@@ -200,5 +200,5 @@ export async function getFilteredProducts(params: ProductFilterParams): Promise<
     return [];
   }
 
-  return products.map(mapSupabaseToProduct);
+  return (products || []).map(mapSupabaseToProduct);
 }
