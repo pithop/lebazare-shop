@@ -155,3 +155,50 @@ export async function getRelatedProducts(currentProductId: string, category?: st
 
   return products.map(mapSupabaseToProduct);
 }
+
+export interface ProductFilterParams {
+  query?: string;
+  category?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  limit?: number;
+}
+
+export async function getFilteredProducts(params: ProductFilterParams): Promise<Product[]> {
+  const supabase = createClient();
+  const { query, category, minPrice, maxPrice, limit = 20 } = params;
+
+  let dbQuery = supabase
+    .from('products')
+    .select('id, title, price, stock, category, images, slug, created_at, is_active, product_variants(id, name, price, stock, attributes)')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (query) {
+    dbQuery = dbQuery.ilike('title', `%${query}%`);
+  }
+
+  if (category && category !== 'all') {
+    dbQuery = dbQuery.eq('category', category);
+  }
+
+  // Note: Price filtering on the 'products' table assumes the base price is relevant.
+  // For complex variant pricing, this might need adjustment, but for performance it's a good first step.
+  if (minPrice !== undefined) {
+    dbQuery = dbQuery.gte('price', minPrice);
+  }
+
+  if (maxPrice !== undefined) {
+    dbQuery = dbQuery.lte('price', maxPrice);
+  }
+
+  const { data: products, error } = await dbQuery;
+
+  if (error) {
+    console.error('Error fetching filtered products:', error);
+    return [];
+  }
+
+  return products.map(mapSupabaseToProduct);
+}
