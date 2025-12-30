@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/sonner'
 import ClarityAnalytics from '@/components/ClarityAnalytics'
 import { Analytics } from "@vercel/analytics/next"
 import JsonLd from '@/components/JsonLd'
+import AnnouncementBar from '@/components/AnnouncementBar'
 import { i18n } from '@/i18n-config'
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
@@ -114,6 +115,7 @@ export default async function RootLayout({
         <ClarityAnalytics />
         <Analytics />
         <CartProvider>
+          <AnnouncementBar />
           <Header dictionary={dictionary} />
           <CartDrawer />
           <Toaster />

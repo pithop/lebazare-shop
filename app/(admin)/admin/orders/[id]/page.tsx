@@ -5,6 +5,7 @@ import { notFound, redirect } from 'next/navigation'
 
 import OrderStatusSelect from '@/components/admin/OrderStatusSelect'
 import OrderShippingForm from '@/components/admin/OrderShippingForm'
+import OrderActions from '@/components/admin/OrderActions'
 
 export default async function OrderDetailPage({ params }: { params: { id: string } }) {
     const supabase = createClient()
@@ -48,7 +49,10 @@ export default async function OrderDetailPage({ params }: { params: { id: string
                     </Link>
                     <h1 className="text-3xl font-serif text-slate-800">Commande #{order.id.slice(0, 8)}</h1>
                 </div>
-                <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
+                <div className="flex items-center gap-4">
+                    <OrderActions orderId={order.id} />
+                    <OrderStatusSelect orderId={order.id} currentStatus={order.status} />
+                </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

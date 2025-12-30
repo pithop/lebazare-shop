@@ -52,6 +52,13 @@ export default function AdminLayout({
                             <RefreshCw className="w-5 h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
                             <span className="font-medium">Sync Etsy</span>
                         </Link>
+                        <Link
+                            href="/admin/settings"
+                            className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all group"
+                        >
+                            <Settings className="w-5 h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                            <span className="font-medium">Paramètres</span>
+                        </Link>
                     </nav>
 
                     <div className="p-4 border-t border-slate-100">
