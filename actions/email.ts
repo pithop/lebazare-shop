@@ -125,3 +125,97 @@ export async function sendOrderConfirmation(orderId: string) {
         return { success: false, message: 'Failed to send confirmation' }
     }
 }
+
+export async function sendOrderShipped(orderId: string, trackingNumber?: string, trackingUrl?: string, carrier?: string) {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return { success: false, message: 'Config error' };
+
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+    try {
+        const { data: order } = await supabase.from('orders').select('*').eq('id', orderId).single();
+        if (!order) return { success: false, message: 'Order not found' };
+
+        // Parse customer details
+        let customerDetails = order.customer_details;
+        if (typeof customerDetails === 'string') {
+            try { customerDetails = JSON.parse(customerDetails); } catch (e) { }
+        }
+        order.customer_details = customerDetails;
+
+        const { renderToStaticMarkup } = await import('react-dom/server');
+        const { OrderShipped } = await import('@/components/emails/OrderShipped');
+
+        const emailHtml = renderToStaticMarkup(
+            React.createElement(OrderShipped, { order, trackingNumber, trackingUrl, carrier })
+        );
+
+        await sendEmail({
+            to: order.customer_details.email,
+            subject: `Votre commande #${order.id.slice(0, 8)} est en route ! 🚚`,
+            html: emailHtml,
+        });
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending shipped email:', error);
+        return { success: false, message: 'Failed to send email' };
+    }
+}
+
+export async function sendOrderCancelled(orderId: string) {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return { success: false, message: 'Config error' };
+
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+    try {
+        const { data: order } = await supabase.from('orders').select('*').eq('id', orderId).single();
+        if (!order) return { success: false, message: 'Order not found' };
+
+        // Parse customer details
+        let customerDetails = order.customer_details;
+        if (typeof customerDetails === 'string') {
+            try { customerDetails = JSON.parse(customerDetails); } catch (e) { }
+        }
+        order.customer_details = customerDetails;
+
+        const { renderToStaticMarkup } = await import('react-dom/server');
+        const { OrderCancelled } = await import('@/components/emails/OrderCancelled');
+
+        const emailHtml = renderToStaticMarkup(
+            React.createElement(OrderCancelled, { order })
+        );
+
+        await sendEmail({
+            to: order.customer_details.email,
+            subject: `Annulation de votre commande #${order.id.slice(0, 8)}`,
+            html: emailHtml,
+        });
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending cancelled email:', error);
+        return { success: false, message: 'Failed to send email' };
+    }
+}
+
+export async function sendWelcomeEmail(email: string, firstName: string) {
+    try {
+        const { renderToStaticMarkup } = await import('react-dom/server');
+        const { WelcomeEmail } = await import('@/components/emails/WelcomeEmail');
+
+        const emailHtml = renderToStaticMarkup(
+            React.createElement(WelcomeEmail, { firstName })
+        );
+
+        await sendEmail({
+            to: email,
+            subject: `Bienvenue chez LeBazare ! ✨`,
+            html: emailHtml,
+        });
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error sending welcome email:', error);
+        return { success: false, message: 'Failed to send email' };
+    }
+}

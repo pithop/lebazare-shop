@@ -28,6 +28,7 @@ export default function CheckoutForm({
 
     const [message, setMessage] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [cgvAccepted, setCgvAccepted] = useState(false)
 
     useEffect(() => {
         if (!stripe) {
@@ -141,8 +142,28 @@ export default function CheckoutForm({
         <form id="payment-form" onSubmit={handleSubmit} className="space-y-6">
             <PaymentElement id="payment-element" options={{ layout: 'tabs' }} />
 
+            <div className="flex items-start gap-3 my-6">
+                <div className="flex items-center h-5">
+                    <input
+                        id="cgv"
+                        name="cgv"
+                        type="checkbox"
+                        required
+                        checked={cgvAccepted}
+                        onChange={(e) => setCgvAccepted(e.target.checked)}
+                        className="h-4 w-4 rounded border-gray-300 text-slate-900 focus:ring-slate-900"
+                    />
+                </div>
+                <div className="text-sm">
+                    <label htmlFor="cgv" className="font-medium text-gray-700">
+                        J'accepte les <a href="/cgv" target="_blank" className="text-slate-900 underline hover:text-slate-700">Conditions Générales de Vente</a>
+                    </label>
+                    <p className="text-gray-500">En cochant cette case, vous reconnaissez avoir lu et accepté nos conditions de vente.</p>
+                </div>
+            </div>
+
             <button
-                disabled={isLoading || !stripe || !elements}
+                disabled={isLoading || !stripe || !elements || !cgvAccepted}
                 id="submit"
                 className="w-full bg-slate-900 text-white py-4 rounded-lg font-medium hover:bg-slate-800 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
             >

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import NewsletterForm from '@/components/NewsletterForm';
 
 export default function Footer({ dictionary }: { dictionary: any }) {
   return (
@@ -55,21 +56,7 @@ export default function Footer({ dictionary }: { dictionary: any }) {
             <p className="text-stone-300 text-sm mb-6 leading-relaxed">
               Inscrivez-vous pour recevoir nos nouveautés et offres exclusives.
             </p>
-            <form className="flex flex-col space-y-3">
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder="Votre email"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-stone-500 focus:outline-none focus:border-sand focus:bg-white/10 transition-all"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-sand text-deep-blue px-6 py-3 rounded-lg hover:bg-white transition-colors font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
-              >
-                S'inscrire
-              </button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 
