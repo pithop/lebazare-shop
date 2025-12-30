@@ -17,8 +17,16 @@ export default function OrderStatusSelect({ orderId, currentStatus }: { orderId:
     const [isLoading, setIsLoading] = useState(false)
 
     const handleStatusChange = async (newStatus: string) => {
+        let reason: string | undefined = undefined;
+
+        if (newStatus === 'cancelled') {
+            const input = window.prompt("Motif de l'annulation (sera envoyé au client) :", "Rupture de stock");
+            if (input === null) return; // User clicked Cancel in the prompt
+            reason = input;
+        }
+
         setIsLoading(true)
-        const result = await updateOrderStatus(orderId, newStatus)
+        const result = await updateOrderStatus(orderId, newStatus, reason)
         if (result.success) {
             setStatus(newStatus)
         } else {

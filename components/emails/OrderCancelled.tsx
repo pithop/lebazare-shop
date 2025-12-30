@@ -3,9 +3,10 @@ import { Order } from '@/lib/types';
 
 interface OrderCancelledProps {
     order: Order;
+    reason?: string;
 }
 
-export const OrderCancelled: React.FC<OrderCancelledProps> = ({ order }) => {
+export const OrderCancelled: React.FC<OrderCancelledProps> = ({ order, reason }) => {
     const { customer_details } = order;
 
     // Premium Design Tokens
@@ -44,6 +45,13 @@ export const OrderCancelled: React.FC<OrderCancelledProps> = ({ order }) => {
                             Commande <span style={{ fontWeight: '600', color: colors.primary }}>#{order.id.slice(0, 8)}</span>
                         </div>
                     </div>
+
+                    {reason && (
+                        <div style={{ backgroundColor: colors.background, padding: '24px', borderRadius: '8px', marginBottom: '32px', textAlign: 'center' }}>
+                            <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '600' }}>Motif de l'annulation</p>
+                            <p style={{ margin: '0', fontSize: '15px', fontStyle: 'italic' }}>"{reason}"</p>
+                        </div>
+                    )}
 
                     <div style={{ marginBottom: '32px', textAlign: 'center' }}>
                         <p style={{ fontSize: '15px', color: colors.text }}>

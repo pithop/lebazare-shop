@@ -162,7 +162,7 @@ export async function sendOrderShipped(orderId: string, trackingNumber?: string,
     }
 }
 
-export async function sendOrderCancelled(orderId: string) {
+export async function sendOrderCancelled(orderId: string, reason?: string) {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return { success: false, message: 'Config error' };
 
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY);
@@ -182,7 +182,7 @@ export async function sendOrderCancelled(orderId: string) {
         const { OrderCancelled } = await import('@/components/emails/OrderCancelled');
 
         const emailHtml = renderToStaticMarkup(
-            React.createElement(OrderCancelled, { order })
+            React.createElement(OrderCancelled, { order, reason })
         );
 
         await sendEmail({

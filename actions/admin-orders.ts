@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase-server'
 import { revalidatePath } from 'next/cache'
 import { sendOrderShipped, sendOrderCancelled } from '@/actions/email'
 
-export async function updateOrderStatus(orderId: string, status: string) {
+export async function updateOrderStatus(orderId: string, status: string, reason?: string) {
     const supabase = createClient()
 
     const { error } = await supabase
@@ -24,7 +24,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
         const shippingInfo = order?.shipping_info || {};
         await sendOrderShipped(orderId, shippingInfo.trackingNumber, undefined, shippingInfo.carrier);
     } else if (status === 'cancelled') {
-        await sendOrderCancelled(orderId);
+        await sendOrderCancelled(orderId, reason);
     }
 
     revalidatePath(`/admin/orders/${orderId}`)
