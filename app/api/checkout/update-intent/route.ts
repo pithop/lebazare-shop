@@ -101,8 +101,17 @@ export async function POST(req: Request) {
             shippingAddress.country
         );
 
-        // FREE SHIPPING THRESHOLD (200€)
-        const FREE_SHIPPING_THRESHOLD_CENTS = 20000;
+        // FREE SHIPPING THRESHOLD (Dynamic)
+        // Fetch shipping rules from settings
+        const { data: shippingRulesData } = await supabase
+            .from('settings')
+            .select('value')
+            .eq('key', 'shipping_rules')
+            .single();
+
+        const shippingRules = shippingRulesData?.value || { freeShippingThreshold: 100, isActive: true };
+        const FREE_SHIPPING_THRESHOLD_CENTS = (shippingRules.isActive ? shippingRules.freeShippingThreshold : 999999) * 100;
+
         const productTotalCents = formattedItems.reduce((acc: number, item: any) => acc + (item.price * 100 * item.quantity), 0);
 
         if (productTotalCents >= FREE_SHIPPING_THRESHOLD_CENTS) {

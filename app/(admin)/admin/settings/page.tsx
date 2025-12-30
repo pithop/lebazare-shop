@@ -12,11 +12,12 @@ export default async function SettingsPage() {
     }
 
     const announcement = await getSetting('announcement') || { text: '', isActive: false }
+    const shippingRules = await getSetting('shipping_rules') || { freeShippingThreshold: 100, isActive: false }
 
     return (
         <div className="p-8 max-w-7xl mx-auto">
             <h1 className="text-3xl font-serif text-slate-800 mb-8">Paramètres du Site</h1>
-            <SettingsForm initialAnnouncement={announcement} />
+            <SettingsForm initialAnnouncement={announcement} initialShippingRules={shippingRules} />
         </div>
     )
 }

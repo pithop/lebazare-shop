@@ -328,8 +328,8 @@ export default function CheckoutPage() {
                         </div>
                         <div className="flex justify-between text-slate-600">
                             <span>Livraison</span>
-                            <span className={shippingCost === null ? "text-slate-400 italic" : "text-slate-900"}>
-                                {shippingCost === null ? 'Calculé à l\'étape suivante' : `${shippingCost.toFixed(2)} €`}
+                            <span className={shippingCost === null ? "text-slate-400 italic" : (shippingCost === 0 ? "text-green-600 font-medium" : "text-slate-900")}>
+                                {shippingCost === null ? 'Calculé à l\'étape suivante' : (shippingCost === 0 ? 'Gratuit' : `${shippingCost.toFixed(2)} €`)}
                             </span>
                         </div>
                         {tax > 0 && (
