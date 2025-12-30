@@ -34,7 +34,7 @@ export default async function ProduitsPage({ params: { lang }, searchParams }: P
       category,
       minPrice,
       maxPrice,
-      limit: 50 // Fetch reasonable amount, not everything
+      limit: 100 // Fetch all products (up to 100)
     });
 
     // 2. Fetch a lightweight list for filter counts/ranges if needed (or just use a separate efficient query later)
