@@ -80,3 +80,4 @@ LeBazare Production Readiness Analysis.txt
 production_security.txt
 *.sql
 settings_migration.txt
+reviews_migration.txt

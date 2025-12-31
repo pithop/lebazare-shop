@@ -10,6 +10,10 @@ interface ProductSchemaProps {
         currency: string;
         availability: 'InStock' | 'OutOfStock';
         brand?: string;
+        aggregateRating?: {
+            ratingValue: string | number;
+            reviewCount: string | number;
+        };
     };
     shipping: {
         cost: number; // Cost in standard units
@@ -30,13 +34,14 @@ export const ProductSchema: React.FC<ProductSchemaProps> = ({ product, shipping 
             "@type": "Brand",
             "name": product.brand || "Lebazare Artisanat"
         },
-        // Placeholder for AggregateRating to trigger stars in SERP
-        // In a real app, fetch this from a reviews provider
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "124"
-        },
+        // AggregateRating (Dynamic or Placeholder)
+        ...(product.aggregateRating ? {
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": product.aggregateRating.ratingValue,
+                "reviewCount": product.aggregateRating.reviewCount
+            }
+        } : {}),
         "offers": {
             "@type": "Offer",
             "url": `https://www.lebazare.fr/fr/produits/${product.sku}`,

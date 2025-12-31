@@ -9,24 +9,10 @@ import RelatedProducts from '@/components/shop/RelatedProducts';
 import { Product } from '@/lib/types';
 import { ProductSchema } from '@/components/seo/ProductSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
-
 import { i18n } from '@/i18n-config';
-
-// export async function generateStaticParams() {
-//   const products = await getStaticProducts(20);
-
-//   const params = [];
-//   for (const locale of i18n.locales) {
-//     for (const product of products) {
-//       params.push({
-//         lang: locale,
-//         handle: product.handle,
-//       });
-//     }
-//   }
-
-//   return params;
-// }
+import ReviewForm from '@/components/reviews/ReviewForm';
+import ReviewList from '@/components/reviews/ReviewList';
+import { getProductReviews } from '@/actions/reviews';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -51,8 +37,6 @@ export async function generateMetadata({ params }: { params: { handle: string; l
     }
 
     const isEnglish = params.lang === 'en';
-    // Use English title for English locale if available, otherwise fallback to SEO title (French) or Title (French)
-    // Ideally we would have an SEO Title EN, but Title EN is better than SEO Title FR for English users.
     const title = (isEnglish && product.title_en) ? product.title_en : (product.seo_title || product.title);
     const description = (isEnglish && product.description_en) ? product.description_en : (product.description || `Découvrez ${product.title} sur LeBazare`);
 
@@ -102,16 +86,9 @@ export default async function ProductPage({ params }: { params: { handle: string
     product = exampleProducts.find(p => p.handle === params.handle) || null;
   }
 
-
   if (!product) {
     notFound();
   }
-
-  console.log(`[DEBUG] Rendering Product Page: ${product.title} (ID: ${product.id})`);
-
-
-
-  // ... (inside component)
 
   const isEnglish = params.lang === 'en';
   const displayTitle = (isEnglish && product.title_en) ? product.title_en : product.title;
@@ -120,12 +97,16 @@ export default async function ProductPage({ params }: { params: { handle: string
   const images = product.images.edges.map((edge) => edge.node);
   const variants = product.variants.edges.map((edge) => edge.node);
   const relatedProducts = await getRelatedProducts(product.id, product.category);
+  const reviews = await getProductReviews(product.id);
+
+  // Calculate aggregate rating
+  const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+  const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : null;
 
   // Logic to determine shipping for Schema
-  // In a real scenario, this might come from a pre-calculated field or default values
   const isMorocco = product.origin_country === 'MA';
   const shippingSchema = {
-    cost: isMorocco ? 25.00 : 8.00, // Example base costs
+    cost: isMorocco ? 25.00 : 8.00,
     minDays: isMorocco ? 5 : 2,
     maxDays: isMorocco ? 10 : 4
   };
@@ -141,7 +122,11 @@ export default async function ProductPage({ params }: { params: { handle: string
           price: parseFloat(variants[0]?.priceV2.amount || '0'),
           currency: variants[0]?.priceV2.currencyCode || 'EUR',
           availability: variants[0]?.availableForSale ? 'InStock' : 'OutOfStock',
-          brand: 'LeBazare'
+          brand: 'LeBazare',
+          aggregateRating: averageRating ? {
+            ratingValue: averageRating,
+            reviewCount: reviews.length
+          } : undefined
         }}
         shipping={shippingSchema}
       />
@@ -226,6 +211,19 @@ export default async function ProductPage({ params }: { params: { handle: string
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-16 border-t border-slate-100 pt-16 max-w-4xl mx-auto">
+        <h2 className="text-2xl font-serif text-slate-900 mb-8 text-center">Avis Clients</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
+            <h3 className="text-lg font-medium mb-6">Ce qu'ils en pensent</h3>
+            <ReviewList reviews={reviews} />
+          </div>
+          <div>
+            <ReviewForm productId={product.id} />
           </div>
         </div>
       </div>
