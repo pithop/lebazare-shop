@@ -70,6 +70,7 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       google: 'votre-code-google-search-console', // Remplacez par votre code
       other: {
         'msvalidate.01': 'votre-code-bing-webmaster', // Remplacez par votre code
+        'trustpilot-one-time-domain-verification-id': '1a5788c0-0b45-43ea-ab5b-31929f2893de',
       },
     },
   }
