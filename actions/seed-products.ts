@@ -1,9 +1,15 @@
 'use server'
 
 import { createClient } from '@/lib/supabase-server'
-import productsData from '../lebazare.json'
+// import productsData from '../lebazare.json' // Disabled: File moved to dump
 
 export async function seedProducts() {
+    // This function is disabled because the source JSON file has been moved.
+    // To re-enable, restore lebazare.json or update the path.
+    console.warn('seedProducts is disabled.')
+    return { success: false, count: 0, errors: 0, message: 'Seeding disabled' }
+
+    /*
     const supabase = createClient()
     let count = 0
     let errors = 0
@@ -65,4 +71,5 @@ export async function seedProducts() {
     }
 
     return { success: true, count, errors }
+    */
 }
