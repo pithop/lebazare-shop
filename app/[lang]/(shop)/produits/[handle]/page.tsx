@@ -176,9 +176,10 @@ export default async function ProductPage({ params }: { params: { handle: string
             {displayDescription && (
               <div className="prose prose-slate prose-p:text-slate-600 prose-headings:font-serif prose-headings:font-normal max-w-none">
                 <h3 className="text-lg mb-2">À propos</h3>
-                <p className="whitespace-pre-line leading-relaxed text-sm">
-                  {displayDescription}
-                </p>
+                <div
+                  className="leading-relaxed text-sm"
+                  dangerouslySetInnerHTML={{ __html: displayDescription }}
+                />
               </div>
             )}
 

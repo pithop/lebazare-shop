@@ -60,7 +60,6 @@ supabase_migrations/20251222132100_logistics_overhaul.txt
 rapport_technique_logistique.md
 scripts/debug-product-rls.ts
 enriched_output.json
-etsy_listings_enriched.json
 scripts/seed-etsy-v3.ts
 scripts/verify-logistics.ts
 scripts/check-product-id.ts
@@ -81,3 +80,11 @@ production_security.txt
 *.sql
 settings_migration.txt
 reviews_migration.txt
+database_schema_query.txt
+etsy_listings_enriched.json
+LeBazare.md
+Supabase Snippet Inventaire des colonnes du schéma public.csv
+scripts/check-database.ts
+scripts/cleanup-database.ts
+scripts/import-enriched-products.ts
+scripts/quick-validate-json.ts
