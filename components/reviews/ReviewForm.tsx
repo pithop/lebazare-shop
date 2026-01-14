@@ -5,7 +5,7 @@ import { submitReview } from '@/actions/reviews'
 import StarRating from './StarRating'
 import { toast } from 'sonner'
 
-export default function ReviewForm({ productId }: { productId: string }) {
+export default function ReviewForm({ productId, onCancel }: { productId: string, onCancel?: () => void }) {
     const [rating, setRating] = useState(0)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -66,6 +66,16 @@ export default function ReviewForm({ productId }: { productId: string }) {
                 >
                     {isSubmitting ? 'Envoi...' : 'Publier mon avis'}
                 </button>
+                {onCancel && (
+                    <button
+                        type="button"
+                        onClick={onCancel}
+                        disabled={isSubmitting}
+                        className="bg-transparent text-slate-500 px-6 py-2 rounded-lg hover:text-slate-800 transition-colors w-full md:w-auto mt-2 md:mt-0 md:ml-2"
+                    >
+                        Annuler
+                    </button>
+                )}
             </div>
         </form>
     )

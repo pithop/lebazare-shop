@@ -10,9 +10,8 @@ import { Product } from '@/lib/types';
 import { ProductSchema } from '@/components/seo/ProductSchema';
 import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { i18n } from '@/i18n-config';
-import ReviewForm from '@/components/reviews/ReviewForm';
-import ReviewList from '@/components/reviews/ReviewList';
-import { getProductReviews } from '@/actions/reviews';
+import { getAverageRating, getProductReviews, getRatingDistribution, getTotalReviewCount } from '@/lib/reviews';
+import ProductReviews from '@/components/ProductReviews';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -97,11 +96,11 @@ export default async function ProductPage({ params }: { params: { handle: string
   const images = product.images.edges.map((edge) => edge.node);
   const variants = product.variants.edges.map((edge) => edge.node);
   const relatedProducts = await getRelatedProducts(product.id, product.category);
-  const reviews = await getProductReviews(product.id);
 
-  // Calculate aggregate rating
-  const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
-  const averageRating = reviews.length > 0 ? (totalRating / reviews.length).toFixed(1) : null;
+  // Fetch review data
+  const { reviews, total: reviewsCount } = await getProductReviews(product.id, 1, 5);
+  const averageRating = await getAverageRating(product.id);
+  const ratingDistribution = await getRatingDistribution(product.id);
 
   // Logic to determine shipping for Schema
   const isMorocco = product.origin_country === 'MA';
@@ -123,10 +122,16 @@ export default async function ProductPage({ params }: { params: { handle: string
           currency: variants[0]?.priceV2.currencyCode || 'EUR',
           availability: variants[0]?.availableForSale ? 'InStock' : 'OutOfStock',
           brand: 'LeBazare',
-          aggregateRating: averageRating ? {
-            ratingValue: averageRating,
-            reviewCount: reviews.length
-          } : undefined
+          aggregateRating: averageRating > 0 ? {
+            ratingValue: averageRating.toString(),
+            reviewCount: reviewsCount
+          } : undefined,
+          reviews: reviews.map(r => ({
+            author: r.author_name,
+            date: r.created_at,
+            text: r.comment,
+            rating: r.rating
+          }))
         }}
         shipping={shippingSchema}
       />
@@ -216,17 +221,14 @@ export default async function ProductPage({ params }: { params: { handle: string
         </div>
       </div>
 
-      <div className="mt-16 border-t border-slate-100 pt-16 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-serif text-slate-900 mb-8 text-center">Avis Clients</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h3 className="text-lg font-medium mb-6">Ce qu'ils en pensent</h3>
-            <ReviewList reviews={reviews} />
-          </div>
-          <div>
-            <ReviewForm productId={product.id} />
-          </div>
-        </div>
+      <div className="mt-16 max-w-4xl mx-auto">
+        <ProductReviews
+          reviews={reviews}
+          averageRating={averageRating}
+          totalCount={reviewsCount}
+          ratingDistribution={ratingDistribution}
+          productId={product.id}
+        />
       </div>
 
       <div className="mt-24 border-t border-slate-100 pt-16">

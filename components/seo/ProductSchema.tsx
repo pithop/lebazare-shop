@@ -14,6 +14,12 @@ interface ProductSchemaProps {
             ratingValue: string | number;
             reviewCount: string | number;
         };
+        reviews?: Array<{
+            author: string;
+            date: string;
+            text: string;
+            rating: number;
+        }>;
     };
     shipping: {
         cost: number; // Cost in standard units
@@ -41,6 +47,23 @@ export const ProductSchema: React.FC<ProductSchemaProps> = ({ product, shipping 
                 "ratingValue": product.aggregateRating.ratingValue,
                 "reviewCount": product.aggregateRating.reviewCount
             }
+        } : {}),
+        // Individual Reviews
+        ...(product.reviews && product.reviews.length > 0 ? {
+            "review": product.reviews.map(review => ({
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": review.rating,
+                    "bestRating": "5"
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": review.author
+                },
+                "datePublished": review.date,
+                "reviewBody": review.text
+            }))
         } : {}),
         "offers": {
             "@type": "Offer",
