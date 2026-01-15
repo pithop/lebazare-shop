@@ -12,6 +12,7 @@ import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema';
 import { i18n } from '@/i18n-config';
 import { getAverageRating, getProductReviews, getRatingDistribution, getTotalReviewCount } from '@/lib/reviews';
 import ProductReviews from '@/components/ProductReviews';
+import StickyAddToCart from '@/components/StickyAddToCart';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -235,6 +236,16 @@ export default async function ProductPage({ params }: { params: { handle: string
         <h2 className="text-2xl font-serif text-slate-900 mb-8 text-center">Vous aimerez aussi</h2>
         <RelatedProducts products={relatedProducts} />
       </div>
+      <StickyAddToCart
+        product={{
+          id: product.id,
+          title: displayTitle,
+          images: images
+        }}
+        variantId={variants[0]?.id}
+        price={parseFloat(variants[0]?.priceV2.amount || '0')}
+        isAvailable={variants[0]?.availableForSale}
+      />
     </div>
   );
 }

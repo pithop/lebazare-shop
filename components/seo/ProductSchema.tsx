@@ -99,6 +99,22 @@ export const ProductSchema: React.FC<ProductSchemaProps> = ({ product, shipping 
                     }
                 }
             },
+            "priceSpecification": [
+                {
+                    "@type": "UnitPriceSpecification",
+                    "priceType": "https://schema.org/ListPrice",
+                    "price": (product.price / 0.8).toFixed(2),
+                    "priceCurrency": product.currency
+                },
+                {
+                    "@type": "UnitPriceSpecification",
+                    "priceType": "https://schema.org/SalePrice",
+                    "price": product.price.toFixed(2),
+                    "priceCurrency": product.currency,
+                    "validFrom": new Date().toISOString().split('T')[0],
+                    "validThrough": new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0]
+                }
+            ],
             "hasMerchantReturnPolicy": {
                 "@type": "MerchantReturnPolicy",
                 "applicableCountry": "FR",
