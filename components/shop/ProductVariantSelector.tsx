@@ -3,6 +3,18 @@
 import { useState, useEffect } from 'react'
 import AddToCartButton from '@/components/AddToCartButton'
 
+function DynamicVisitorCount() {
+    const [count, setCount] = useState<number | null>(null)
+
+    useEffect(() => {
+        // Random number between 2 and 8
+        setCount(Math.floor(Math.random() * (8 - 2 + 1)) + 2)
+    }, [])
+
+    if (count === null) return <span className="opacity-0">...</span> // Prevent hydration mismatch
+    return <span>{count} personnes consultent cette pièce unique</span>
+}
+
 interface Variant {
     id: string
     title: string
@@ -143,7 +155,7 @@ export default function ProductVariantSelector({
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
-                    <span>3 personnes consultent cette pièce unique</span>
+                    <DynamicVisitorCount />
                 </div>
 
                 {selectedVariant ? (

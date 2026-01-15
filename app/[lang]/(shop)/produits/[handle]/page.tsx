@@ -232,10 +232,7 @@ export default async function ProductPage({ params }: { params: { handle: string
         />
       </div>
 
-      <div className="mt-24 border-t border-slate-100 pt-16">
-        <h2 className="text-2xl font-serif text-slate-900 mb-8 text-center">Vous aimerez aussi</h2>
-        <RelatedProducts products={relatedProducts} />
-      </div>
+      <RelatedProducts products={relatedProducts} />
       <StickyAddToCart
         product={{
           id: product.id,

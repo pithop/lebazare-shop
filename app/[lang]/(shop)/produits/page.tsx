@@ -28,30 +28,23 @@ export default async function ProduitsPage({ params: { lang }, searchParams }: P
   const maxPrice = typeof searchParams.maxPrice === 'string' ? parseFloat(searchParams.maxPrice) : undefined;
 
   try {
-    // 1. Fetch filtered products for display (Optimized)
-    products = await getFilteredProducts({
-      query,
-      category,
-      minPrice,
-      maxPrice,
-      limit: 100 // Fetch all products (up to 100)
-    });
+    // Parallelize queries for performance
+    const [fetchedProducts, allProducts] = await Promise.all([
+      getFilteredProducts({
+        query,
+        category,
+        minPrice,
+        maxPrice,
+        limit: 100
+      }),
+      getAllProducts(100)
+    ]);
 
-    // 2. Fetch a lightweight list for filter counts/ranges if needed (or just use a separate efficient query later)
-    // For now, to keep filters working without complex aggregation queries, we might need a separate strategy
-    // or just accept that filters show global options.
-    // Let's fetch a larger set just for calculating available categories/prices if performance allows, 
-    // OR better: hardcode standard ranges/categories to avoid the heavy "fetch all" query.
-
-    // Compromise: Fetch simplified data for filters or use what we have.
-    // For now, let's use the filtered products to derive available filters, 
-    // knowing this limits "unselected" options visibility but is much faster.
-    // actually, let's fetch 100 latest for the filter context to be somewhat representative
-    allProductsForFilters = await getAllProducts(100);
+    products = fetchedProducts;
+    allProductsForFilters = allProducts;
 
     if (products.length === 0 && !query && !category) {
       // Only fallback to examples if absolutely no products exist in DB and no filters are applied
-      // If filters are applied and result is empty, that's a valid "No results" state.
       const check = await getAllProducts(1);
       if (check.length === 0) {
         products = exampleProducts;
