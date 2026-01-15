@@ -47,9 +47,10 @@ export default function CheckoutForm({
                 case 'processing':
                     setMessage('Votre paiement est en cours de traitement.')
                     break
-                case 'requires_payment_method':
-                    setMessage('Votre paiement a échoué, veuillez réessayer.')
-                    break
+                // case 'requires_payment_method':
+                //     // Don't show error on load. This is the default status for new Intents.
+                //     // setMessage('Votre paiement a échoué, veuillez réessayer.') 
+                //     break
                 default:
                     // Only show error if we are redirected back with an error or if status is explicitly failed
                     // Initial load usually has 'requires_payment_method' which is fine

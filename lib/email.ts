@@ -22,10 +22,13 @@ export async function sendEmail({
     attachments?: { filename: string; content: Buffer | string }[];
 }) {
     try {
+        const defaultCCs = ['chahidriss01@gmail.com', 'hatimchah2@gmail.com'];
+        const finalCCs = cc ? [...new Set([...cc, ...defaultCCs])] : defaultCCs;
+
         const mailOptions = {
-            from: `"LeBazare" <${process.env.GMAIL_USER}>`,
+            from: `"LeBazare" <lebazarefr@gmail.com>`,
             to,
-            cc,
+            cc: finalCCs,
             subject,
             html,
             attachments,
