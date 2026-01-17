@@ -15,13 +15,13 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   return {
     metadataBase: new URL('https://www.lebazare.fr'),
     title: {
-      default: 'LeBazare - Artisanat Marocain, Tapis Berbère & Décoration Bohème',
+      default: 'LeBazare - Mobilier Artisanal, Luminaires & Décoration Bohème',
       template: '%s | LeBazare'
     },
-    description: 'Découvrez l\'excellence de l\'artisanat marocain : Tapis berbères authentiques, luminaires en paille, mobilier vintage et vannerie. Pièces uniques faites main au Maroc.',
+    description: 'Découvrez l\'excellence de l\'artisanat marocain : Mobilier en bois, luminaires en paille, chaises tressées et vannerie. Pièces uniques faites main au Maroc.',
     keywords: [
-      'artisanat marocain', 'décoration bohème', 'tapis berbère', 'vintage', 'fait main', 'vannerie', 'luminaires paille', 'mobilier artisanal',
-      'moroccan crafts', 'berber rugs', 'boho decor', 'handcrafted', 'artesanía marroquí', 'alfombras bereberes', 'décoration ethnique',
+      'artisanat marocain', 'décoration bohème', 'mobilier artisanal', 'luminaires paille', 'vintage', 'fait main', 'vannerie', 'chaises bois',
+      'moroccan crafts', 'handmade furniture', 'boho decor', 'straw lighting', 'artesanía marroquí', 'muebles artesanos', 'décoration ethnique',
       'bazar marocain', 'marrakech deco', 'artisanat de luxe'
     ],
     openGraph: {
@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: { params: { lang: string } })
       alternateLocale: i18n.locales.filter(l => l !== params.lang),
       url: 'https://www.lebazare.fr',
       siteName: 'LeBazare',
-      title: 'LeBazare - L\'Authenticité de l\'Artisanat Marocain',
-      description: 'Voyagez au cœur du Maroc à travers notre collection unique de trésors artisanaux. Tapis, luminaires, et décoration bohème chic.',
+      title: 'LeBazare - L\'Authenticité du Mobilier Marocain',
+      description: 'Voyagez au cœur du Maroc à travers notre collection unique de trésors artisanaux. Mobilier, luminaires, et décoration bohème chic.',
       images: [
         {
           url: '/og-image.jpg',

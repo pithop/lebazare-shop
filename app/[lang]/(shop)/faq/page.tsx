@@ -17,20 +17,20 @@ export default function FAQPage() {
             answer: "Tous nos produits sont sourcés directement auprès d'artisans au Maroc. Nous travaillons sans intermédiaire pour garantir une rémunération juste aux artisans et une traçabilité totale."
         },
         {
-            question: "Les tapis sont-ils vraiment faits main ?",
-            answer: "Absolument. Chaque tapis est noué à la main par des femmes berbères selon des techniques ancestrales. Un tapis peut nécessiter plusieurs semaines voire mois de travail."
+            question: "Les produits sont-ils vraiment faits main ?",
+            answer: "Absolument. Chaque pièce (tabouret, luminaire, panier) est fabriquée à la main selon des techniques ancestrales. Cela signifie que chaque objet est unique et peut présenter de légères variations, gage de son authenticité."
         },
         {
             question: "Livrez-vous à l'international ?",
             answer: "Oui, nous livrons partout dans le monde. Les frais de port sont calculés automatiquement lors de la validation de votre panier."
         },
         {
-            question: "Comment entretenir mon tapis berbère ?",
-            answer: "Nous recommandons un aspirateur régulier. Pour un nettoyage en profondeur, privilégiez un nettoyage à sec professionnel. En cas de tache, agissez rapidement avec de l'eau gazeuse et un chiffon propre."
+            question: "Comment entretenir mes luminaires en paille ou mobilier ?",
+            answer: "Pour la paille et l'osier, dépoussiérez régulièrement avec un chiffon sec ou une brosse douce. Évitez l'humidité directe. Pour le bois, un chiffon doux suffit. Nos produits sont conçus pour durer avec un entretien minimal."
         },
         {
             question: "Puis-je commander un produit sur mesure ?",
-            answer: "Oui ! Nous pouvons réaliser certains articles sur mesure (tapis, mobilier). Contactez-nous avec votre projet pour obtenir un devis."
+            answer: "Oui ! Nous pouvons réaliser certains articles sur mesure (mobilier, dimensions spécifiques). Contactez-nous avec votre projet pour obtenir un devis."
         }
     ];
 

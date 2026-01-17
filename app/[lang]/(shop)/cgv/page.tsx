@@ -1,53 +1,77 @@
-export async function generateMetadata({ params }: { params: { lang: string } }) {
-    return {
-        title: 'Conditions Générales de Vente - LeBazare',
-        description: 'Conditions Générales de Vente de la boutique LeBazare',
-        alternates: {
-            canonical: `/${params.lang}/cgv`,
-        },
-    };
-}
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Conditions Générales de Vente (CGV) - LeBazare',
+    description: 'Consultez nos conditions générales de vente. Transparence, droits du consommateur et informations légales.',
+};
 
 export default function CGVPage() {
     return (
-        <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <div className="container mx-auto px-4 py-12 max-w-4xl text-dark-text/80">
             <h1 className="text-4xl font-serif text-terracotta mb-8 text-center">Conditions Générales de Vente</h1>
+            <p className="text-center italic mb-12">Dernière mise à jour : Janvier 2026</p>
 
-            <div className="prose prose-lg max-w-none text-dark-text bg-white p-8 rounded-xl shadow-sm border border-stone-100">
-                <p className="text-sm text-stone-500 mb-8">Dernière mise à jour : {new Date().toLocaleDateString()}</p>
+            <div className="space-y-8 prose mx-auto">
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">1. Préambule</h2>
+                    <p>
+                        Les présentes conditions générales de vente (CGV) s'appliquent à toutes les ventes conclues sur le site internet LeBazare.fr.
+                        Le site est édité par LeBazare, micro-entreprise spécialisée dans la vente de mobilier et décoration artisanale.
+                    </p>
+                </section>
 
-                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">1. Objet</h2>
-                <p>
-                    Les présentes Conditions Générales de Vente (CGV) régissent les ventes de produits artisanaux effectuées sur le site LeBazare.
-                </p>
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">2. Produits et Disponibilité</h2>
+                    <p>
+                        Les produits proposés à la vente sont ceux décrits sur le site. Nous apportons le plus grand soin à la présentation et à la description de ces produits pour satisfaire au mieux l'information du client.
+                        Toutefois, s'agissant d'artisanat fait main, des variations minimes de couleurs ou de dimensions peuvent exister.
+                    </p>
+                </section>
 
-                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">2. Produits</h2>
-                <p>
-                    Nos produits sont issus de l'artisanat marocain. Chaque pièce étant faite à la main, de légères variations de taille, de couleur ou de motif peuvent exister, ce qui en fait le charme et l'unicité.
-                </p>
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">3. Prix</h2>
+                    <p>
+                        Les prix de nos produits sont indiqués en euros toutes taxes comprises (TTC). Les frais de traitement et d'expédition sont facturés en supplément et clairement indiqués avant la validation de la commande.
+                    </p>
+                </section>
 
-                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">3. Prix</h2>
-                <p>
-                    Les prix sont indiqués en Euros (€) et s'entendent hors frais de livraison. LeBazare se réserve le droit de modifier ses prix à tout moment, mais le produit sera facturé sur la base du tarif en vigueur au moment de la validation de la commande.
-                </p>
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">4. Commande et Paiement</h2>
+                    <p>
+                        La validation de la commande vaut acceptation des présentes CGV. Le paiement est exigible immédiatement à la commande.
+                        Vous pouvez effectuer le règlement par carte bancaire, Apple Pay, ou autres moyens proposés via notre partenaire sécurisé Stripe.
+                    </p>
+                </section>
 
-                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">4. Commande</h2>
-                <p>
-                    La validation de la commande entraîne l'acceptation des présentes CGV. Un email de confirmation vous sera envoyé après validation.
-                </p>
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">5. Livraison</h2>
+                    <p>
+                        Les produits sont livrés à l'adresse de livraison indiquée au cours du processus de commande.
+                        Les délais indiqués (généralement 48h de préparation + délai transporteur) sont des délais moyens habituels et correspondent aux délais de traitement et de livraison.
+                    </p>
+                </section>
 
-                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">5. Paiement</h2>
-                <p>
-                    Le paiement est exigible immédiatement à la commande. Nous acceptons les paiements par carte bancaire via notre prestataire sécurisé Stripe.
-                </p>
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">6. Droit de Rétractation</h2>
+                    <p>
+                        Conformément aux dispositions légales en vigueur, vous disposez d'un délai de 14 jours à compter de la réception de vos produits pour exercer votre droit de rétractation sans avoir à justifier de motifs ni à payer de pénalité.
+                    </p>
+                </section>
 
-                <h2 className="text-2xl font-serif text-deep-blue mt-8 mb-4">6. Médiation</h2>
-                <p>
-                    Conformément aux dispositions du Code de la consommation concernant le règlement amiable des litiges, LeBazare adhère au Service du Médiateur du e-commerce de la [Nom de l'organisme, ex: FEVAD] dont les coordonnées sont les suivantes : [Adresse Postale] – [URL du site].
-                    Après démarche préalable écrite des consommateurs vis-à-vis de LeBazare, le Service du Médiateur peut être saisi pour tout litige de consommation dont le règlement n’aurait pas abouti.
-                </p>
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">7. Garanties</h2>
+                    <p>
+                        Tous nos produits bénéficient de la garantie légale de conformité et de la garantie des vices cachés, prévues par les articles 1641 et suivants du Code civil.
+                    </p>
+                </section>
 
-                {/* Add more sections as needed */}
+                <section>
+                    <h2 className="text-2xl font-serif text-deep-blue mb-4">8. Litiges</h2>
+                    <p>
+                        Les présentes conditions de vente à distance sont soumises à la loi française. En cas de litige ou de réclamation, le client s'adressera en priorité au vendeur pour obtenir une solution amiable.
+                    </p>
+                </section>
             </div>
         </div>
     );
