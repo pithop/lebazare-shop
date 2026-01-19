@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/next"
 import JsonLd from '@/components/JsonLd'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import { i18n } from '@/i18n-config'
+import FacebookPixel from '@/components/FacebookPixel'
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   return {
@@ -113,6 +114,7 @@ export default async function RootLayout({
     <html lang={params.lang} dir={params.lang === 'ar' ? 'rtl' : 'ltr'}>
       <body>
         <JsonLd data={jsonLd} />
+        <FacebookPixel />
         <ClarityAnalytics />
         <Analytics />
         <CartProvider>
