@@ -16,14 +16,14 @@ export async function generateMetadata({ params }: { params: { lang: string } })
   return {
     metadataBase: new URL('https://www.lebazare.fr'),
     title: {
-      default: 'LeBazare - Mobilier Artisanal, Luminaires & Décoration Bohème',
-      template: '%s | LeBazare'
+      default: 'LeBazare | Mobilier Artisanal Marocain & Décoration Bohème - Le Bazare',
+      template: '%s | LeBazare - Le Bazare France'
     },
-    description: 'Découvrez l\'excellence de l\'artisanat marocain : Mobilier en bois, luminaires en paille, chaises tressées et vannerie. Pièces uniques faites main au Maroc.',
+    description: 'LeBazare (Le Bazare) : Boutique française de mobilier artisanal marocain. Luminaires en paille, chaises tressées, vannerie. Pièces uniques faites main, expédiées sous 48h.',
     keywords: [
-      'artisanat marocain', 'décoration bohème', 'mobilier artisanal', 'luminaires paille', 'vintage', 'fait main', 'vannerie', 'chaises bois',
+      'LeBazare', 'Le Bazare', 'lebazare.fr', 'artisanat marocain', 'décoration bohème', 'mobilier artisanal', 'luminaires paille', 'vintage', 'fait main', 'vannerie', 'chaises bois',
       'moroccan crafts', 'handmade furniture', 'boho decor', 'straw lighting', 'artesanía marroquí', 'muebles artesanos', 'décoration ethnique',
-      'bazar marocain', 'marrakech deco', 'artisanat de luxe'
+      'bazar marocain', 'marrakech deco', 'artisanat de luxe', 'boutique artisanat maroc'
     ],
     openGraph: {
       type: 'website',
@@ -94,19 +94,41 @@ export default async function RootLayout({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': 'https://www.lebazare.fr/#organization',
     name: 'LeBazare',
+    alternateName: ['Le Bazare', 'LeBazare.fr', 'Le Bazare France'],
     url: 'https://www.lebazare.fr',
-    logo: 'https://www.lebazare.fr/logo.png',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.lebazare.fr/logo.png',
+      width: 512,
+      height: 512
+    },
+    image: 'https://www.lebazare.fr/og-image.jpg',
+    description: 'LeBazare - Boutique en ligne de mobilier artisanal marocain, luminaires en paille et décoration bohème. Pièces uniques faites main, expédiées depuis la France.',
+    foundingDate: '2024',
+    founder: {
+      '@type': 'Person',
+      name: 'LeBazare Team'
+    },
+    slogan: 'L\'authenticité du mobilier marocain',
     sameAs: [
-      'https://www.instagram.com/lebazare',
-      'https://www.facebook.com/lebazare'
+      'https://www.instagram.com/lebazare.fr',
+      'https://www.facebook.com/lebazare.fr',
+      'https://www.pinterest.fr/lebazare',
+      'https://www.etsy.com/shop/LeBazare'
     ],
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+33-9-72-21-38-99',
       contactType: 'customer service',
-      areaServed: ['FR', 'BE', 'CH', 'US', 'ES'],
+      email: 'contact@lebazare.fr',
+      areaServed: ['FR', 'BE', 'CH', 'LU', 'DE', 'ES', 'IT'],
       availableLanguage: ['French', 'English', 'Spanish', 'Arabic']
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'FR'
     }
   }
 
