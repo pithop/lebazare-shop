@@ -3,16 +3,45 @@
 import { useCart } from '@/context/CartContext'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, Suspense } from 'react'
+import { useEffect, Suspense, useState } from 'react'
+import { trackGoogleAdsPurchase } from '@/components/GoogleAdsTag'
+import { trackPurchase } from '@/components/FacebookPixel'
 
 function CheckoutSuccessContent() {
     const { clearCart } = useCart()
     const searchParams = useSearchParams()
     const orderId = searchParams.get('orderId')
+    const [tracked, setTracked] = useState(false)
 
     useEffect(() => {
         clearCart()
-    }, [clearCart])
+
+        // Track conversion only once
+        if (orderId && !tracked) {
+            // Fetch order details to get the amount
+            const trackConversion = async () => {
+                try {
+                    const response = await fetch(`/api/orders/${orderId}`)
+                    if (response.ok) {
+                        const order = await response.json()
+                        const totalAmount = order.total / 100 // Convert from cents to euros
+
+                        // Track Google Ads conversion
+                        trackGoogleAdsPurchase(orderId, totalAmount, 'EUR')
+
+                        // Track Facebook conversion
+                        trackPurchase(totalAmount, 'EUR')
+
+                        setTracked(true)
+                        console.log('Conversions tracked for order:', orderId, 'Amount:', totalAmount)
+                    }
+                } catch (error) {
+                    console.error('Error tracking conversion:', error)
+                }
+            }
+            trackConversion()
+        }
+    }, [clearCart, orderId, tracked])
 
     return (
         <div className="container mx-auto px-4 py-20 text-center relative z-10">

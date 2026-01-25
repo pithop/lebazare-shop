@@ -11,6 +11,7 @@ import JsonLd from '@/components/JsonLd'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import { i18n } from '@/i18n-config'
 import FacebookPixel from '@/components/FacebookPixel'
+import GoogleAdsTag from '@/components/GoogleAdsTag'
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   return {
@@ -136,6 +137,7 @@ export default async function RootLayout({
       <body>
         <JsonLd data={jsonLd} />
         <FacebookPixel />
+        <GoogleAdsTag />
         <ClarityAnalytics />
         <Analytics />
         <CartProvider>
