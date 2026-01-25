@@ -10,6 +10,9 @@ interface ProductSchemaProps {
         currency: string;
         availability: 'InStock' | 'OutOfStock';
         brand?: string;
+        material?: string; // e.g., "Doum (paille naturelle)", "Bois d'eucalyptus"
+        pattern?: string; // e.g., "Tressé main", "Motif berbère"
+        category?: string; // e.g., "Luminaires", "Mobilier"
         aggregateRating?: {
             ratingValue: string | number;
             reviewCount: string | number;
@@ -36,6 +39,12 @@ export const ProductSchema: React.FC<ProductSchemaProps> = ({ product, shipping 
         "image": product.images,
         "description": product.description,
         "sku": product.sku || `SKU-${product.name.replace(/\s+/g, '-').toUpperCase()}`,
+        // Material (important for Google Merchant)
+        ...(product.material ? { "material": product.material } : {}),
+        // Pattern (for artisanal products)
+        ...(product.pattern ? { "pattern": product.pattern } : {}),
+        // Category
+        ...(product.category ? { "category": product.category } : {}),
         "brand": {
             "@type": "Brand",
             "name": product.brand || "Lebazare Artisanat"
