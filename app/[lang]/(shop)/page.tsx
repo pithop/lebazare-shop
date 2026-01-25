@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getStaticProducts } from '@/lib/products';
+import { getTrendingProducts } from '@/lib/products';
 import HeroCreative from '@/components/HeroCreative';
 import AboutSection from '@/components/AboutSection';
 import ValuesSection from '@/components/ValuesSection';
@@ -20,9 +20,9 @@ export async function generateMetadata({ params }: { params: { lang: string } })
 }
 
 export default async function Home() {
-  // Fetch trending/featured products for the carousel and other sections
+  // Fetch trending products (best ratings + most reviews) for the carousel and other sections
   // Fetching 5 products: 3 for Hero, 1 for About, 1 for CTA
-  const products = await getStaticProducts(5);
+  const products = await getTrendingProducts(5);
 
   const heroProducts = products.slice(0, 3);
   const aboutProduct = products[3];

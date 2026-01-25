@@ -202,3 +202,81 @@ export async function getFilteredProducts(params: ProductFilterParams): Promise<
 
   return (products || []).map(mapSupabaseToProduct);
 }
+
+/**
+ * Get trending products sorted by best ratings and most reviews
+ * Uses a "trending score" = average_rating * sqrt(review_count) to balance quality and quantity
+ */
+export async function getTrendingProducts(limit: number = 5): Promise<Product[]> {
+  const supabase = createClient();
+
+  // First, get all active products
+  const { data: products, error: productsError } = await supabase
+    .from('products')
+    .select('id, title, price, stock, category, images, slug, created_at, is_active, product_variants(id, name, price, stock, attributes)')
+    .eq('is_active', true);
+
+  if (productsError || !products) {
+    console.error('Error fetching products for trending:', productsError);
+    return [];
+  }
+
+  // Get review stats for all products
+  const { data: reviewStats, error: reviewsError } = await supabase
+    .from('reviews')
+    .select('product_id, rating')
+    .eq('status', 'published');
+
+  if (reviewsError) {
+    console.error('Error fetching review stats:', reviewsError);
+    // Fall back to regular products if reviews fail
+    return products.slice(0, limit).map(mapSupabaseToProduct);
+  }
+
+  // Calculate stats per product
+  const productStats: Record<string, { avgRating: number; reviewCount: number; trendingScore: number }> = {};
+
+  if (reviewStats && reviewStats.length > 0) {
+    // Group reviews by product
+    const reviewsByProduct: Record<string, number[]> = {};
+    reviewStats.forEach((review: { product_id: string; rating: number }) => {
+      if (!reviewsByProduct[review.product_id]) {
+        reviewsByProduct[review.product_id] = [];
+      }
+      reviewsByProduct[review.product_id].push(review.rating);
+    });
+
+    // Calculate average and count for each product
+    Object.entries(reviewsByProduct).forEach(([productId, ratings]) => {
+      const avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+      const reviewCount = ratings.length;
+      // Trending score: average rating * sqrt(review count)
+      // This balances quality (rating) with popularity (count)
+      const trendingScore = avgRating * Math.sqrt(reviewCount);
+      productStats[productId] = { avgRating, reviewCount, trendingScore };
+    });
+  }
+
+  // Sort products by trending score (highest first), then by created_at for products without reviews
+  const sortedProducts = products
+    .map(product => ({
+      ...product,
+      stats: productStats[product.id] || { avgRating: 0, reviewCount: 0, trendingScore: 0 }
+    }))
+    .sort((a, b) => {
+      // Primary sort: trending score (descending)
+      if (b.stats.trendingScore !== a.stats.trendingScore) {
+        return b.stats.trendingScore - a.stats.trendingScore;
+      }
+      // Secondary sort: review count (descending)
+      if (b.stats.reviewCount !== a.stats.reviewCount) {
+        return b.stats.reviewCount - a.stats.reviewCount;
+      }
+      // Tertiary sort: created_at (newest first)
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    })
+    .slice(0, limit);
+
+  return sortedProducts.map(mapSupabaseToProduct);
+}
+
