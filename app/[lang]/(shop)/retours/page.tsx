@@ -29,7 +29,7 @@ export default function ReturnPolicyPage() {
                     </p>
                     <ul>
                         <li>Email : contact@lebazare.fr</li>
-                        <li>Adresse : [Votre Adresse Postale Ici]</li>
+                        <li>Adresse :Aix-en-Provence 13100, France</li>
                     </ul>
 
                     <h3>3. Effets de la rétractation</h3>

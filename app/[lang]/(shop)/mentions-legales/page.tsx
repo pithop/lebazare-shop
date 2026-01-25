@@ -19,9 +19,9 @@ export default function MentionsLegalesPage() {
                     <h2 className="text-2xl font-serif text-deep-blue mb-4">Éditeur du site</h2>
                     <p>
                         Le site <strong>LeBazare</strong> est édité par :<br />
-                        [Votre Nom ou Raison Sociale]<br />
-                        [Adresse]<br />
-                        [Code Postal, Ville]<br />
+                        LeBazare<br />
+                        Aix-en-Provence<br />
+                        13100, France<br />
                         Email : contact@lebazare.fr<br />
                         Téléphone : +33 9 72 21 38 99
                     </p>
@@ -49,8 +49,8 @@ export default function MentionsLegalesPage() {
                 <section>
                     <h2 className="text-2xl font-serif text-deep-blue mb-4">Données Personnelles</h2>
                     <p>
-                        Conformément à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant.
-                        Pour exercer ce droit, contactez-nous par email.
+                        Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, de portabilité et de suppression des données vous concernant.
+                        Pour exercer ce droit, contactez-nous par email à contact@lebazare.fr.
                     </p>
                 </section>
 
@@ -58,13 +58,15 @@ export default function MentionsLegalesPage() {
                     <h2 className="text-2xl font-serif text-deep-blue mb-4">Médiation de la Consommation</h2>
                     <p>
                         Conformément aux articles L.616-1 et R.616-1 du code de la consommation, nous proposons un dispositif de médiation de la consommation.
-                        L'entité de médiation retenue est : <strong>[Nom du Médiateur - ex: FEVAD ou CM2C]</strong>.
+                        L'entité de médiation retenue est : <strong>FEVAD (Fédération du e-commerce et de la vente à distance)</strong>.
                     </p>
                     <p>
                         En cas de litige, vous pouvez déposer votre réclamation sur son site : <br />
-                        [URL du site du médiateur]<br />
+                        <a href="https://www.mediateurfevad.fr" target="_blank" rel="noopener noreferrer" className="text-terracotta hover:underline">www.mediateurfevad.fr</a><br />
                         Ou par voie postale en écrivant à :<br />
-                        [Adresse du médiateur]
+                        FEVAD - Service du Médiateur du e-commerce<br />
+                        60 rue La Boétie<br />
+                        75008 Paris
                     </p>
                 </section>
 
@@ -72,3 +74,4 @@ export default function MentionsLegalesPage() {
         </div>
     );
 }
+
