@@ -113,9 +113,8 @@ export default async function RootLayout({
     },
     slogan: 'L\'authenticité du mobilier marocain',
     sameAs: [
-      'https://www.instagram.com/lebazare.fr',
-      'https://www.facebook.com/lebazare.fr',
-      'https://www.pinterest.fr/lebazare',
+      'https://www.instagram.com/le.bazare',
+      'https://www.facebook.com/lebazarfr',
       'https://www.etsy.com/shop/LeBazare'
     ],
     contactPoint: {
