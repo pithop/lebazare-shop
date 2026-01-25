@@ -10,7 +10,7 @@ export async function POST(req: Request) {
         const { urls } = await req.json(); // Tableau d'URLs à indexer
 
         const API_KEY = process.env.INDEXNOW_KEY; // Clé générée (ex: UUID)
-        const HOST = 'www.lebazre.fr';
+        const HOST = 'www.lebazare.fr';
 
         if (!API_KEY) {
             return NextResponse.json({ success: false, error: 'INDEXNOW_KEY not configured' }, { status: 500 });
