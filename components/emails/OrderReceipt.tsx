@@ -16,6 +16,7 @@ interface ExtendedOrder extends Order {
             country: string;
         };
     };
+    customer_code?: string; // Customer tracking code
 }
 
 interface OrderReceiptProps {
@@ -24,7 +25,7 @@ interface OrderReceiptProps {
 }
 
 export const OrderReceipt: React.FC<OrderReceiptProps> = ({ order, products }) => {
-    const { customer_details, shipping_details, items, total, shipping_total_cents, tax_total_cents } = order;
+    const { customer_details, shipping_details, items, total, shipping_total_cents, tax_total_cents, customer_code } = order;
 
     // Helper to format price
     const formatPrice = (amount: number) => {
@@ -71,6 +72,50 @@ export const OrderReceipt: React.FC<OrderReceiptProps> = ({ order, products }) =
                             Commande <span style={{ fontWeight: '600', color: colors.primary }}>#{order.id.slice(0, 8)}</span>
                         </div>
                     </div>
+
+                    {/* Customer Code Card */}
+                    {customer_code && (
+                        <div style={{
+                            marginBottom: '32px',
+                            padding: '24px',
+                            backgroundColor: '#FEF3C7',
+                            border: '2px dashed #F59E0B',
+                            borderRadius: '12px',
+                            textAlign: 'center'
+                        }}>
+                            <p style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#92400E', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '600' }}>
+                                Votre Code Client
+                            </p>
+                            <p style={{
+                                margin: '0 0 16px 0',
+                                fontSize: '32px',
+                                fontWeight: '700',
+                                color: colors.primary,
+                                fontFamily: 'monospace',
+                                letterSpacing: '3px'
+                            }}>
+                                {customer_code}
+                            </p>
+                            <p style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#78350F' }}>
+                                Conservez ce code pour suivre toutes vos commandes chez LeBazare.
+                            </p>
+                            <a
+                                href={`https://www.lebazare.fr/fr/mon-compte?code=${customer_code}`}
+                                style={{
+                                    display: 'inline-block',
+                                    padding: '12px 24px',
+                                    backgroundColor: colors.primary,
+                                    color: '#FFFFFF',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontSize: '14px',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Suivre ma commande
+                            </a>
+                        </div>
+                    )}
 
                     {/* Items */}
                     <div style={{ marginBottom: '32px' }}>

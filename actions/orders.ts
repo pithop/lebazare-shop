@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@supabase/supabase-js'
-import React from 'react'
+import { getOrCreateCustomerCode } from '@/lib/customer-codes'
 
 export async function createOrder(customerDetails: any, items: any[], total: number, shippingTotalCents: number = 0, taxTotalCents: number = 0) {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -15,6 +15,17 @@ export async function createOrder(customerDetails: any, items: any[], total: num
         process.env.SUPABASE_SERVICE_ROLE_KEY
     )
 
+    // Get or create customer code for this email
+    let customerCode: string | null = null;
+    try {
+        if (customerDetails?.email) {
+            customerCode = await getOrCreateCustomerCode(customerDetails.email);
+        }
+    } catch (error) {
+        console.error('Error generating customer code:', error);
+        // Continue without code if generation fails
+    }
+
     // 1. Create Order
     const { data: order, error: orderError } = await supabase
         .from('orders')
@@ -23,7 +34,8 @@ export async function createOrder(customerDetails: any, items: any[], total: num
             shipping_total_cents: shippingTotalCents,
             tax_total_cents: taxTotalCents,
             status: 'pending', // In a real app, this would be 'pending_payment' then 'paid'
-            customer_details: customerDetails
+            customer_details: customerDetails,
+            customer_code: customerCode // New field
         })
         .select()
         .single()
@@ -55,5 +67,6 @@ export async function createOrder(customerDetails: any, items: any[], total: num
     // 3. Send Email
     // Email is now sent post-payment in actions/email.ts
 
-    return { success: true, orderId: order.id }
+    return { success: true, orderId: order.id, customerCode }
 }
+
