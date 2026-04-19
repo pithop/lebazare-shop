@@ -90,9 +90,12 @@ export async function calculateShipping(
         });
 
         // Poids Volumétrique (Diviseur 5000 standard IATA)
-        const volumetricWeightGrams = (effectiveVolume / 5000) * 1000; // volume en cm3 / 5000 * 1000g
+        // DÉSACTIVÉ EN URGENCE : C'est ce qui causait les 33€ de livraison !
+        // Une suspension est très légère mais prend beaucoup de place (Ex: 50x50x50cm). 
+        // L'algorithme calculait un poids "fictif" de 25 Kg, facturé à 1€/kg.
+        const volumetricWeightGrams = 0; // (effectiveVolume / 5000) * 1000;
 
-        // Le poids facturable est le max des deux
+        // Le poids facturable est maintenant uniquement le poids réel
         const billableWeightGrams = Math.max(totalRealWeight, volumetricWeightGrams);
 
         // 3. Interrogation de la base de données pour le tarif
