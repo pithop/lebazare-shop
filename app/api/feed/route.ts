@@ -56,6 +56,15 @@ ${products.map((product) => {
             googleCategory = 'Home & Garden > Decor > Baskets';
         }
 
+        const isApparel = category.toLowerCase().includes('sac') || 
+                         product.title.toLowerCase().includes('sac') || 
+                         product.title.toLowerCase().includes('pochette');
+                         
+        const apparelTags = isApparel ? `
+<g:color>Naturel/Multicolore</g:color>
+<g:gender>unisex</g:gender>
+<g:age_group>adult</g:age_group>` : '';
+
         return `
 <item>
 <g:id>${escapeXml(product.id)}</g:id>
@@ -78,7 +87,7 @@ ${additionalImages.map(img => `<g:additional_image_link>${escapeXml(img)}</g:add
 <g:shipping_weight>${weightKg} kg</g:shipping_weight>
 <g:identifier_exists>no</g:identifier_exists>
 <g:mpn>${escapeXml(product.id.replace(/[^a-zA-Z0-9-]/g, '').substring(0, 70))}</g:mpn>
-<g:return_policy_label>14_days_return</g:return_policy_label>
+<g:return_policy_label>14_days_return</g:return_policy_label>${apparelTags}
 </item>`;
     }).join('')}
 </channel>
