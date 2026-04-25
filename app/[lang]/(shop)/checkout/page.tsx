@@ -128,6 +128,7 @@ export default function CheckoutPage() {
             email: formData.get('email'),
             firstName: formData.get('firstName'),
             lastName: formData.get('lastName'),
+            phone: `${formData.get('phonePrefix')} ${formData.get('phone')}`,
             address: addressForm.street,
             city: addressForm.city,
             postalCode: addressForm.postalCode,
@@ -173,6 +174,23 @@ export default function CheckoutPage() {
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
                                     <input type="email" name="email" required className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Téléphone</label>
+                                    <div className="flex gap-2">
+                                        <select name="phonePrefix" required className="w-24 px-2 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none bg-white font-medium">
+                                            <option value="+33">🇫🇷 +33</option>
+                                            <option value="+32">🇧🇪 +32</option>
+                                            <option value="+41">🇨🇭 +41</option>
+                                            <option value="+212">🇲🇦 +212</option>
+                                            <option value="+352">🇱🇺 +352</option>
+                                            <option value="+44">🇬🇧 +44</option>
+                                            <option value="+1">🇺🇸 +1</option>
+                                            <option value="+1">🇨🇦 +1</option>
+                                        </select>
+                                        <input type="tel" name="phone" required placeholder="06 12 34 56 78" className="flex-1 px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none" />
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">

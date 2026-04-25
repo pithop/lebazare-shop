@@ -145,6 +145,15 @@ export default async function OrderDetailPage({ params }: { params: { id: string
                                 {order.customer_details.firstName} {order.customer_details.lastName}
                             </p>
                             <p>{order.customer_details.email}</p>
+                            {order.customer_details.phone && (
+                                <p>{order.customer_details.phone}</p>
+                            )}
+                            {order.customer_code && (
+                                <div className="mt-4 pt-4 border-t border-slate-100">
+                                    <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Code de Suivi</p>
+                                    <p className="font-mono bg-slate-50 px-2 py-1 rounded inline-block text-slate-700">{order.customer_code}</p>
+                                </div>
+                            )}
                         </div>
                     </div>
 
