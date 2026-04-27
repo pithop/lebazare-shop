@@ -6,7 +6,11 @@ import { redirect } from 'next/navigation';
 import { Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Package, AlertCircle, CheckCircle2 } from 'lucide-react';
 import DeleteProductButton from '@/components/DeleteProductButton';
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+    searchParams
+}: {
+    searchParams: { q?: string, status?: string }
+}) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -15,10 +19,29 @@ export default async function ProductsPage() {
     }
 
     const adminClient = createAdminClient();
-    const { data: products } = await adminClient
+    
+    // Optimisation majeure : Ne sélectionner que les champs nécessaires pour la liste
+    let query = adminClient
         .from('products')
-        .select('*')
+        .select('id, title, stock, price, etsy_id, images')
         .order('created_at', { ascending: false });
+
+    // Recherche par nom
+    if (searchParams.q) {
+        query = query.ilike('title', `%${searchParams.q}%`);
+    }
+
+    // Filtre par statut
+    if (searchParams.status === 'out_of_stock') {
+        query = query.eq('stock', 0);
+    } else if (searchParams.status === 'low_stock') {
+        query = query.gt('stock', 0).lt('stock', 5);
+    } else if (searchParams.status === 'in_stock') {
+        query = query.gte('stock', 5);
+    }
+
+    // Limiter à 200 pour garder le dashboard ultra-rapide
+    const { data: products } = await query.limit(200);
 
     return (
         <div className="p-8 max-w-7xl mx-auto">
@@ -37,21 +60,38 @@ export default async function ProductsPage() {
                 </Link>
             </div>
 
-            {/* Filters & Search Bar (Visual Only for now) */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
-                <div className="relative w-full md:w-96">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input
-                        type="text"
-                        placeholder="Rechercher un produit..."
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none text-sm"
-                    />
+            {/* Filters & Search Bar */}
+            <form action="/admin/products" method="GET" className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
+                <div className="relative w-full md:w-96 flex gap-2">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                            type="text"
+                            name="q"
+                            defaultValue={searchParams.q || ''}
+                            placeholder="Rechercher un produit..."
+                            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none text-sm"
+                        />
+                    </div>
+                    <button type="submit" className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors">
+                        Chercher
+                    </button>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors text-sm font-medium">
-                    <Filter className="w-4 h-4" />
-                    Filtres
-                </button>
-            </div>
+                
+                <div className="flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-slate-400" />
+                    <select 
+                        name="status" 
+                        defaultValue={searchParams.status || ''}
+                        className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-600 outline-none focus:ring-2 focus:ring-slate-900 text-sm font-medium"
+                    >
+                        <option value="">Tous les stocks</option>
+                        <option value="in_stock">En stock</option>
+                        <option value="low_stock">Stock faible</option>
+                        <option value="out_of_stock">En rupture</option>
+                    </select>
+                </div>
+            </form>
 
             {/* Data Table */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">

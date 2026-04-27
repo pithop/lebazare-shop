@@ -1,6 +1,6 @@
 import '../globals.css';
 import Link from 'next/link';
-import { LayoutDashboard, Package, ShoppingBag, RefreshCw, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Truck, RefreshCw, LogOut, Settings } from 'lucide-react';
 import AIAssistant from '@/components/admin/AIAssistant';
 
 export const metadata = {
@@ -44,6 +44,13 @@ export default function AdminLayout({
                         >
                             <ShoppingBag className="w-5 h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
                             <span className="font-medium">Commandes</span>
+                        </Link>
+                        <Link
+                            href="/admin/shipping"
+                            className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all group"
+                        >
+                            <Truck className="w-5 h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                            <span className="font-medium">Livraison</span>
                         </Link>
                         <Link
                             href="/admin/etsy-sync"

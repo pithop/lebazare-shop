@@ -25,6 +25,7 @@ export async function createProduct(formData: FormData) {
     const material_type = formData.get('material_type') as string
     const is_stackable = formData.get('is_stackable') === 'on'
     const handling_tier = formData.get('handling_tier') as string || 'standard'
+    const shipping_profile_id = formData.get('shipping_profile_id') as string || null
 
     // Dimensions
     const length = parseInt(formData.get('dim_length') as string) || 0
@@ -98,6 +99,7 @@ export async function createProduct(formData: FormData) {
         material_type,
         is_stackable,
         handling_tier,
+        shipping_profile_id,
         dimensions
     }).select().single()
 
@@ -184,6 +186,7 @@ export async function updateProduct(id: string, formData: FormData) {
     const material_type = formData.get('material_type') as string
     const is_stackable = formData.get('is_stackable') === 'on'
     const handling_tier = formData.get('handling_tier') as string
+    const shipping_profile_id = formData.get('shipping_profile_id') as string || null
 
     // Dimensions
     const length = parseInt(formData.get('dim_length') as string) || 0
@@ -227,6 +230,7 @@ export async function updateProduct(id: string, formData: FormData) {
         material_type,
         is_stackable,
         handling_tier,
+        shipping_profile_id,
         dimensions
     }
 

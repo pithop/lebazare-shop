@@ -67,7 +67,8 @@ export async function POST(req: Request) {
                         originCountry: parentProduct.origin_country || 'MA',
                         isStackable: parentProduct.is_stackable || false,
                         price: variant.price, // Prix du VARIANT
-                        handlingTier: parentProduct.handling_tier || 'standard'
+                        handlingTier: parentProduct.handling_tier || 'standard',
+                        shippingProfileId: parentProduct.shipping_profile_id || null,
                     };
                 }
 
@@ -82,14 +83,15 @@ export async function POST(req: Request) {
                         originCountry: product.origin_country || 'MA',
                         isStackable: product.is_stackable || false,
                         price: product.price, // Prix du PRODUIT
-                        handlingTier: product.handling_tier || 'standard'
+                        handlingTier: product.handling_tier || 'standard',
+                        shippingProfileId: product.shipping_profile_id || null,
                     };
                 }
 
                 console.warn(`Produit/Variant ignoré (non trouvé en DB): ${item.id}`);
                 return null;
             })
-            .filter((item: any): item is CartItem => item !== null);
+            .filter((item: any) => item !== null) as CartItem[];
 
         if (formattedItems.length === 0) {
             throw new Error("Aucun produit valide dans le panier (Stock épuisé ou expiré). Veuillez vider votre panier.");
