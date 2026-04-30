@@ -11,6 +11,15 @@ import { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+// Dynamic season based on current date
+function getSeasonInfo(): { name: string; tagline: string } {
+  const month = new Date().getMonth(); // 0-11
+  if (month >= 2 && month <= 4) return { name: 'Printemps', tagline: 'Les beaux jours arrivent. Redécouvrez l\'artisanat qui illumine vos intérieurs.' };
+  if (month >= 5 && month <= 7) return { name: 'Été', tagline: 'Des pièces ensoleillées pour un intérieur bohème et lumineux.' };
+  if (month >= 8 && month <= 10) return { name: 'Automne', tagline: 'Textures chaudes et matières nobles pour un cocon automnal.' };
+  return { name: 'Hiver', tagline: 'Chaleur artisanale pour les soirées au coin du feu.' };
+}
+
 type Props = {
   params: { lang: string };
   searchParams: { [key: string]: string | string[] | undefined };
@@ -45,6 +54,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 
 export default async function ProduitsPage({ params: { lang }, searchParams }: Props) {
+  const season = getSeasonInfo();
   let products: Product[] = [];
   let allProductsForFilters: Product[] = [];
 
@@ -113,13 +123,13 @@ export default async function ProduitsPage({ params: { lang }, searchParams }: P
             <h1 className="text-[10vw] md:text-[8vw] leading-[0.9] font-serif text-dark-text tracking-tighter">
               {categorySEO?.heroTitle || 'Collection'}
               <span className="block ml-[5vw] italic text-terracotta opacity-80">
-                {categorySEO?.heroSubtitle || 'Hiver'}
+                {categorySEO?.heroSubtitle || season.name}
               </span>
             </h1>
 
             <div className="md:w-1/3 mb-2">
               <p className="text-base md:text-lg font-light text-stone-600 leading-relaxed text-balance">
-                {categorySEO ? categorySEO.seoContent.split('\n')[0].replace(/^## /, '') : 'Une exploration de la matière et de la forme. Chaque objet est une invitation au voyage, façonné par des mains expertes pour sublimer votre quotidien.'}
+                {categorySEO ? categorySEO.seoContent.split('\n')[0].replace(/^## /, '') : season.tagline}
               </p>
               <div className="mt-6 flex gap-4 text-xs font-medium uppercase tracking-widest text-stone-400">
                 <span>{products.length} Objets</span>
@@ -158,7 +168,7 @@ export default async function ProduitsPage({ params: { lang }, searchParams }: P
             <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-24">
               {products.map((product, index) => (
                 <div key={product.id} className={`${index % 2 === 0 ? 'mt-0' : 'mt-12 md:mt-24'} break-inside-avoid`}>
-                  <ProductCard product={product} index={index} />
+                  <ProductCard product={product} index={index} priority={index < 3} />
                 </div>
               ))}
             </div>

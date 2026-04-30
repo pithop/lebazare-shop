@@ -10,7 +10,7 @@ import { Plus, Loader2 } from 'lucide-react';
 import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 import QuickAddModal from './shop/QuickAddModal';
 
-export default function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+export default function ProductCard({ product, index = 0, priority = false }: { product: Product; index?: number; priority?: boolean }) {
   const { handle, title, priceRange, images, category, variants } = product;
   const image = images.edges[0]?.node;
   const price = priceRange.minVariantPrice;
@@ -107,6 +107,8 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority={priority}
+                  loading={priority ? 'eager' : 'lazy'}
                 />
               </motion.div>
             ) : (
