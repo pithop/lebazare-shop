@@ -18,7 +18,6 @@ export default function ProductCard({ product, index = 0, priority = false }: { 
   const { addItem } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const hasVariants = variants.edges.length > 1 || (variants.edges.length === 1 && variants.edges[0].node.title !== 'Default Title');
 
@@ -102,50 +101,26 @@ export default function ProductCard({ product, index = 0, priority = false }: { 
                 transition={{ duration: 1.2, ease: [0.25, 0.4, 0.25, 1] }}
                 className="w-full h-full relative"
               >
+                {/* Permanent Skeleton Loader behind the image */}
+                <div className="absolute inset-0 bg-stone-200/50 animate-pulse z-0 flex flex-col items-center justify-center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-stone-400 mb-2">
+                    <path
+                      d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
+                      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M7 10L12 15L17 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M12 15V3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+
                 <Image
                   src={image.url}
                   alt={image.altText || title}
                   fill
-                  className={`object-cover object-center transition-opacity duration-700 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  className="object-cover object-center z-10"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority={priority}
                   loading={priority ? 'eager' : 'lazy'}
-                  onLoad={() => setIsImageLoaded(true)}
                 />
-                
-                {/* Skeleton Loader while image is downloading */}
-                {!isImageLoaded && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-stone-200/80 via-stone-50/50 to-stone-200/80 animate-shimmer z-10 flex items-center justify-center">
-                     <motion.div
-                      animate={{ scale: [1, 1.05, 1], opacity: [0.15, 0.25, 0.15] }}
-                      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                    >
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="text-stone-400">
-                        <path
-                          d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M7 10L12 15L17 10"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M12 15V3"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </motion.div>
-                  </div>
-                )}
               </motion.div>
             ) : (
               <div className="w-full h-full flex items-center justify-center text-stone-300 bg-stone-50">
