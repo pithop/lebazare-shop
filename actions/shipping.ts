@@ -8,7 +8,7 @@ const supabase = createClient(
     process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-export async function saveShippingProfile(profileId: string | null, name: string, destinations: any[]) {
+export async function saveShippingProfile(profileId: string | null, name: string, destinations: any[], productIds?: string[]) {
     try {
         let currentProfileId = profileId;
 
@@ -51,7 +51,32 @@ export async function saveShippingProfile(profileId: string | null, name: string
             if (error) throw error;
         }
 
+        // 4. Update Product Associations
+        if (productIds !== undefined && currentProfileId) {
+            // First, remove association from products that were linked to this profile but are no longer in the list
+            if (productIds.length > 0) {
+                await supabase
+                    .from('products')
+                    .update({ shipping_profile_id: null })
+                    .eq('shipping_profile_id', currentProfileId)
+                    .not('id', 'in', `(${productIds.join(',')})`);
+                
+                // Then, associate the selected products
+                await supabase
+                    .from('products')
+                    .update({ shipping_profile_id: currentProfileId })
+                    .in('id', productIds);
+            } else {
+                // If empty array, remove all associations for this profile
+                await supabase
+                    .from('products')
+                    .update({ shipping_profile_id: null })
+                    .eq('shipping_profile_id', currentProfileId);
+            }
+        }
+
         revalidatePath('/admin/shipping');
+        revalidatePath('/admin/products');
         revalidatePath('/admin/products/new');
         // Will also need to revalidate product edit pages
         
@@ -89,6 +114,41 @@ export async function getShippingProfiles() {
         return data || [];
     } catch (error) {
         console.error('Failed to fetch shipping profiles', error);
+        return [];
+    }
+}
+
+export async function searchProductsForShipping(query: string) {
+    if (!query || query.trim() === '') return [];
+    
+    try {
+        const { data, error } = await supabase
+            .from('products')
+            .select('id, title, images, shipping_profile_id')
+            .ilike('title', `%${query}%`)
+            .limit(10);
+            
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Failed to search products', error);
+        return [];
+    }
+}
+
+export async function getProductsForProfile(profileId: string) {
+    if (!profileId) return [];
+    
+    try {
+        const { data, error } = await supabase
+            .from('products')
+            .select('id, title, images, shipping_profile_id')
+            .eq('shipping_profile_id', profileId);
+            
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Failed to fetch products for profile', error);
         return [];
     }
 }

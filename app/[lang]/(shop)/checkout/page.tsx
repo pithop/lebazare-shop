@@ -9,6 +9,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import CheckoutForm from '@/components/CheckoutForm'
 import AddressAutocomplete from '@/components/AddressAutocomplete'
 import { toast } from 'sonner'
+import { COUNTRIES } from '@/lib/countries'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -247,32 +248,9 @@ export default function CheckoutPage() {
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-900 outline-none"
                                     >
-                                        <option value="FR">France</option>
-                                        <option value="BE">Belgique</option>
-                                        <option value="CH">Suisse</option>
-                                        <option value="DE">Allemagne</option>
-                                        <option value="ES">Espagne</option>
-                                        <option value="IT">Italie</option>
-                                        <option value="NL">Pays-Bas</option>
-                                        <option value="LU">Luxembourg</option>
-                                        <option value="GB">Royaume-Uni</option>
-                                        <option value="US">États-Unis</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="AU">Australie</option>
-                                        <option value="JP">Japon</option>
-                                        <option value="MA">Maroc</option>
-                                        <option value="PT">Portugal</option>
-                                        <option value="IE">Irlande</option>
-                                        <option value="SE">Suède</option>
-                                        <option value="DK">Danemark</option>
-                                        <option value="FI">Finlande</option>
-                                        <option value="NO">Norvège</option>
-                                        <option value="AT">Autriche</option>
-                                        <option value="AE">Émirats arabes unis</option>
-                                        <option value="SA">Arabie saoudite</option>
-                                        <option value="QA">Qatar</option>
-                                        <option value="KW">Koweït</option>
-                                        {/* Add more as needed or use a library like country-list */}
+                                        {COUNTRIES.map(c => (
+                                            <option key={c.code} value={c.code}>{c.name}</option>
+                                        ))}
                                     </select>
                                 </div>
 

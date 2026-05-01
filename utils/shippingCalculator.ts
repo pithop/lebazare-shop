@@ -20,24 +20,20 @@ export interface CartItem {
     shippingProfileId?: string | null; // Shipping profile assigned to this product
 }
 
+import { getCountryByCode } from '@/lib/countries';
+
 // ─── Zone Mapping ───────────────────────────────────────────────────────────────
 // Maps a customer's country code to an ordered list of zones to try in the 
 // shipping_profile_destinations table. First match wins.
 
-const EU_COUNTRY_CODES = [
-    'BE', 'DE', 'ES', 'IT', 'NL', 'LU', 'PT', 'IE', 'SE', 'DK', 'FI', 'AT',
-    'GR', 'PL', 'CZ', 'SK', 'HU', 'RO', 'BG', 'HR', 'SI', 'EE', 'LV', 'LT',
-    'CY', 'MT'
-];
-
 function mapCountryToZone(countryCode: string): string[] {
-    if (countryCode === 'FR') return ['FR', 'EU'];
-    if (EU_COUNTRY_CODES.includes(countryCode)) return [countryCode, 'EU'];
-    // CH is not in the EU — try dedicated CH zone, then EU fallback, then ROW
-    if (countryCode === 'CH') return ['CH', 'EU', 'ROW'];
-    // GB post-Brexit → try GB-specific, then ROW
-    if (countryCode === 'GB') return ['GB', 'ROW'];
-    // Rest of the world
+    const country = getCountryByCode(countryCode);
+    if (!country) return [countryCode, 'ROW'];
+    
+    if (country.region === 'EU') {
+        return [countryCode, 'EU', 'ROW'];
+    }
+    
     return [countryCode, 'ROW'];
 }
 
