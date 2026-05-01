@@ -10,8 +10,9 @@ import Image from 'next/image'
 type Destination = { id?: string, zone: string, base_price: number, additional_price: number }
 type Profile = { id: string, name: string, shipping_profile_destinations: any[] }
 type ProductLight = { id: string, title: string, images: string[], shipping_profile_id: string | null, price?: number }
+type CustomZone = { id: string, name: string, countries: string[] }
 
-export default function ShippingProfilesManager({ initialProfiles }: { initialProfiles: Profile[] }) {
+export default function ShippingProfilesManager({ initialProfiles, customZones }: { initialProfiles: Profile[], customZones: CustomZone[] }) {
     const [profiles, setProfiles] = useState<Profile[]>(initialProfiles)
     
     // Edit state
@@ -173,6 +174,13 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                                                 <option key={r.code} value={r.code}>{r.name}</option>
                                                             ))}
                                                         </optgroup>
+                                                        {customZones && customZones.length > 0 && (
+                                                            <optgroup label="Vos Zones Personnalisées">
+                                                                {customZones.map(z => (
+                                                                    <option key={z.id} value={z.id}>{z.name}</option>
+                                                                ))}
+                                                            </optgroup>
+                                                        )}
                                                         <optgroup label="Pays Spécifiques">
                                                             {COUNTRIES.map(c => (
                                                                 <option key={c.code} value={c.code}>{c.name}</option>
@@ -426,13 +434,13 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                 </div>
                             </div>
                             <div className="p-6 bg-slate-50/50 space-y-3">
-                                {profile.shipping_profile_destinations.length === 0 ? (
-                                    <p className="text-sm text-slate-500 italic">Aucun tarif défini</p>
-                                ) : (
-                                    profile.shipping_profile_destinations.slice(0, 3).map(d => {
-                                        const zoneName = REGIONS.find(r => r.code === d.zone)?.name || COUNTRIES.find(c => c.code === d.zone)?.name || d.zone;
-                                        return (
-                                            <div key={d.id} className="flex justify-between items-center text-sm">
+                                                {profile.shipping_profile_destinations.length === 0 ? (
+                                                    <p className="text-sm text-slate-500 italic">Aucun tarif défini</p>
+                                                ) : (
+                                                    profile.shipping_profile_destinations.slice(0, 3).map(d => {
+                                                        const zoneName = customZones.find(z => z.id === d.zone)?.name || REGIONS.find(r => r.code === d.zone)?.name || COUNTRIES.find(c => c.code === d.zone)?.name || d.zone;
+                                                        return (
+                                                            <div key={d.id} className="flex justify-between items-center text-sm">
                                                 <span className="font-medium text-slate-600">{zoneName}</span>
                                                 <div className="text-right">
                                                     <span className="text-slate-900 font-bold">{(d.base_price_cents / 100).toFixed(2)}€</span>

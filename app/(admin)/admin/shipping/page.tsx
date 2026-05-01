@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase-admin';
 import { createClient } from '@/lib/supabase-server';
 import { redirect } from 'next/navigation';
 import ShippingProfilesManager from '@/components/admin/ShippingProfilesManager';
+import CustomZonesManager from '@/components/admin/CustomZonesManager';
 
 export default async function ShippingAdminPage() {
     const supabase = createClient();
@@ -22,6 +23,12 @@ export default async function ShippingAdminPage() {
         `)
         .order('created_at', { ascending: false });
 
+    // Fetch custom zones
+    const { data: customZones } = await adminClient
+        .from('custom_shipping_zones')
+        .select('*')
+        .order('name', { ascending: true });
+
     return (
         <div className="p-8 max-w-7xl mx-auto">
             <div className="mb-8">
@@ -29,7 +36,9 @@ export default async function ShippingAdminPage() {
                 <p className="text-slate-500 mt-1">Configurez des frais de livraison sur-mesure par zone géographique, façon Etsy.</p>
             </div>
 
-            <ShippingProfilesManager initialProfiles={profiles || []} />
+            <CustomZonesManager initialZones={customZones || []} />
+
+            <ShippingProfilesManager initialProfiles={profiles || []} customZones={customZones || []} />
         </div>
     );
 }

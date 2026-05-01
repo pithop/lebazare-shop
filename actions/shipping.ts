@@ -152,3 +152,56 @@ export async function getProductsForProfile(profileId: string) {
         return [];
     }
 }
+
+// --- Custom Zones Actions ---
+
+export async function getCustomZones() {
+    try {
+        const { data, error } = await supabase
+            .from('custom_shipping_zones')
+            .select('*')
+            .order('name');
+            
+        if (error) throw error;
+        return data || [];
+    } catch (error) {
+        console.error('Failed to fetch custom zones', error);
+        return [];
+    }
+}
+
+export async function saveCustomZone(id: string | null, name: string, countries: string[]) {
+    try {
+        if (id) {
+            const { error } = await supabase
+                .from('custom_shipping_zones')
+                .update({ name, countries })
+                .eq('id', id);
+            if (error) throw error;
+        } else {
+            const { error } = await supabase
+                .from('custom_shipping_zones')
+                .insert({ name, countries });
+            if (error) throw error;
+        }
+        revalidatePath('/admin/shipping');
+        return { success: true };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}
+
+export async function deleteCustomZone(id: string) {
+    try {
+        const { error } = await supabase
+            .from('custom_shipping_zones')
+            .delete()
+            .eq('id', id);
+            
+        if (error) throw error;
+        revalidatePath('/admin/shipping');
+        return { success: true };
+    } catch (error: any) {
+        return { success: false, error: error.message };
+    }
+}

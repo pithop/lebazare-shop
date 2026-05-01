@@ -26,15 +26,28 @@ import { getCountryByCode } from '@/lib/countries';
 // Maps a customer's country code to an ordered list of zones to try in the 
 // shipping_profile_destinations table. First match wins.
 
-function mapCountryToZone(countryCode: string): string[] {
+async function mapCountryToZone(supabase: any, countryCode: string): Promise<string[]> {
     const country = getCountryByCode(countryCode);
-    if (!country) return [countryCode, 'ROW'];
+    const defaultZones = country ? (country.region === 'EU' ? [countryCode, 'EU', 'ROW'] : [countryCode, 'ROW']) : [countryCode, 'ROW'];
     
-    if (country.region === 'EU') {
-        return [countryCode, 'EU', 'ROW'];
+    // Fetch custom zones
+    const { data: customZones } = await supabase
+        .from('custom_shipping_zones')
+        .select('id, countries');
+        
+    if (!customZones || customZones.length === 0) return defaultZones;
+    
+    // Find any custom zones that include this country code
+    const matchingCustomZoneIds = customZones
+        .filter((z: any) => z.countries.includes(countryCode))
+        .map((z: any) => z.id);
+        
+    if (matchingCustomZoneIds.length > 0) {
+        // Hierarchy: Exact Country -> Custom Zone(s) -> Region -> ROW
+        return [countryCode, ...matchingCustomZoneIds, ...(country?.region === 'EU' ? ['EU'] : []), 'ROW'];
     }
     
-    return [countryCode, 'ROW'];
+    return defaultZones;
 }
 
 // ─── Profile-Based Shipping ─────────────────────────────────────────────────────
@@ -91,7 +104,7 @@ async function calculateProfileShipping(
     profileItems: CartItem[],
     destinationCountry: string
 ): Promise<number> {
-    const zones = mapCountryToZone(destinationCountry);
+    const zones = await mapCountryToZone(supabase, destinationCountry);
 
     // Resolve rates for each item
     const itemRates: { item: CartItem; rate: ProfileRate }[] = [];
