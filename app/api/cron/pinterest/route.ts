@@ -6,6 +6,39 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+async function getPinterestAccessToken() {
+    const appId = process.env.PINTEREST_APP_ID;
+    const appSecret = process.env.PINTEREST_APP_SECRET;
+    const refreshToken = process.env.PINTEREST_REFRESH_TOKEN;
+
+    if (!appId || !appSecret || !refreshToken) {
+        throw new Error("Missing Pinterest OAuth credentials (APP_ID, APP_SECRET, or REFRESH_TOKEN) in environment variables.");
+    }
+
+    const authHeader = Buffer.from(`${appId}:${appSecret}`).toString('base64');
+
+    const params = new URLSearchParams();
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', refreshToken);
+
+    const res = await fetch('https://api.pinterest.com/v5/oauth/token', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Basic ${authHeader}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: params.toString()
+    });
+
+    const data = await res.json();
+    
+    if (!res.ok) {
+        throw new Error(`Failed to refresh Pinterest token: ${JSON.stringify(data)}`);
+    }
+
+    return data.access_token;
+}
+
 export async function POST(req: NextRequest) {
   try {
     // 1. Verify Authorization Header (Cron Secret)
@@ -51,11 +84,18 @@ export async function POST(req: NextRequest) {
     const imageUrl = product.images[0];
     const productUrl = `https://www.lebazare.fr/produits/${product.slug}`;
     const boardId = process.env.PINTEREST_BOARD_ID;
-    const accessToken = process.env.PINTEREST_ACCESS_TOKEN;
-
-    if (!boardId || !accessToken) {
-      console.error('Pinterest credentials (Board ID or Access Token) are missing.');
+    
+    if (!boardId) {
+      console.error('Pinterest Board ID is missing.');
       return NextResponse.json({ error: 'Pinterest configuration error' }, { status: 500 });
+    }
+
+    let accessToken;
+    try {
+      accessToken = await getPinterestAccessToken();
+    } catch (e: any) {
+      console.error("Token refresh error:", e.message);
+      return NextResponse.json({ error: 'Pinterest authentication error', details: e.message }, { status: 500 });
     }
 
     // Prepare Pinterest API Payload

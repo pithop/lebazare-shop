@@ -124,7 +124,7 @@ export async function searchProductsForShipping(query: string) {
     try {
         const { data, error } = await supabase
             .from('products')
-            .select('id, title, images, shipping_profile_id')
+            .select('id, title, images, shipping_profile_id, price')
             .ilike('title', `%${query}%`)
             .limit(10);
             
@@ -142,7 +142,7 @@ export async function getProductsForProfile(profileId: string) {
     try {
         const { data, error } = await supabase
             .from('products')
-            .select('id, title, images, shipping_profile_id')
+            .select('id, title, images, shipping_profile_id, price')
             .eq('shipping_profile_id', profileId);
             
         if (error) throw error;

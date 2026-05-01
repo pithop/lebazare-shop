@@ -9,7 +9,7 @@ import Image from 'next/image'
 
 type Destination = { id?: string, zone: string, base_price: number, additional_price: number }
 type Profile = { id: string, name: string, shipping_profile_destinations: any[] }
-type ProductLight = { id: string, title: string, images: { edges: { node: { url: string } }[] }, shipping_profile_id: string | null }
+type ProductLight = { id: string, title: string, images: string[], shipping_profile_id: string | null, price?: number }
 
 export default function ShippingProfilesManager({ initialProfiles }: { initialProfiles: Profile[] }) {
     const [profiles, setProfiles] = useState<Profile[]>(initialProfiles)
@@ -254,7 +254,16 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
 
                             {/* Search Results Dropdown-like area */}
                             <AnimatePresence>
-                                {searchResults.length > 0 && (
+                                {searchQuery.length >= 2 && !isSearching && searchResults.length === 0 ? (
+                                    <motion.div 
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        className="mt-2 bg-white border border-slate-200 rounded-xl shadow-lg p-4 text-center text-sm text-slate-500"
+                                    >
+                                        Aucun produit trouvé pour "{searchQuery}"
+                                    </motion.div>
+                                ) : searchResults.length > 0 && (
                                     <motion.div 
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -263,7 +272,7 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                     >
                                         {searchResults.map(result => {
                                             const isAssigned = assignedProducts.some(p => p.id === result.id);
-                                            const imgUrl = result.images?.edges?.[0]?.node?.url;
+                                            const imgUrl = result.images?.[0];
                                             return (
                                                 <button
                                                     key={result.id}
@@ -273,7 +282,12 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                                     <div className="w-8 h-8 rounded bg-slate-100 overflow-hidden relative shrink-0">
                                                         {imgUrl && <Image src={imgUrl} alt="" fill className="object-cover" />}
                                                     </div>
-                                                    <span className="text-xs font-medium text-slate-700 line-clamp-1 flex-1">{result.title}</span>
+                                                    <div className="flex-1 min-w-0">
+                                                        <span className="text-xs font-medium text-slate-700 line-clamp-1">{result.title}</span>
+                                                        {result.price !== undefined && (
+                                                            <span className="text-[10px] text-slate-400 font-medium">{(result.price / 100).toFixed(2)}€</span>
+                                                        )}
+                                                    </div>
                                                     {isAssigned && <Check className="w-4 h-4 text-green-500 shrink-0" />}
                                                 </button>
                                             )
@@ -297,22 +311,28 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                 <div className="space-y-2">
                                     <AnimatePresence>
                                         {assignedProducts.map(product => {
-                                            const imgUrl = product.images?.edges?.[0]?.node?.url;
+                                            const imgUrl = product.images?.[0];
                                             return (
                                                 <motion.div 
                                                     initial={{ opacity: 0, scale: 0.95 }}
                                                     animate={{ opacity: 1, scale: 1 }}
                                                     exit={{ opacity: 0, scale: 0.95 }}
                                                     key={product.id} 
-                                                    className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-100 shadow-sm group"
+                                                    className="flex items-center gap-3 bg-white p-2 rounded-xl border border-slate-100 shadow-sm group hover:border-red-100 transition-colors"
                                                 >
                                                     <div className="w-10 h-10 rounded-lg bg-slate-100 overflow-hidden relative shrink-0">
                                                         {imgUrl && <Image src={imgUrl} alt="" fill className="object-cover" />}
                                                     </div>
-                                                    <span className="text-sm font-medium text-slate-700 line-clamp-1 flex-1">{product.title}</span>
+                                                    <div className="flex-1 min-w-0">
+                                                        <span className="text-sm font-medium text-slate-700 line-clamp-1">{product.title}</span>
+                                                        {product.price !== undefined && (
+                                                            <span className="text-[11px] text-slate-400 font-medium">{(product.price / 100).toFixed(2)}€</span>
+                                                        )}
+                                                    </div>
                                                     <button 
                                                         onClick={() => toggleProductAssignment(product)}
                                                         className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                                                        title="Retirer ce produit"
                                                     >
                                                         <X className="w-4 h-4" />
                                                     </button>
