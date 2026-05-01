@@ -285,7 +285,7 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                                     <div className="flex-1 min-w-0">
                                                         <span className="text-xs font-medium text-slate-700 line-clamp-1">{result.title}</span>
                                                         {result.price !== undefined && (
-                                                            <span className="text-[10px] text-slate-400 font-medium">{(result.price / 100).toFixed(2)}€</span>
+                                                            <span className="text-[10px] text-slate-400 font-medium">{result.price.toFixed(2)}€</span>
                                                         )}
                                                     </div>
                                                     {isAssigned && <Check className="w-4 h-4 text-green-500 shrink-0" />}
@@ -326,7 +326,7 @@ export default function ShippingProfilesManager({ initialProfiles }: { initialPr
                                                     <div className="flex-1 min-w-0">
                                                         <span className="text-sm font-medium text-slate-700 line-clamp-1">{product.title}</span>
                                                         {product.price !== undefined && (
-                                                            <span className="text-[11px] text-slate-400 font-medium">{(product.price / 100).toFixed(2)}€</span>
+                                                            <span className="text-[11px] text-slate-400 font-medium">{product.price.toFixed(2)}€</span>
                                                         )}
                                                     </div>
                                                     <button 
